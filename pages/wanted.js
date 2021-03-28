@@ -3,6 +3,7 @@ import useSWR from 'swr';
 
 import HeadCustom from './components/HeadCustom';
 import WantedElement from './components/WantedElement';
+import Header from './components/Header';
 
 const baseUrl = "http://localhost:8000/";
 
@@ -24,16 +25,17 @@ const WantedList = (props) => {
     )
 
     return (
-        <>
+        <div>
           <HeadCustom></HeadCustom>
+          <Header></Header>
           <main>
               <div className="mainZone mla mra">
                 <div className="pt20">
-                    {data && data.map( w => <WantedElement {...w} key={w}/>)}
+                    {data && data.map( w => <WantedElement {...w} key={w.slug} />)}
                 </div>
               </div>
           </main>
-        </>
+        </div>
     )
 }
 

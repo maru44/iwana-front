@@ -1,5 +1,6 @@
 const WantedElement = wanted => {
     return (
+      <div>
         <article className="mb20 aPost flexNormal hrefBox">
           <div className="frameContain" ></div>
           <div className="ml20 flex1">
@@ -20,6 +21,7 @@ const WantedElement = wanted => {
             <a class="hrefBoxIn" href="{% url 'detail' post.slug %}"></a>
           */}
         </article>
+      </div>
     )
 }
 
