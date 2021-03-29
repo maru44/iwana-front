@@ -11,7 +11,17 @@ const WantedDetail = props => {
     //const wanted = props.wanted;
     //console.log(props);
 
+    async function fetcher (url) {
+      const res = await fetch(url);
+      return res.json();
+    }
+
     const wanted = props.wanted;
+
+    const initialOffers = props.offers;
+    const { data, error } = useSWR(
+      `${backEndUrl}/api/offering/${wanted.slug}`, fetcher, { initialData: initialOffers }
+    )
 
     return (
         <div>
@@ -64,8 +74,16 @@ export const getServerSideProps = async ctx => {
     const { slug } = ctx.query;
     const res = await fetch(`http://localhost:8000/api/wanted/${slug}`);
     const wanted = await res.json();
+
+    const res2 = await fetch(`http://localhost:8000/api/offering/${slug}`);
+    const offers = await res2.json();
   
-    return { props: { wanted } }
+    return {
+      props: {
+        wanted: wanted,
+        offers: offers,
+      }
+    }
 }
 
 export default WantedDetail;
