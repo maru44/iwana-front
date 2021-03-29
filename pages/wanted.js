@@ -31,7 +31,7 @@ const WantedList = (props) => {
           <main>
               <div className="mainZone mla mra">
                 <div className="pt20">
-                    {data && data.map( w => <WantedElement {...w} key={w.slug} />)}
+                    {data && data.map( w => <WantedElement {...w} key={w} />)}
                 </div>
               </div>
           </main>
