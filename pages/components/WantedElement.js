@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 const WantedElement = wanted => {
+
     return (
       <div>
         <article className="mb20 aPost flexNormal hrefBox">
@@ -23,7 +24,7 @@ const WantedElement = wanted => {
             <a class="hrefBoxIn" href="{% url 'detail' post.slug %}"></a>
           */}
           <Link as={`/wanted/${wanted.slug}`} href="/wanted/[slug]" passHref>
-            <a class="hrefBoxIn" href="{% url 'detail' post.slug %}"></a>
+            <a class="hrefBoxIn"></a>
           </Link>
         </article>
       </div>
