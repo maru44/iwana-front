@@ -307,6 +307,7 @@ width height
   width: 100%;
   max-width: 500px;
 }
+.wM1200px { max-width: 1200px; }
 
 /*    px      */
 .w20px { width: 20px; }

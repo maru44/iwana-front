@@ -63,6 +63,49 @@ const WantedDetail = props => {
                       <p className="brAll">{ wanted.want_intro }</p>
                     </div>
                   </div>
+                  {/* offer */}
+                  <div className="mt40 offerZone">
+                    <h2 className="h3Size">オファー</h2>
+                    <div className="mt10 field">
+                      {wanted.is_gotten ? (
+                        <h4 className="textCen have">入手済み</h4>
+                      ) : (
+                        <div className="notHave">
+                          <label htmlFor="id_offer_url">メッセージまたはリンク</label>
+                          <div className="flexNormal">
+                            <input type="text" name="offer" id="id_offer_url" className="w70 wM1200px" />
+                            <div id="offeringBtn" className="ml10 btNormal btFormat1 flexCen border1 pl10 pr10">送信</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt20 offerList">
+                      {data && data.map(
+                        (offer, index) =>  (
+                          <div className="flexNormal mb10 alCen" key={index}>
+                            {offer.user && (
+                              <div className="mr10  hrefBox">
+                                {/* if offer user is_auth */}
+                                <div className="offerUserArea">
+                                  <div className="imgCircle mla mra w30px h30px" 
+                                    style={{ backgroundImage: `url(${backEndUrl}${offer.user.picture})` }}>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                            <article className="flex1 aOffer">
+                              <div className="ml10">
+                                <p className="brAll">{ offer.offer_url }</p>
+                              </div>
+                              <div className="mt5 textRight">
+                                <small>{ offer.posted }</small>
+                              </div>
+                            </article>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
                 </div>
               </main>
             </div>
