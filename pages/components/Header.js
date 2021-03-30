@@ -11,7 +11,12 @@ const Header = () => {
               </Link>
             </div>
             <div className="headerUserArea">
-              <div className="circle mla hrefBox flexCen pl5 pr5">ログイン</div>
+              <div className="circle mla hrefBox flexCen pl5 pr5">
+                ログイン
+                <Link href="/user/login" passHref>
+                  <a className="hrefBoxIn"></a>
+                </Link>
+              </div>
             </div>
           </div>
         </header>

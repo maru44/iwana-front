@@ -1,3 +1,4 @@
+import Router from 'next/router';
 
 export const getCookie = name => {
     if (process.browser) {
@@ -23,7 +24,7 @@ export const getCsrfOfDjango = async () => {
     return data;
 }
 
-export const getJwtToken = async postData => {
+export const getJwtToken = async (postData, nextPage) => {
 
     const csrf = await getCsrfOfDjango();
 
@@ -37,8 +38,16 @@ export const getJwtToken = async postData => {
         body: JSON.stringify(postData),
     }
 
-    const res = await fetch(`http://localhost:8000/api/user/login`, params);
+    const res = await fetch(`http://localhost:8000/api/user/login/`, params);
     const data = await res.json();
+
+    if (data.token) {
+        if (nextPage) {
+            Router.push(nextPage);
+        } else {
+            Router.push('/');
+        }
+    } else {}
 
     return data;
 }
