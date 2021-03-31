@@ -1,7 +1,7 @@
 import Router from 'next/router';
 
 export const getCookie = name => {
-    if (process.browser) {
+    if (process.browser) { // process.clientの方がいい?
         if (document.cookie && document.cookie !== '') {
             for (const cookie of document.cookie.split(';')) {
                 const [key, value] = cookie.trim().split('=');
@@ -24,6 +24,13 @@ export const getCsrfOfDjango = async () => {
     return data;
 }
 
+// loginの実処理を行う関数
+/**
+ * 
+ * @param {Array} postData username & passworrd
+ * @param {String or null} nextPage next page
+ * @returns data (key is token)
+ */
 export const getJwtToken = async (postData, nextPage) => {
 
     const csrf = await getCsrfOfDjango();
