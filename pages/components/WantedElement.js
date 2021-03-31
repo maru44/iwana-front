@@ -24,7 +24,7 @@ const WantedElement = wanted => {
             <a class="hrefBoxIn" href="{% url 'detail' post.slug %}"></a>
           */}
           <Link as={`/wanted/${wanted.slug}`} href="/wanted/[slug]" passHref>
-            <a class="hrefBoxIn"></a>
+            <a className="hrefBoxIn"></a>
           </Link>
         </article>
       </div>

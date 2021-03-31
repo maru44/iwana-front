@@ -2,16 +2,35 @@ import { getCookie, getCsrfOfDjango, getJwtToken } from '../components/Helper';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 
+import GlobalContext from '../states/GlobalContext';
+import { useContext } from 'react';
+
 const baseUrl = "http://localhost:8000/";
 
-const Profile = props => {
-    const user = props.user;
+const Profile = () => {
+    // const user = props.user;
 
-    const jwt_token = getCookie('iwana_user_token');
+    // const jwt_token = getCookie('iwana_user_token');
 
-    console.log(jwt_token);
+    // console.log(jwt_token);
 
-    console.log(user);
+    // console.log(user);
+
+    const { currentUser, setUser } = useContext(GlobalContext);
+
+    console.log(currentUser);
+
+    setTimeout(() => {
+      console.log(currentUser)
+    }, 800);
+
+    setTimeout(() => {
+      setUser(currentUser + 1)
+    }, 1000);
+
+    setTimeout(() => {
+      console.log(currentUser)
+    }, 1200);
 
     return (
         <div>
@@ -24,9 +43,6 @@ const Profile = props => {
                   <h1 className="h3Size">プロフィール変更</h1>
                   <form className="mt20" method="POST" encType="multipart/form-data">
                     <div className="field">
-                      { user.name && (user.name) }
-                      { user.username && (user.username) }
-                      { user.intro && (user.intro) }
                     </div>
                   </form>
                 </div>

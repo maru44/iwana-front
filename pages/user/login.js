@@ -2,6 +2,10 @@ import { getCookie, getCsrfOfDjango, getJwtToken } from '../components/Helper';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 
+import GlobalContext from '../states/GlobalContext';
+import { useContext } from 'react';
+
+/*
 const fetchLogin = async e => {
 
     e.preventDefault();
@@ -25,6 +29,32 @@ const fetchLogin = async e => {
     }
 
     return data;
+}
+*/
+
+const fetchLogin = async e => {
+
+  e.preventDefault();
+
+  const target = e.target;
+  let nextPage = null;
+  
+  const postData = {
+    "username": target.username.value,
+    "password": target.password.value,
+  }
+
+  if (target.next.value !== null || target.next.value !== "") {
+      nextPage = target.next.value;
+  }
+
+  const data = await getJwtToken(postData, nextPage);
+
+  if (process.browser) {
+      document.cookie = `iwana_user_token=${data['token']}`;
+  }
+
+  return data;
 }
 
 const Login = () => {
