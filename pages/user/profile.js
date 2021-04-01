@@ -2,35 +2,11 @@ import { getCookie, getCsrfOfDjango, getJwtToken } from '../components/Helper';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 
-import GlobalContext from '../states/GlobalContext';
 import { useContext } from 'react';
 
 const baseUrl = "http://localhost:8000/";
 
 const Profile = () => {
-    // const user = props.user;
-
-    // const jwt_token = getCookie('iwana_user_token');
-
-    // console.log(jwt_token);
-
-    // console.log(user);
-
-    const { currentUser, setUser } = useContext(GlobalContext);
-
-    console.log(currentUser);
-
-    setTimeout(() => {
-      console.log(currentUser)
-    }, 800);
-
-    setTimeout(() => {
-      setUser(currentUser + 1)
-    }, 1000);
-
-    setTimeout(() => {
-      console.log(currentUser)
-    }, 1200);
 
     return (
         <div>

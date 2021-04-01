@@ -5,6 +5,8 @@ import HeadCustom from './components/HeadCustom';
 import WantedElement from './components/WantedElement';
 import Header from './components/Header';
 
+import { useCurrentUser } from './hooks/useCurrentUser';
+
 const baseUrl = "http://localhost:8000/";
 
 const WantedList = (props) => {
@@ -12,6 +14,9 @@ const WantedList = (props) => {
     // const localUrl = 'http://localhost:8000/api/wanted';
     const localUrl = `${baseUrl}api/wanted`;
     console.log(localUrl);
+
+    const { authChecking, CurrentUser } = useCurrentUser();
+    console.log(CurrentUser);
 
     async function fetchTalk (url) {
         const res = await fetch(url);

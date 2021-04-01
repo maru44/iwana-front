@@ -1,26 +1,35 @@
 import '../styles/globals.css';
-import { useState, useEffect } from 'react';
-import GlobalContext from './states/GlobalContext';
+import { useEffect } from 'react';
+import { useSetRecoilState, RecoilRoot } from 'recoil';
 import getCookie from './components/Helper';
+import { CurrentUserState } from './states/CurrentUser';
+import { fetchCurrentUser } from './components/Helper';
 
-/*
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+const AppInt = () => {
+  const setCurrentUser = useSetRecoilState(CurrentUserState);
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const tk = getCookie('iwana_user_token');
+        const { CurrentUser } = await fetchCurrentUser(tk);
+        setCurrentUser(CurrentUser);
+      } catch {
+        setCurrentUser(null);
+      }
+    })();
+  }, [])
+
+  return null;
 }
-*/
 
 function MyApp({ Component, pageProps }) {
-  // default is null
-  // if logined -> current user is object
-  const [currentUser, setUser] = useState(0);
-
-  const token_ = getCookie('iwana_user_token');
-
   return (
-    <GlobalContext.Provider value={{currentUser, setUser}}>
+    <RecoilRoot>
       <Component {...pageProps} />
-    </GlobalContext.Provider>
+      <AppInt />
+    </RecoilRoot>
   )
 }
 
-export default MyApp
+export default MyApp;

@@ -59,4 +59,14 @@ export const getJwtToken = async (postData, nextPage) => {
     return data;
 }
 
+
+export const fetchCurrentUser = async token => {
+    const res = await fetch(`http://localhost:8000/api/user/token/${token}`);
+    const uid = await res.json();
+
+    console.log(uid);
+
+    return uid;
+}
+
 export default getCookie;
