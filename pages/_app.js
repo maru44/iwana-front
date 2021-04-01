@@ -12,7 +12,8 @@ const AppInt = () => {
     (async function () {
       try {
         const tk = getCookie('iwana_user_token');
-        const { CurrentUser } = await fetchCurrentUser(tk);
+        const CurrentUser = await fetchCurrentUser(tk);
+        console.log(CurrentUser);
         setCurrentUser(CurrentUser);
       } catch {
         setCurrentUser(null);

@@ -61,7 +61,12 @@ export const getJwtToken = async (postData, nextPage) => {
 
 
 export const fetchCurrentUser = async token => {
-    const res = await fetch(`http://localhost:8000/api/user/token/${token}`);
+    const tokenList = token.split('.');
+    const head = tokenList[0];
+    const pay = tokenList[1];
+    const signature = tokenList[2];
+
+    const res = await fetch(`http://localhost:8000/api/user/token/?head=${head}&pay=${pay}&signature=${signature}`);
     const uid = await res.json();
 
     console.log(uid);

@@ -13,9 +13,8 @@ const WantedList = (props) => {
     
     // const localUrl = 'http://localhost:8000/api/wanted';
     const localUrl = `${baseUrl}api/wanted`;
-    console.log(localUrl);
 
-    const { authChecking, CurrentUser } = useCurrentUser();
+    const { isAuthChecking, CurrentUser } = useCurrentUser();
     console.log(CurrentUser);
 
     async function fetchTalk (url) {

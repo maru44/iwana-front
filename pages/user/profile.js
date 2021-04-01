@@ -1,12 +1,13 @@
 import { getCookie, getCsrfOfDjango, getJwtToken } from '../components/Helper';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
-
-import { useContext } from 'react';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 
 const baseUrl = "http://localhost:8000/";
 
 const Profile = () => {
+
+    const { isAuthChecking, CurrentUser } = useCurrentUser();
 
     return (
         <div>
@@ -19,6 +20,9 @@ const Profile = () => {
                   <h1 className="h3Size">プロフィール変更</h1>
                   <form className="mt20" method="POST" encType="multipart/form-data">
                     <div className="field">
+                      { isAuthChecking && "取得中" }
+                      { !CurrentUser && '非ログイン' }
+                      { CurrentUser && CurrentUser }
                     </div>
                   </form>
                 </div>
