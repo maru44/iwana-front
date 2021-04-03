@@ -32,9 +32,10 @@ body {
   -webkit-user-select: none;
   */
   /*
+  background-color: #fff2f0;
   background-color: #ffd9d1;
   */
-  background-color: #fff2f0;
+  background-color: #fff;
 }
 
 .touchDevBody {
@@ -548,6 +549,11 @@ header
   .headerCon .circle {
       height: 40px;
       background-color: #fff;
+  }
+  .headerCon .halfCircle {
+    height: 40px;
+    border-radius: 50px;
+    background-color: #fff2f0;
   }
   .headerCon .toPost {
       width: 40px;

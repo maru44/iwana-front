@@ -9,14 +9,6 @@ import { useRequireLogin } from '../hooks/useRequireLogin';
 
 const baseUrl = process.env.BACKEND_URL;
 
-interface User {
-  username: string,
-  name: string,
-  picture: string,
-  pk: number,
-  intro: string,
-}
-
 export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const Profile: NextPage = () => {
@@ -66,19 +58,5 @@ const Profile: NextPage = () => {
         </div>
     )
 }
-
-/*
-export async function getServerSideProps() {
-    const jwt_token = getCookie('iwana_user_token');
-
-    console.log(jwt_token);
-    const user = jwt_token;
-
-    //const res = await fetch(`${baseUrl}api/user/profile/${jwt_token}`);
-    //const user = await res.json();
-
-    return { props: { user } }
-}
-*/
 
 export default Profile;

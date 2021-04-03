@@ -1,22 +1,51 @@
-import HeadCustom from '../components/HeadCustom';
-import Header from '../components/Header';
-
 import Link from 'next/link';
 import useSWR from 'swr';
+import { AppContext } from 'next/app';
+import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
+
+import HeadCustom from '../components/HeadCustom';
+import Header from '../components/Header';
+import { headData } from '../types/any';
+
+import { useCurrentUser } from '../hooks/useCurrentUser';
+import { ParsedUrlQuery } from 'node:querystring';
 
 export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const WantedDetail = props => {
+interface Props {
+  wanted: {
+    slug: number,
+    want_name: string,
+    want_intro: string,
+    want_price: number,
+    plat: { [key: number]: any}
+    user: any,
+    posted: string,
+    is_gotten: boolean,
+    picture: string,
+  },
+  offers: { [key: number]: any}
+}
 
-    //const wanted = props.wanted;
-    //console.log(props);
+// SSR return value
+interface SSRProps {
+  wanted: { [key: string]: any },
+  offers: { [key: number]: any },
+}
 
-    async function fetcher (url) {
+// ssr query params
+interface Params extends ParsedUrlQuery {
+  slug: string,
+}
+
+const WantedDetail: NextPage<Props> = props => {
+
+    const { isAuthChecking, CurrentUser } = useCurrentUser();
+
+    async function fetcher (url: string) {
       const res = await fetch(url);
       return res.json();
     }
-
-    // const backEndUrl = process.env.BACKEND_URL;
 
     const wanted = props.wanted;
 
@@ -25,9 +54,17 @@ const WantedDetail = props => {
       `${backEndUrl}/api/offering/${wanted.slug}`, fetcher, { initialData: initialOffers }
     )
 
+    const headData: headData = {
+      ogtypeWebsite: 'article',
+      ogtitle: `${wanted.want_name} | 欲しいものページ`,
+      ogimage: `${backEndUrl}${wanted.picture}`,
+      ogdescription: `${wanted.want_name}を欲しがっています。`,
+      title: `Iwana - ${wanted.want_name}`,
+    }
+
     return (
         <div>
-            <HeadCustom></HeadCustom>
+            <HeadCustom {...headData}></HeadCustom>
             <Header></Header>
             <div className="content">
               <main>
@@ -53,7 +90,7 @@ const WantedDetail = props => {
                       <div className="mr20 mt5">希望プラットフォーム: </div>
                       <div className="mt5">
                         { wanted.plat && wanted.plat.map(
-                             (p, index) => <span key={index}>{ p.name }</span>
+                             (p: any, index: number) => <span key={index}>{ p.name }</span>
                         )}
                       </div>
                     </div>
@@ -65,6 +102,20 @@ const WantedDetail = props => {
                       <p className="brAll">{ wanted.want_intro }</p>
                     </div>
                   </div>
+                  {/* only user */}
+                  { !isAuthChecking && CurrentUser && CurrentUser.pk === wanted.user.pk && (
+                    <div className="mt40 flexNormal spBw">
+                      <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn" wanted={ wanted.slug }>入手
+                        <span className="is_gotten ml10">
+                          {wanted.is_gotten ? 'gotten': 'No'}
+                        </span>
+                      </div>
+                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">編集
+                        {/*<a href="{% url 'update' post.slug %}" className="hrefBoxIn"></a>*/}
+                      </div>
+                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn" wanted={ wanted.slug }>削除</div>
+                    </div>
+                  )}
                   {/* offer */}
                   <div className="mt40 offerZone">
                     <h2 className="h3Size">オファー</h2>
@@ -81,9 +132,10 @@ const WantedDetail = props => {
                         </div>
                       )}
                     </div>
+                    {/* ここあとで子componentにする */}
                     <div className="mt20 offerList">
                       {data && data.map(
-                        (offer, index) =>  (
+                        (offer: any, index: number) =>  (
                           <div className="flexNormal mb10 alCen" key={index}>
                             {offer.user && (
                               <div className="mr10  hrefBox">
@@ -115,8 +167,8 @@ const WantedDetail = props => {
     )
 }
 
-export const getServerSideProps = async ctx => {
-    const { slug } = ctx.query;
+export const getServerSideProps: GetServerSideProps<SSRProps, Params> = async (ctx) => {
+    const slug = ctx.params.slug;
     const res = await fetch(`${backEndUrl}/api/wanted/${slug}`);
     const wanted = await res.json();
 
