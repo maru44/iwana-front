@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Link from 'next/link';
 import useSWR from 'swr';
 
-const backEndUrl = 'http://localhost:8000';
+export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const WantedDetail = props => {
 
@@ -15,6 +15,8 @@ const WantedDetail = props => {
       const res = await fetch(url);
       return res.json();
     }
+
+    // const backEndUrl = process.env.BACKEND_URL;
 
     const wanted = props.wanted;
 
@@ -115,10 +117,10 @@ const WantedDetail = props => {
 
 export const getServerSideProps = async ctx => {
     const { slug } = ctx.query;
-    const res = await fetch(`http://localhost:8000/api/wanted/${slug}`);
+    const res = await fetch(`${backEndUrl}/api/wanted/${slug}`);
     const wanted = await res.json();
 
-    const res2 = await fetch(`http://localhost:8000/api/offering/${slug}`);
+    const res2 = await fetch(`${backEndUrl}/api/offering/${slug}`);
     const offers = await res2.json();
   
     return {

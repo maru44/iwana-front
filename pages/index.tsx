@@ -13,7 +13,8 @@ import { getCookie, getCsrfOfDjango } from './components/Helper';
 //const csrftoken = getCookie('csrftoken');
 const csrftoken = getCsrfOfDjango();
 
-const scrapeEndPoint = "http://localhost:8000/api/scrape/";
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+const scrapeEndPoint = `${baseUrl}/api/scrape/`;
 
 //async function fetchScrape (e) {
 const fetchScrape = async e => {
@@ -45,7 +46,7 @@ const fetchScrape = async e => {
     body: JSON.stringify(postData),
   });
   
-  const ret = await res.json();
+  let ret = await res.json();
 
   if (ret['mercari'] == [] && ret['rakuma'] == [] && ret['yahoo'] == []) {
     ret = "null";

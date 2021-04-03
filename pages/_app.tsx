@@ -1,7 +1,9 @@
 import '../styles/globals.css';
 import { useEffect } from 'react';
+import { AppProps } from 'next/app';
 import { useSetRecoilState, RecoilRoot } from 'recoil';
 import getCookie from './components/Helper';
+
 import { CurrentUserState } from './states/CurrentUser';
 import { fetchCurrentUser } from './components/Helper';
 
@@ -24,7 +26,7 @@ const AppInt = () => {
   return null;
 }
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <Component {...pageProps} />

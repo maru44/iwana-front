@@ -1,6 +1,25 @@
+import { NextComponentType } from 'next';
 import Link from 'next/link';
 
-const WantedElement = wanted => {
+/*
+interface wanted {
+  slug: string,
+  want_name: string,
+  want_intro: string,
+  plat: { [key: number]: any[]},
+  is_gotten: boolean,
+}
+*/
+
+interface Props {
+  slug: string,
+  want_name: string,
+  want_intro: string,
+  plat: { [key: number]: any[]},
+  is_gotten: boolean,
+}
+
+const WantedElement: NextComponentType<Props> = wanted => {
 
     return (
       <div>

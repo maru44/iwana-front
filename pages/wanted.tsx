@@ -1,3 +1,4 @@
+import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
 import useSWR from 'swr';
 
@@ -7,17 +8,36 @@ import Header from './components/Header';
 
 import { useCurrentUser } from './hooks/useCurrentUser';
 
-const baseUrl = "http://localhost:8000/";
+/*
+interface Props {
+    wanted: {
+        slug: string,
+        want_name: string,
+        posted: string,
+        is_gotten: boolean,
+        want_intro: string,
+        want_price: number,
+        user: { [key: string]: any },
+        plat: { [key: number]: any },
+        is_accept_official: boolean,
+        picture: string,
+    }
+}
+*/
 
-const WantedList = (props) => {
+interface Props {
+    wanteds: { [key: number]: any[]}
+}
+
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+const WantedList: NextPage<Props> = props => {
     
-    // const localUrl = 'http://localhost:8000/api/wanted';
-    const localUrl = `${baseUrl}api/wanted`;
+    const localUrl = `${baseUrl}/api/wanted`;
 
     const { isAuthChecking, CurrentUser } = useCurrentUser();
-    console.log(CurrentUser);
 
-    async function fetchTalk (url) {
+    async function fetchTalk (url: string) {
         const res = await fetch(url);
         return res.json();
     }
@@ -35,7 +55,7 @@ const WantedList = (props) => {
           <main>
               <div className="mainZone mla mra">
                 <div className="pt20">
-                    {data && data.map( w =>
+                    {data && data.map( (w: any) =>
                       <WantedElement {...w} key={ w.slug } />
                     )}
                 </div>
@@ -45,8 +65,8 @@ const WantedList = (props) => {
     )
 }
 
-export async function getServerSideProps() {
-    const res = await fetch(`${baseUrl}api/wanted`);
+export const getServerSideProps: GetServerSideProps = async () => {
+    const res = await fetch(`${baseUrl}/api/wanted`);
     const wanteds = await res.json();
 
     return { props: { wanteds } }
