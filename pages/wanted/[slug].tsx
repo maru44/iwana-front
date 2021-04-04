@@ -81,6 +81,9 @@ const WantedDetail: NextPage<Props> = props => {
                         <div className="ml10 flex1 ovHide">
                           <h2 className="whNormal h3Size">{ wanted.user.username }</h2>
                         </div>
+                        <Link as={`/wanted/u/${wanted.user.username}`} href="/wanted/u/[username]" passHref>
+                          <a className="hrefBoxIn"></a>
+                        </Link>
                       </div>
                       <div>
                          <small>{ wanted.posted }</small>
@@ -127,7 +130,7 @@ const WantedDetail: NextPage<Props> = props => {
                           <label htmlFor="id_offer_url">メッセージまたはリンク</label>
                           <div className="flexNormal">
                             <input type="text" name="offer" id="id_offer_url" className="w70 wM1200px" />
-                            <div id="offeringBtn" className="ml10 btNormal btFormat1 flexCen border1 pl10 pr10">送信</div>
+                            <div id="offeringBtn" className="ml10 btNormal btFormat1 flexCen pl10 pr10">送信</div>
                           </div>
                         </div>
                       )}

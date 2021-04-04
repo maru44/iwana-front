@@ -1,6 +1,5 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
 import Link from 'next/link';
+import { destroyCookie } from 'nookies';
 
 import { useState } from 'react';
 
@@ -8,10 +7,7 @@ import HeadCustom from './components/HeadCustom';
 import Header from './components/Header';
 import { GlobalArea, MessageArea } from './components/GlobalPlat';
 
-import { getCookie, getCsrfOfDjango } from './components/Helper';
-
-//const csrftoken = getCookie('csrftoken');
-const csrftoken = getCsrfOfDjango();
+import { getCsrfOfDjango, dCookie } from './components/Helper';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
@@ -19,9 +15,9 @@ const scrapeEndPoint = `${baseUrl}/api/scrape/`;
 //async function fetchScrape (e) {
 const fetchScrape = async e => {
 
-  const tk = await csrftoken;
-
   e.preventDefault();
+
+  const tk = await getCsrfOfDjango();
 
   const target = e.target;
   
@@ -45,6 +41,9 @@ const fetchScrape = async e => {
     },
     body: JSON.stringify(postData),
   });
+
+  // destroy cookie
+  // await dCookie('csrftoken');
   
   let ret = await res.json();
 
@@ -117,7 +116,7 @@ export default function Home() {
                 </select>
               </div>
               <button id="globalBtn" type="submit"
-               className="mt30 btFormat1 btNormal wM500px flexCen border1 pl10 pr10">
+               className="mt30 btFormat1 btNormal wM500px flexCen pt5 pb5">
                  検索
               </button>
             </form>

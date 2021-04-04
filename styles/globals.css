@@ -33,9 +33,10 @@ body {
   */
   /*
   background-color: #fff2f0;
+  background-color: #fff;
   background-color: #ffd9d1;
   */
-  background-color: #fff;
+  background-color: #fff2f0;
 }
 
 .touchDevBody {
@@ -490,6 +491,7 @@ button
   background-color: #49b334;
   border-radius: 6px;
   color: white;
+  border: none;
 }
 
 .btSize1 {
@@ -540,12 +542,15 @@ select {
 header
 ////////////////*/
 
+header {
+  background-color: #fff;
+}
+
 .headerCon {
   height: 56px;
   width: 100%;
   max-width: 770px;
-  margin: 0 auto;
-  border-bottom: 1px solid #1f1f1f; }
+  margin: 0 auto; }
   .headerCon .circle {
       height: 40px;
       background-color: #fff;

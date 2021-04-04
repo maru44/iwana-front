@@ -1,5 +1,9 @@
-import Router from 'next/router';
+import { NextPageContext } from 'next';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import nookies from 'nookies';
+
+import { useSetRecoilState } from 'recoil';
+import { CurrentUserState } from '../states/CurrentUser';
 
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -18,13 +22,18 @@ const getCookie = (name: string) => {
     }
 }
 
-export const getCsrfOfDjango = async () => {
+export const getCsrfOfDjango = async (ctx?: NextPageContext) => {
     const res = await fetch(`${baseUrl}/api/csrf/`);
     const data = await res.json();
 
     setCookie(null, 'csrftoken', data['token'], {
         maxAge: 60 * 24 * 60 * 60,
     });
+    /*
+    nookies.set(ctx, 'csrftoken', data['token'], {
+        maxAge: 60 * 24 * 60 * 60,
+    })
+    */
 
     return data;
 }
@@ -45,7 +54,7 @@ export const getJwtToken = async (postData: postData, nextPage?: string) => {
 
     const csrf = await getCsrfOfDjango();
 
-    const params = {
+    const params: any = {
         method: "POST",
         credentials: 'include',
         headers: {
@@ -57,14 +66,6 @@ export const getJwtToken = async (postData: postData, nextPage?: string) => {
 
     const res = await fetch(`${baseUrl}/api/user/login/`, params);
     const data = await res.json();
-
-    if (data.token) {
-        if (nextPage) {
-            Router.push(nextPage);
-        } else {
-            Router.push('/');
-        }
-    } else {}
 
     return data;
 }
@@ -79,9 +80,21 @@ export const fetchCurrentUser = async (token: string) => {
     const res = await fetch(`${baseUrl}/api/user/profile/?head=${head}&pay=${pay}&signature=${signature}`);
     const user = await res.json();
 
-    console.log(user);
-
     return user;
+}
+
+export const dCookie = (name: string, ctx?: NextPageContext): void => {
+    destroyCookie(ctx, name);
+}
+
+export const modalOpen = () => {
+    document.querySelector(".modal").classList.remove('off');
+    document.querySelector('.modalCon').classList.remove('off');
+}
+
+export const modalClose = () => {
+    document.querySelector(".modal").classList.add('off');
+    document.querySelector('.modalCon').classList.add('off');
 }
 
 export default getCookie;

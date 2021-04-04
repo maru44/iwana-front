@@ -1,41 +1,53 @@
-import { getCsrfOfDjango, getJwtToken } from '../components/Helper';
+import { fetchCurrentUser, getCsrfOfDjango, getJwtToken } from '../components/Helper';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
+import { useSetRecoilState } from 'recoil';
 
 import { useRequireAnonymous } from '../hooks/useRequireAnonymous';
+import { CurrentUserState } from '../states/CurrentUser';
+import Router from 'next/router';
 
 const isBrowser = () => typeof window !== 'undefined';
-
-const fetchLogin = async e => {
-
-  e.preventDefault();
-
-  const target = e.target;
-  let nextPage = null;
-  
-  const postData = {
-    "username": target.username.value,
-    "password": target.password.value,
-  }
-
-  if (target.next.value !== null || target.next.value !== "") {
-      nextPage = target.next.value;
-  }
-
-  const data = await getJwtToken(postData, nextPage);
-
-  setCookie(null, 'iwana_user_token', data['token'], {
-    maxAge: 365 * 24 * 60 * 60,
-  });
-
-  return data;
-}
 
 const Login = () => {
 
     useRequireAnonymous();
+
+    // login function
+    const setCurrentUser = useSetRecoilState(CurrentUserState);
+    const fetchLogin = async e => {
+
+      e.preventDefault();
+      const target = e.target;
+      let nextPage = null;
+  
+      const postData = {
+        "username": target.username.value,
+        "password": target.password.value,
+      }
+
+      if (target.next.value !== null || target.next.value !== "") {
+          nextPage = target.next.value;
+      }
+
+      const data = await getJwtToken(postData, nextPage);
+      setCookie(null, 'iwana_user_token', data['token'], {
+        maxAge: 365 * 24 * 60 * 60,
+      });
+
+      const CurrentUser = await fetchCurrentUser(data['token']);
+      setCurrentUser(CurrentUser);
+
+      if (data.token) {
+        if (nextPage) {
+          Router.push(nextPage);
+        } else {
+          Router.push('/');
+        }
+      }
+    }
     
     return (
         <div>
