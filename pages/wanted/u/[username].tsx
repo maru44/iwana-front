@@ -62,7 +62,7 @@ const WantedList: NextPage<Props> = props => {
     return (
         <div>
           <HeadCustom {...headData}></HeadCustom>
-          <Header></Header>
+          <Header what={1}></Header>
           <main>
               <div className="mainZone mla mra">
                 {/* user data */}
@@ -79,9 +79,9 @@ const WantedList: NextPage<Props> = props => {
                       </Link>
                     </div>
                   )}
-                  <div className="mt5">
-                    <p>{user.intro}</p>
-                  </div>
+                </div>
+                <div className="mt5">
+                  <p>{user.intro}</p>
                 </div>
                 {/* wanteds list */}
                 <div className="mt20">

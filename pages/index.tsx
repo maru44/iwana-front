@@ -7,7 +7,7 @@ import HeadCustom from './components/HeadCustom';
 import Header from './components/Header';
 import { GlobalArea, MessageArea } from './components/GlobalPlat';
 
-import { getCsrfOfDjango, dCookie } from './components/Helper';
+import { getCsrfOfDjango } from './components/Helper';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
@@ -41,11 +41,11 @@ const fetchScrape = async e => {
     },
     body: JSON.stringify(postData),
   });
-
-  // destroy cookie
-  // await dCookie('csrftoken');
   
   let ret = await res.json();
+
+  // destroy cookie
+  destroyCookie(null, 'csrftoken');
 
   if (ret['mercari'] == [] && ret['rakuma'] == [] && ret['yahoo'] == []) {
     ret = "null";
@@ -68,7 +68,7 @@ export default function Home() {
   return (
     <div>
       <HeadCustom></HeadCustom>
-      <Header></Header>
+      <Header what={2}></Header>
       <div className="content">
         <main>
           <div className="mainZone mla mra">

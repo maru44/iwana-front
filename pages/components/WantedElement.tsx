@@ -1,4 +1,4 @@
-import { NextComponentType } from 'next';
+import { NextComponentType, NextPageContext } from 'next';
 import Link from 'next/link';
 
 /*
@@ -15,11 +15,11 @@ interface Props {
   slug: string,
   want_name: string,
   want_intro: string,
-  plat: { [key: number]: any[]},
+  plat: { [key: number]: object},
   is_gotten: boolean,
 }
 
-const WantedElement: NextComponentType<Props> = wanted => {
+const WantedElement: NextComponentType<NextPageContext, {}, Props> = wanted => {
 
     return (
       <div>
@@ -31,7 +31,7 @@ const WantedElement: NextComponentType<Props> = wanted => {
               { wanted.want_intro }
             </p>
             <div className="platArea">
-              {wanted.plat.map( p => <span>{ p.name }</span>)}
+              {wanted.plat.map( p => <span key={p.name}>{ p.name }</span>)}
             </div>
           </div>
           <div className="ml10 mr10">

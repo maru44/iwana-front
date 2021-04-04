@@ -1,12 +1,22 @@
 import Link from 'next/link';
-import { userInfo } from 'node:os';
-
+import { useRef } from 'react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 
 export const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const Header = () => {
+interface props {
+  what?: number,
+}
+
+const Header = (props: props) => {
     const { isAuthChecking, CurrentUser } = useCurrentUser();
+    const tabList = useRef(null);
+
+    if (props.what) {
+      if (tabList.current !== null) {
+        tabList.current.children[props.what - 1].classList.add('now');
+      }
+    }
 
     return (
         <header>
@@ -33,15 +43,21 @@ const Header = () => {
                 </div>
               )}
             </div>
+            <div className="circle hrefBox flexNormal jsCen ml20 toPost">
+              +
+              <Link href="/post" passHref>
+                <a className="hrefBoxIn"></a>
+              </Link>
+            </div>
           </div>
-          <div className="headerCon2 w100 alCen flexNormal">
+          <div className="headerCon2 w100 alCen flexNormal" ref={tabList}>
             <div className="hrefBox flexCen">
               <b>みんなの欲しいもの</b>
               <Link href='/wanted' passHref>
                 <a className="hrefBoxIn"></a>
               </Link>
             </div>
-            <div className="ml20 hrefBox flexCen">
+            <div className="hrefBox flexCen">
               <b>グローバル検索</b>
               <Link href='/' passHref>
                 <a className="hrefBoxIn"></a>

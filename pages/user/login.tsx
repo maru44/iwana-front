@@ -68,7 +68,7 @@ const Login = () => {
                       <label htmlFor="id_password">パスワード</label>
                       <input type="password" name="password" autoComplete="current-password" required id="id_password" />
                     </div>
-                    <div className="mt10">
+                    <div className="mt30">
                       <button className="pt5 pb5 wM500px btFormat1 btNormal" type="submit">
                         ログイン
                       </button>

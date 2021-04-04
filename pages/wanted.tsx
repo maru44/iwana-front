@@ -33,7 +33,7 @@ const WantedList: NextPage<Props> = props => {
     return (
         <div>
           <HeadCustom></HeadCustom>
-          <Header></Header>
+          <Header what={1}></Header>
           <main>
               <div className="mainZone mla mra">
                 <div className="pt20">

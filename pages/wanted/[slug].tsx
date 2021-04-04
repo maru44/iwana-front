@@ -65,7 +65,7 @@ const WantedDetail: NextPage<Props> = props => {
     return (
         <div>
             <HeadCustom {...headData}></HeadCustom>
-            <Header></Header>
+            <Header what={1}></Header>
             <div className="content">
               <main>
                 <div className="mainZone mla mra">
@@ -148,6 +148,9 @@ const WantedDetail: NextPage<Props> = props => {
                                     style={{ backgroundImage: `url(${backEndUrl}${offer.user.picture})` }}>
                                   </div>
                                 </div>
+                                <Link as={`/wanted/u/${offer.user.username}`} href="/wanted/u/[username]" passHref>
+                                  <a className="hrefBoxIn"></a>
+                                </Link>
                               </div>
                             )}
                             <article className="flex1 aOffer">

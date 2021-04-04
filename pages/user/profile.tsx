@@ -1,4 +1,4 @@
-import { modalClose, modalOpen } from '../components/Helper';
+import { modalClose, modalOpen, updateProfile } from '../components/Helper';
 import { NextPage } from 'next';
 import Router from 'next/router';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
@@ -32,6 +32,12 @@ const Profile: NextPage = () => {
       Router.push('/');
     }
 
+    // update profile
+    const updating = e => {
+      e.preventDefault();
+      updateProfile(e, CurrentUser);
+    }
+
     return (
         <div>
           <HeadCustom></HeadCustom>
@@ -41,14 +47,15 @@ const Profile: NextPage = () => {
               <div className="mainZone mla mra">
                 <div className="pt20">
                   <h1 className="h3Size">プロフィール変更</h1>
-                  <form className="mt20" method="POST" encType="multipart/form-data">
+                  <form onSubmit={updating} className="mt20" method="POST" encType="multipart/form-data">
                     <div className="field">
                       { isAuthChecking && "取得中" }
                       { CurrentUser &&
                         <div>
                           <div className="field">
                             <label htmlFor="id_name">表示名</label>
-                              <input type="text" id="id_name" defaultValue={user.name} />
+                            <input name="name" type="text" id="id_name" defaultValue={user.name}>
+                            </input>
                           </div>
                           <div className="field mt20">
                             <label htmlFor="id_intro">プロフィール画像</label>
@@ -59,9 +66,14 @@ const Profile: NextPage = () => {
                           </div>
                           <div className="field mt20">
                             <label htmlFor="id_intro">紹介文</label>
-                            <textarea id="id_intro" rows={5} defaultValue={user.intro}></textarea>
+                            <textarea id="id_intro" name="intro" rows={5} defaultValue={user.intro}></textarea>
                           </div>
                         </div> }
+                    </div>
+                    <div className="mt30">
+                      <button type="submit" className="btFormat1 pt5 pb5 btNormal wM500px">
+                        変更する
+                      </button>
                     </div>
                   </form>
                 </div>
