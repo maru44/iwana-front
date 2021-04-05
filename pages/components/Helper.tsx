@@ -24,6 +24,7 @@ const getCookie = (name: string) => {
     }
 }
 
+// get csrftoken from serverside
 export const getCsrfOfDjango = async (ctx?: NextPageContext) => {
     const res = await fetch(`${baseUrl}/api/csrf/`);
     const data = await res.json();
@@ -39,6 +40,7 @@ export const getCsrfOfDjango = async (ctx?: NextPageContext) => {
 
     return data;
 }
+
 
 interface postData {
     username: string,
@@ -74,7 +76,7 @@ export const getJwtToken = async (postData: postData, nextPage?: string) => {
     return data;
 }
 
-
+// get CurrentUser information by jwt
 export const fetchCurrentUser = async (token: string) => {
     const tokenList = token.split('.');
     const head = tokenList[0];
@@ -87,16 +89,20 @@ export const fetchCurrentUser = async (token: string) => {
     return user;
 }
 
+/*   modal open or close   */
+// open
 export const modalOpen = () => {
     document.querySelector(".modal").classList.remove('off');
     document.querySelector('.modalCon').classList.remove('off');
 }
 
+// close
 export const modalClose = () => {
     document.querySelector(".modal").classList.add('off');
     document.querySelector('.modalCon').classList.add('off');
 }
 
+// update profile
 export const updateProfile = async (e, user: User) => {
 
     let formData = new FormData();
@@ -132,6 +138,40 @@ export const updateProfile = async (e, user: User) => {
     destroyCookie(null, 'csrftoken');
 
     Router.reload();
+}
+
+// post wanted
+export const postWanted = async (e, wanted_plat, user: User) => {
+
+    console.log(wanted_plat);
+    let formData = new FormData();
+    // user pk
+    formData.set('user_pk', user.pk.toString());
+
+    formData.set('want_name', e.target.want_name.value);
+    formData.set('want_price', e.target.want_price.value);
+    for (let i = 0; i < wanted_plat.length; i++) {
+        formData.append('plat[]', wanted_plat[i]);
+    }
+    formData.set('want_intro', e.target.want_intro.value);
+    if (e.target.picture.files.length !== 0) {
+        formData.set('picture', e.target.picture.files[0])
+    }
+
+    const csrf = await getCsrfOfDjango();
+    
+    const res = await fetch(`${baseUrl}/api/wanted/`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            //"Content-Type": "multipart/form-data",
+            "X-CSRFToken": csrf['token'],
+        },
+        body: formData,
+    })
+
+    const ret = await res.json();
+    destroyCookie(null, 'csrftoken');
 }
 
 export default getCookie;

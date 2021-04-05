@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { NextPage } from 'next';
 import { destroyCookie } from 'nookies';
 
 import { useState } from 'react';
@@ -12,8 +13,7 @@ import { getCsrfOfDjango } from './components/Helper';
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
 
-//async function fetchScrape (e) {
-const fetchScrape = async e => {
+const fetchScrape = async (e: any) => {
 
   e.preventDefault();
 
@@ -55,11 +55,12 @@ const fetchScrape = async e => {
   return ret;
 }
 
-export default function Home() {
+// component
+export const Home: NextPage = () => {
 
   const [data, setData] = useState([]);
 
-  const searching = async e => {
+  const searching = async (e: any) => {
     setData('searching');
     const dd = await fetchScrape(e);
     setData(dd);
@@ -138,3 +139,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home;

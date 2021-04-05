@@ -1,6 +1,10 @@
 import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
 import HeadCustom from './components/HeadCustom';
 import Header from './components/Header';
+import { postWanted } from './components/Helper';
+
+import { useCurrentUser } from './hooks/useCurrentUser';
+import { useRequireLogin } from './hooks/useRequireLogin';
 
 interface Props {
     wanted?: {
@@ -17,6 +21,11 @@ interface Props {
 }
 
 const PostPage: NextPage<Props> = (props) => {
+    const { isAuthChecking, CurrentUser } = useCurrentUser();
+    const user = CurrentUser;
+    
+    useRequireLogin();
+
     const wanted = props.wanted;
 
     console.log(wanted);
@@ -31,19 +40,19 @@ const PostPage: NextPage<Props> = (props) => {
         }
     }
 
-    const submitWanted = (e, wanted?: Props) => {
+    const submitWanted = (e) => {
         e.preventDefault();
-        console.log(e.target.want_name.value);
-        console.log(e.target.want_price.value);
-        console.log(e.target.wanted_plat);
-        const platSelects = e.target.wanted_plat;
+        // console.log(e.target.want_name.value);
+        // console.log(e.target.want_price.value);
+        // console.log(e.target.wanted_plat);
+        const platSelects = e.target.plat;
         let arrPlat = [];
         for (let i = 0; i < platSelects.length; i++) {
             if (platSelects[i].checked) {
                 arrPlat.push(platSelects[i].value);
             }
         }
-        console.log(arrPlat);
+        postWanted(e, arrPlat, user);
     }
 
     return (
@@ -71,15 +80,15 @@ const PostPage: NextPage<Props> = (props) => {
                             <label htmlFor="plat_all"></label>
                             <form onSubmit={checkAll} className="flexNormal mt5 alCen" id="want_plat">
                               <div className="mr20">
-                                <input id="plat_mercari" name="wanted_plat" form="postData" value="Mercari" type="checkbox" />
+                                <input id="plat_mercari" name="plat" form="postData" value="Mercari" type="checkbox" />
                                 <label htmlFor="plat_mercari">Mercari</label>
                               </div>
                               <div className="mr20">
-                                <input id="plat_rakuma" name="wanted_plat" form="postData" value="Rakuma" type="checkbox" />
+                                <input id="plat_rakuma" name="plat" form="postData" value="Rakuma" type="checkbox" />
                                 <label htmlFor="plat_rakuma">Rakuma</label>
                               </div>
                               <div className="mr20">
-                                <input id="plat_yahoo" name="wanted_plat" form="postData" value="Yahoo" type="checkbox" />
+                                <input id="plat_yahoo" name="plat" form="postData" value="Yahoo" type="checkbox" />
                                 <label htmlFor="plat_yahoo">Yahoo</label>
                               </div>
                             </form>
