@@ -174,4 +174,13 @@ export const postWanted = async (e, wanted_plat, user: User) => {
     destroyCookie(null, 'csrftoken');
 }
 
+// change is gotten
+export const gottenChange = async (e: any) => {
+    const slug = e.target.getAttribute('data-wanted');
+    const res = await fetch(`${baseUrl}/api/gotten/${slug}`);
+    const ret = await res.json();
+
+    return ret['is_'];
+}
+
 export default getCookie;

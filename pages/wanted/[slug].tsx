@@ -1,14 +1,19 @@
 import Link from 'next/link';
 import useSWR from 'swr';
+import { useState } from 'react';
 import { AppContext } from 'next/app';
 import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
 
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 import { headData } from '../types/any';
+import { gottenChange } from '../components/Helper';
 
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { ParsedUrlQuery } from 'node:querystring';
+
+import 'emoji-mart/css/emoji-mart.css';
+import { Emoji } from 'emoji-mart';
 
 export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -49,6 +54,8 @@ const WantedDetail: NextPage<Props> = props => {
 
     const wanted = props.wanted;
 
+    const [ is_gotten, SetGotten ] = useState(wanted.is_gotten);
+
     const initialOffers = props.offers;
     const { data, error } = useSWR(
       `${backEndUrl}/api/offering/${wanted.slug}`, fetcher, { initialData: initialOffers }
@@ -60,6 +67,13 @@ const WantedDetail: NextPage<Props> = props => {
       ogimage: `${backEndUrl}${wanted.picture}`,
       ogdescription: `${wanted.want_name}を欲しがっています。`,
       title: `Iwana - ${wanted.want_name}`,
+    }
+
+    const gottenChangeStart = async (e: any) => {
+      if (wanted.user.pk === CurrentUser.pk) {
+        const which = await gottenChange(e);
+        SetGotten(which);
+      }
     }
 
     return (
@@ -93,7 +107,7 @@ const WantedDetail: NextPage<Props> = props => {
                       <div className="mr20 mt5">希望プラットフォーム: </div>
                       <div className="mt5">
                         { wanted.plat && wanted.plat.map(
-                             (p: any, index: number) => <span key={index}>{ p.name }</span>
+                             (p: any, index: number) => <span className={p.slug} key={index}>{ p.name }</span>
                         )}
                       </div>
                     </div>
@@ -105,25 +119,32 @@ const WantedDetail: NextPage<Props> = props => {
                       <p className="brAll">{ wanted.want_intro }</p>
                     </div>
                   </div>
-                  {/* only user */}
+                  {/* only owner */}
                   { !isAuthChecking && CurrentUser && CurrentUser.pk === wanted.user.pk && (
                     <div className="mt40 flexNormal spBw">
-                      <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn" wanted={ wanted.slug }>入手
+                      <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn"
+                       onClick={gottenChangeStart} data-wanted={ wanted.slug }>
+                        {is_gotten ? '入手済み' : '未入手'}
                         <span className="is_gotten ml10">
-                          {wanted.is_gotten ? 'gotten': 'No'}
+                          {is_gotten ? (
+                            <Emoji emoji="confetti_ball" size={20}></Emoji>
+                          ) : ''}
                         </span>
                       </div>
-                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">編集
+                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">
+                        編集<span className="ml10"><Emoji emoji="black_nib" size={20}></Emoji></span>
                         {/*<a href="{% url 'update' post.slug %}" className="hrefBoxIn"></a>*/}
                       </div>
-                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn" wanted={ wanted.slug }>削除</div>
+                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn" data-wanted={ wanted.slug }>
+                        削除<span className="ml10"><Emoji emoji="wastebasket" size={20}></Emoji></span>
+                      </div>
                     </div>
                   )}
                   {/* offer */}
                   <div className="mt40 offerZone">
                     <h2 className="h3Size">オファー</h2>
                     <div className="mt10 field">
-                      {wanted.is_gotten ? (
+                      {is_gotten ? (
                         <h4 className="textCen have">入手済み</h4>
                       ) : (
                         <div className="notHave">

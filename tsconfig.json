@@ -18,6 +18,7 @@
     },
     "include": [
         "pages/**/*",
+        "emoji.d.ts",
     ],
     "exclude": ["node_modules"],
 }

@@ -658,7 +658,7 @@ main
 /*  home  */
 
 .gottenBtn {
-  background-color: #ffc4b8;
+  background-color: #fff;
   border-radius: 6px;
 }
 
@@ -703,11 +703,14 @@ main
       height: 25px;
   }
   .platArea span {
-      background-color: #49b334;
       margin-right: 5px;
       white-space: nowrap;
       padding: 3px 5px;
+      color: #fff;
   }
+  .platArea .mercari { background-color: #19a7ff; }
+  .platArea .rakuma { background-color: #ad0000; }
+  .platArea .yahoo { background-color: #f2ca00; }
   .aPost:hover {
       box-shadow: 0 0 10px rgba(0, 0, 0, .4);
   }

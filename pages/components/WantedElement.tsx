@@ -1,5 +1,9 @@
 import { NextComponentType, NextPageContext } from 'next';
 import Link from 'next/link';
+import { useState } from 'react';
+
+import 'emoji-mart/css/emoji-mart.css';
+import { Emoji } from 'emoji-mart';
 
 /*
 interface wanted {
@@ -19,7 +23,11 @@ interface Props {
   is_gotten: boolean,
 }
 
-const WantedElement: NextComponentType<NextPageContext, {}, Props> = wanted => {
+type user_pk = string;
+
+const WantedElement: NextComponentType<NextPageContext, {}, Props> = (wanted) => {
+
+    const [ is_gotten, SetGotten ] = useState(wanted.is_gotten);
 
     return (
       <div>
@@ -31,12 +39,12 @@ const WantedElement: NextComponentType<NextPageContext, {}, Props> = wanted => {
               { wanted.want_intro }
             </p>
             <div className="platArea">
-              {wanted.plat.map( p => <span key={p.name}>{ p.name }</span>)}
+              {wanted.plat.map( p => <span className={p.slug} key={p.name}>{ p.name }</span>)}
             </div>
           </div>
           <div className="ml10 mr10">
             <div className="is_gotten">
-                {wanted.is_gotten ? '&#10004;' : ''}
+                {is_gotten ? (<Emoji emoji="partying_face" size={32}></Emoji>) : ''}
             </div>
           </div>
           {/*

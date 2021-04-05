@@ -1,11 +1,11 @@
 import { GetServerSideProps, NextPage } from 'next';
 import useSWR from 'swr';
 
+import { useCurrentUser } from './hooks/useCurrentUser';
+
 import HeadCustom from './components/HeadCustom';
 import WantedElement from './components/WantedElement';
 import Header from './components/Header';
-
-import { useCurrentUser } from './hooks/useCurrentUser';
 
 interface Props {
     wanteds: { [key: number]: any[]}
@@ -16,8 +16,6 @@ const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const WantedList: NextPage<Props> = props => {
     
     const localUrl = `${baseUrl}/api/wanted`;
-
-    const { isAuthChecking, CurrentUser } = useCurrentUser();
 
     async function fetchTalk (url: string) {
         const res = await fetch(url);
