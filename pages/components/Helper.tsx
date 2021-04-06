@@ -31,12 +31,8 @@ export const getCsrfOfDjango = async (ctx?: NextPageContext) => {
 
     setCookie(null, 'csrftoken', data['token'], {
         maxAge: 60 * 24 * 60 * 60,
+        //secure: true, // @TODO 本場コメントアウトはずす
     });
-    /*
-    nookies.set(ctx, 'csrftoken', data['token'], {
-        maxAge: 60 * 24 * 60 * 60,
-    })
-    */
 
     return data;
 }

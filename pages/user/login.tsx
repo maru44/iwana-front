@@ -35,6 +35,7 @@ const Login = () => {
       const data = await getJwtToken(postData, nextPage);
       setCookie(null, 'iwana_user_token', data['token'], {
         maxAge: 365 * 24 * 60 * 60,
+        //secure: true, // @TODO 本場コメントアウトはずす
       });
 
       const CurrentUser = await fetchCurrentUser(data['token']);
