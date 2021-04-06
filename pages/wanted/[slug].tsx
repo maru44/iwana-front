@@ -7,7 +7,7 @@ import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 import { headData } from '../types/any';
-import { gottenChange } from '../components/Helper';
+import { getCsrfOfDjango, gottenChange, deleteWanted } from '../components/Helper';
 
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -76,6 +76,10 @@ const WantedDetail: NextPage<Props> = props => {
       }
     }
 
+    const delWanted = (e: any) => {
+      deleteWanted(e)
+    }
+
     return (
         <div>
             <HeadCustom {...headData}></HeadCustom>
@@ -135,7 +139,7 @@ const WantedDetail: NextPage<Props> = props => {
                         編集<span className="ml10"><Emoji emoji="black_nib" size={20}></Emoji></span>
                         {/*<a href="{% url 'update' post.slug %}" className="hrefBoxIn"></a>*/}
                       </div>
-                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn" data-wanted={ wanted.slug }>
+                      <div onClick={delWanted} className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn" data-wanted={ wanted.slug }>
                         削除<span className="ml10"><Emoji emoji="wastebasket" size={20}></Emoji></span>
                       </div>
                     </div>

@@ -56,17 +56,15 @@ const fetchScrape = async (e: any) => {
 }
 
 const showUser = async () => {
-  const coo =  parseCookies();
-  console.log(coo);
+  // const coo =  parseCookies();
+
   const tk = await getCsrfOfDjango();
-  const jwt = coo['iwana_user_token'];
   const res = await fetch(`${baseUrl}/api/test/`, {
     method: "POST",
     credentials: 'include',
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "X-CSRFToken": tk['token'],
-      "Authorization": `${jwt}`,
     },
     // body: JSON.stringify({"data": "aaa"}),
   });
@@ -161,6 +159,7 @@ export const Home: NextPage = () => {
 }
 
 // test
+/*
 export const getServerSideProps = async (ctx: any) => {
   const clientCookies = parseCookies(ctx);
   const csrfToken = clientCookies['csrftoken'];
@@ -175,5 +174,6 @@ export const getServerSideProps = async (ctx: any) => {
 
   return { props: {} };
 }
+*/
 
 export default Home;

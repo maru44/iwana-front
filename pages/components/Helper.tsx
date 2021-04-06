@@ -179,4 +179,16 @@ export const gottenChange = async (e: any) => {
     return ret['is_'];
 }
 
+export const deleteWanted = async (e: any) => {
+    const slug = e.target.getAttribute('data-wanted');
+    const csrf = await getCsrfOfDjango();
+    const res = await fetch(`${baseUrl}/api/wanted/${slug}`, {
+        method: "DELETE",
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": csrf['token'],
+        },
+    });
+}
+
 export default getCookie;
