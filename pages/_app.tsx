@@ -2,11 +2,11 @@ import '../styles/globals.css';
 import { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { useSetRecoilState, RecoilRoot } from 'recoil';
-import getCookie from './components/Helper';
+import getCookie from '../components/Helper';
 import { parseCookies } from 'nookies';
 
-import { CurrentUserState } from './states/CurrentUser';
-import { fetchCurrentUser } from './components/Helper';
+import { CurrentUserState } from '../states/CurrentUser';
+import { fetchCurrentUser } from '../components/Helper';
 
 const AppInt = () => {
   const setCurrentUser = useSetRecoilState(CurrentUserState);

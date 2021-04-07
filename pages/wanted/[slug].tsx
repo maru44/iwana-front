@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { AppContext } from 'next/app';
 import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
 
-import HeadCustom from '../components/HeadCustom';
-import Header from '../components/Header';
-import DelWantedComponent from '../components/DelWantedComponent';
-import { headData, Wanted } from '../types/any';
-import { getCsrfOfDjango, gottenChange } from '../components/Helper';
+import HeadCustom from '../../components/HeadCustom';
+import Header from '../../components/Header';
+import DelWantedComponent from '../../components/DelWantedComponent';
+import { headData, Wanted } from '../../types/any';
+import { getCsrfOfDjango, gottenChange } from '../../components/Helper';
 
-import { useCurrentUser } from '../hooks/useCurrentUser';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { ParsedUrlQuery } from 'node:querystring';
 
 import 'emoji-mart/css/emoji-mart.css';
@@ -67,132 +67,153 @@ const WantedDetail: NextPage<Props> = props => {
       }
     }
 
+    const [open, setOpen] = useState(false);
+
     // open delete modal
-    let open = false;
     const delStart = (e: any) => {
       e.preventDefault();
-      open = true;
+      console.log(open);
+      setOpen(true);
     }
 
+    const delClose = (e: any) => {
+      e.preventDefault();
+      setOpen(false);
+  }
+
+  console.log(wanted);
+
+  if (!wanted) {
+    // 404
+    return (<></>)
+  } else {
     return (
-        <div>
-            <HeadCustom {...headData}></HeadCustom>
-            <Header what={1}></Header>
-            <div className="content">
-              <main>
-                <div className="mainZone mla mra">
-                  <div className="pt20 detPost">
-                    <h1 className="brAll h2Size">{ wanted.want_name }</h1>
-                    
-                    <div className="mt20">
-                      <div className="frameContain w100" style={{ backgroundImage: `url(${backEndUrl}${wanted.picture})`}}></div>
-                    </div>
-                    <div className="mt20 flexNormal spBw alFlBot">
-                      <div className="flex1 flexNormal alCen hrefBox">
-                        <div className="imgCircle" style={{ backgroundImage: `url(${backEndUrl}${wanted.user.picture})`}}></div>
-                        <div className="ml10 flex1 ovHide">
-                          <h2 className="whNormal h3Size">{ wanted.user.username }</h2>
-                        </div>
-                        <Link as={`/wanted/u/${wanted.user.username}`} href="/wanted/u/[username]" passHref>
-                          <a className="hrefBoxIn"></a>
-                        </Link>
+      <div>
+          <HeadCustom {...headData}></HeadCustom>
+          <Header what={1}></Header>
+          <div className="content">
+            <main>
+              <div className="mainZone mla mra">
+                <div className="pt20 detPost">
+                  <h1 className="brAll h2Size">{ wanted.want_name }</h1>
+                  
+                  <div className="mt20">
+                    <div className="frameContain w100" style={{ backgroundImage: `url(${backEndUrl}${wanted.picture})`}}></div>
+                  </div>
+                  <div className="mt20 flexNormal spBw alFlBot">
+                    <div className="flex1 flexNormal alCen hrefBox">
+                      <div className="imgCircle" style={{ backgroundImage: `url(${backEndUrl}${wanted.user.picture})`}}></div>
+                      <div className="ml10 flex1 ovHide">
+                        <h2 className="whNormal h3Size">{ wanted.user.username }</h2>
                       </div>
-                      <div>
-                         <small>{ wanted.posted }</small>
-                      </div>
+                      <Link as={`/wanted/u/${wanted.user.username}`} href="/wanted/u/[username]" passHref>
+                        <a className="hrefBoxIn"></a>
+                      </Link>
                     </div>
-                    <div className="platArea mt15 flexNormal flexWrap alCen">
-                      <div className="mr20 mt5">希望プラットフォーム: </div>
-                      <div className="mt5">
-                        { wanted.plat && wanted.plat.map(
-                             (p: any, index: number) => <span className={p.slug} key={index}>{ p.name }</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="mt10 flexNormal flexWrap">
-                      <div className="mr20 mb5">価格目安: </div>
-                      <div className="">{ wanted.want_price } 円</div>
-                    </div>
-                    <div className="mt30">
-                      <p className="brAll">{ wanted.want_intro }</p>
+                    <div>
+                       <small>{ wanted.posted }</small>
                     </div>
                   </div>
-                  {/* only owner */}
-                  { !isAuthChecking && CurrentUser && CurrentUser.pk === wanted.user.pk && (
-                    <div>
-                      <div className="mt40 flexNormal spBw">
-                        <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn"
-                         onClick={gottenChangeStart} data-wanted={ wanted.slug }>
-                          {is_gotten ? '入手済み' : '未入手'}
-                          <span className="is_gotten ml10">
-                            {is_gotten ? (
-                              <Emoji emoji="confetti_ball" size={20}></Emoji>
-                            ) : ''}
-                          </span>
-                        </div>
-                        <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">
-                          編集<span className="ml10"><Emoji emoji="black_nib" size={20}></Emoji></span>
-                          {/*<a href="{% url 'update' post.slug %}" className="hrefBoxIn"></a>*/}
-                        </div>
-                        <div onClick={delStart} className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn">
-                          削除<span className="ml10"><Emoji emoji="wastebasket" size={20}></Emoji></span>
-                        </div>
-                      </div>
-                      <DelWantedComponent slug={wanted.slug} open={open}></DelWantedComponent>
-                    </div>
-                  )}
-                  {/* offer */}
-                  <div className="mt40 offerZone">
-                    <h2 className="h3Size">オファー</h2>
-                    <div className="mt10 field">
-                      {is_gotten ? (
-                        <h4 className="textCen have">入手済み</h4>
-                      ) : (
-                        <div className="notHave">
-                          <label htmlFor="id_offer_url">メッセージまたはリンク</label>
-                          <div className="flexNormal">
-                            <input type="text" name="offer" id="id_offer_url" className="w70 wM1200px" />
-                            <div id="offeringBtn" className="ml10 btNormal btFormat1 flexCen pl10 pr10">送信</div>
-                          </div>
-                        </div>
+                  <div className="platArea mt15 flexNormal flexWrap alCen">
+                    <div className="mr20 mt5">希望プラットフォーム: </div>
+                    <div className="mt5">
+                      { wanted.plat && wanted.plat.map(
+                           (p: any, index: number) => <span className={p.slug} key={index}>{ p.name }</span>
                       )}
                     </div>
-                    {/* ここあとで子componentにする */}
-                    <div className="mt20 offerList">
-                      {data && data.map(
-                        (offer: any, index: number) =>  (
-                          <div className="flexNormal mb10 alCen" key={index}>
-                            {offer.user && (
-                              <div className="mr10  hrefBox">
-                                {/* if offer user is_auth */}
-                                <div className="offerUserArea">
-                                  <div className="imgCircle mla mra w30px h30px" 
-                                    style={{ backgroundImage: `url(${backEndUrl}${offer.user.picture})` }}>
-                                  </div>
-                                </div>
-                                <Link as={`/wanted/u/${offer.user.username}`} href="/wanted/u/[username]" passHref>
-                                  <a className="hrefBoxIn"></a>
-                                </Link>
-                              </div>
-                            )}
-                            <article className="flex1 aOffer">
-                              <div className="ml10">
-                                <p className="brAll">{ offer.offer_url }</p>
-                              </div>
-                              <div className="mt5 textRight">
-                                <small>{ offer.posted }</small>
-                              </div>
-                            </article>
-                          </div>
-                        )
-                      )}
-                    </div>
+                  </div>
+                  <div className="mt10 flexNormal flexWrap">
+                    <div className="mr20 mb5">価格目安: </div>
+                    <div className="">{ wanted.want_price } 円</div>
+                  </div>
+                  <div className="mt30">
+                    <p className="brAll">{ wanted.want_intro }</p>
                   </div>
                 </div>
-              </main>
-            </div>
-        </div>
+                {/* only owner */}
+                { !isAuthChecking && CurrentUser && CurrentUser.pk === wanted.user.pk && (
+                  <div>
+                    <div className="mt40 flexNormal spBw">
+                      <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn"
+                       onClick={gottenChangeStart} data-wanted={ wanted.slug }>
+                        {is_gotten ? (
+                          <>
+                            <Emoji emoji="confetti_ball" size={20}></Emoji>
+                            <Emoji emoji="confetti_ball" size={20}></Emoji>
+                            <Emoji emoji="confetti_ball" size={20}></Emoji>
+                          </>
+                        ) : (
+                          <>
+                            <Emoji emoji="zombie" size={20}></Emoji>
+                            <Emoji emoji="zombie" size={20}></Emoji>
+                            <Emoji emoji="zombie" size={20}></Emoji>
+                          </>
+                        )}
+                      </div>
+                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">
+                        編集<span className="ml10"><Emoji emoji="black_nib" size={20}></Emoji></span>
+                        {/*<a href="{% url 'update' post.slug %}" className="hrefBoxIn"></a>*/}
+                      </div>
+                      <div onClick={delStart} className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn">
+                        削除<span className="ml10"><Emoji emoji="wastebasket" size={20}></Emoji></span>
+                      </div>
+                    </div>
+                    <DelWantedComponent func={delClose} slug={wanted.slug} open={open}></DelWantedComponent>
+                  </div>
+                )}
+                {/* offer */}
+                <div className="mt40 offerZone">
+                  <h2 className="h3Size">オファー</h2>
+                  <div className="mt10 field">
+                    {is_gotten ? (
+                      <h4 className="textCen have">入手済み</h4>
+                    ) : (
+                      <div className="notHave">
+                        <label htmlFor="id_offer_url">メッセージまたはリンク</label>
+                        <div className="flexNormal">
+                          <input type="text" name="offer" id="id_offer_url" className="w70 wM1200px" />
+                          <div id="offeringBtn" className="ml10 btNormal btFormat1 flexCen pl10 pr10">送信</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {/* ここあとで子componentにする */}
+                  <div className="mt20 offerList">
+                    {data && data.map(
+                      (offer: any, index: number) =>  (
+                        <div className="flexNormal mb10 alCen" key={index}>
+                          {offer.user && (
+                            <div className="mr10  hrefBox">
+                              {/* if offer user is_auth */}
+                              <div className="offerUserArea">
+                                <div className="imgCircle mla mra w30px h30px" 
+                                  style={{ backgroundImage: `url(${backEndUrl}${offer.user.picture})` }}>
+                                </div>
+                              </div>
+                              <Link as={`/wanted/u/${offer.user.username}`} href="/wanted/u/[username]" passHref>
+                                <a className="hrefBoxIn"></a>
+                              </Link>
+                            </div>
+                          )}
+                          <article className="flex1 aOffer">
+                            <div className="ml10">
+                              <p className="brAll">{ offer.offer_url }</p>
+                            </div>
+                            <div className="mt5 textRight">
+                              <small>{ offer.posted }</small>
+                            </div>
+                          </article>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            </main>
+          </div>
+      </div>
     )
+  }
 }
 
 export const getServerSideProps: GetServerSideProps<SSRProps, Params> = async (ctx) => {
@@ -202,6 +223,8 @@ export const getServerSideProps: GetServerSideProps<SSRProps, Params> = async (c
 
     const res2 = await fetch(`${backEndUrl}/api/offering/${slug}`);
     const offers = await res2.json();
+
+    console.log(wanted);
   
     return {
       props: {

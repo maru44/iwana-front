@@ -1,11 +1,11 @@
 import { GetServerSideProps, NextPage } from 'next';
 import useSWR from 'swr';
 
-import { useCurrentUser } from './hooks/useCurrentUser';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 
-import HeadCustom from './components/HeadCustom';
-import WantedElement from './components/WantedElement';
-import Header from './components/Header';
+import HeadCustom from '../components/HeadCustom';
+import WantedElement from '../components/WantedElement';
+import Header from '../components/Header';
 
 interface Props {
     wanteds: { [key: number]: any[]}

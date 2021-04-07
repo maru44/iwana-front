@@ -18,6 +18,10 @@
     },
     "include": [
         "pages/**/*",
+        "components/**/*",
+        "hooks/**/*",
+        "state/**/*",
+        "types/**/*",
         "emoji.d.ts",
     ],
     "exclude": ["node_modules"],

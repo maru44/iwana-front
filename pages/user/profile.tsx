@@ -1,18 +1,18 @@
-import { modalClose, modalOpen, updateProfile } from '../components/Helper';
+import { modalClose, modalOpen, updateProfile } from '../../components/Helper';
 import { NextPage } from 'next';
 import Router from 'next/router';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
-import HeadCustom from '../components/HeadCustom';
-import Header from '../components/Header';
+import HeadCustom from '../../components/HeadCustom';
+import Header from '../../components/Header';
 
-import { useCurrentUser } from '../hooks/useCurrentUser';
-import { useRequireLogin } from '../hooks/useRequireLogin';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { useRequireLogin } from '../../hooks/useRequireLogin';
 
 // for logout
 import { useSetRecoilState } from 'recoil';
-import { CurrentUserState } from '../states/CurrentUser';
-import { fetchCurrentUser } from '../components/Helper';
+import { CurrentUserState } from '../../states/CurrentUser';
+import { fetchCurrentUser } from '../../components/Helper';
 
 export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -33,7 +33,7 @@ const Profile: NextPage = () => {
     }
 
     // update profile
-    const updating = e => {
+    const updating = (e: any) => {
       e.preventDefault();
       updateProfile(e, CurrentUser);
     }

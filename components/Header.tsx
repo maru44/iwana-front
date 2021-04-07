@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 
+import 'emoji-mart/css/emoji-mart.css';
+import { Emoji } from 'emoji-mart';
+
 export const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface props {
@@ -43,8 +46,8 @@ const Header = (props: props) => {
                 </div>
               )}
             </div>
-            <div className="circle hrefBox flexNormal jsCen ml20 toPost">
-              +
+            <div className="circle hrefBox flexCen ml20 toPost">
+              <Emoji emoji="pencil" size={24}></Emoji>
               <Link href="/post" passHref>
                 <a className="hrefBoxIn"></a>
               </Link>

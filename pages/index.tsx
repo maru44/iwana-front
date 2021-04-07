@@ -4,11 +4,11 @@ import { destroyCookie, parseCookies, setCookie } from 'nookies';
 
 import { useState } from 'react';
 
-import HeadCustom from './components/HeadCustom';
-import Header from './components/Header';
-import { GlobalArea, MessageArea } from './components/GlobalPlat';
+import HeadCustom from '../components/HeadCustom';
+import Header from '../components/Header';
+import { GlobalArea, MessageArea } from '../components/GlobalPlat';
 
-import { getCsrfOfDjango } from './components/Helper';
+import { getCsrfOfDjango } from '../components/Helper';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
@@ -53,24 +53,6 @@ const fetchScrape = async (e: any) => {
   }
     
   return ret;
-}
-
-
-// test
-const showUser = async () => {
-
-  const tk = await getCsrfOfDjango();
-  const res = await fetch(`${baseUrl}/api/test/`, {
-    method: "POST",
-    credentials: 'include',
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-CSRFToken": tk['token'],
-    },
-    // body: JSON.stringify({"data": "aaa"}),
-  });
-  const ret = await res.json();
-  console.log(ret);
 }
 
 // component
@@ -139,7 +121,6 @@ export const Home: NextPage = () => {
                  検索
               </button>
             </form>
-            <div onClick={showUser}>user</div>
             {data && data == "need" && (<MessageArea mess="検索ワードを入力してください。"></MessageArea>)}
             {data && data == "null" && (<MessageArea mess="条件に合致する商品がありませんでした。"></MessageArea>)}
             {data && data == "searching" && (<MessageArea mess="検索中です。検索には5秒前後の時間がかかります。"></MessageArea>)}
@@ -158,23 +139,5 @@ export const Home: NextPage = () => {
     </div>
   )
 }
-
-// test
-/*
-export const getServerSideProps = async (ctx: any) => {
-  const clientCookies = parseCookies(ctx);
-  const csrfToken = clientCookies['csrftoken'];
-
-  setCookie(ctx, 'csrftoken', csrfToken, {
-    httpOnly: true,
-  })
-
-  setCookie(ctx, "aaa", "bbb", {
-    httpOnly: true,
-  })
-
-  return { props: {} };
-}
-*/
 
 export default Home;

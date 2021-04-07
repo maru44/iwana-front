@@ -1,12 +1,12 @@
-import { fetchCurrentUser, getCsrfOfDjango, getJwtToken } from '../components/Helper';
+import { fetchCurrentUser, getCsrfOfDjango, getJwtToken } from '../../components/Helper';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
-import HeadCustom from '../components/HeadCustom';
-import Header from '../components/Header';
+import HeadCustom from '../../components/HeadCustom';
+import Header from '../../components/Header';
 import { useSetRecoilState } from 'recoil';
 
-import { useRequireAnonymous } from '../hooks/useRequireAnonymous';
-import { CurrentUserState } from '../states/CurrentUser';
+import { useRequireAnonymous } from '../../hooks/useRequireAnonymous';
+import { CurrentUserState } from '../../states/CurrentUser';
 import Router from 'next/router';
 
 const isBrowser = () => typeof window !== 'undefined';

@@ -4,12 +4,12 @@ import useSWR from 'swr';
 import { ParsedUrlQuery } from 'node:querystring';
 
 
-import HeadCustom from '../../components/HeadCustom';
-import WantedElement from '../../components/WantedElement';
-import Header from '../../components/Header';
-import { headData } from '../../types/any';
+import HeadCustom from '../../../components/HeadCustom';
+import WantedElement from '../../../components/WantedElement';
+import Header from '../../../components/Header';
+import { headData } from '../../../types/any';
 
-import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { useCurrentUser } from '../../../hooks/useCurrentUser';
 
 interface Props {
     wanteds: { [key: number]: any[]},

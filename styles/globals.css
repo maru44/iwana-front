@@ -488,7 +488,8 @@ button
   }
 
 .btFormat1 {
-  background-color: #49b334;
+  /*background-color: #49b334;*/
+  background-color: #ff9985;
   border-radius: 6px;
   color: white;
   border: none;
@@ -510,6 +511,7 @@ button
 
 .btNegative {
   background-color: #f1f1f1;
+  border: none;
   border-radius: 6px;
 }
 
@@ -658,7 +660,6 @@ main
 /*  home  */
 
 .gottenBtn {
-  background-color: #fff;
   border-radius: 6px;
 }
 
