@@ -6,8 +6,9 @@ import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
 
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
-import { headData } from '../types/any';
-import { getCsrfOfDjango, gottenChange, deleteWanted } from '../components/Helper';
+import DelWantedComponent from '../components/DelWantedComponent';
+import { headData, Wanted } from '../types/any';
+import { getCsrfOfDjango, gottenChange } from '../components/Helper';
 
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -18,17 +19,7 @@ import { Emoji } from 'emoji-mart';
 export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface Props {
-  wanted: {
-    slug: number,
-    want_name: string,
-    want_intro: string,
-    want_price: number,
-    plat: { [key: number]: any}
-    user: any,
-    posted: string,
-    is_gotten: boolean,
-    picture: string,
-  },
+  wanted: Wanted,
   offers: { [key: number]: any}
 }
 
@@ -76,8 +67,11 @@ const WantedDetail: NextPage<Props> = props => {
       }
     }
 
-    const delWanted = (e: any) => {
-      deleteWanted(e)
+    // open delete modal
+    let open = false;
+    const delStart = (e: any) => {
+      e.preventDefault();
+      open = true;
     }
 
     return (
@@ -125,23 +119,26 @@ const WantedDetail: NextPage<Props> = props => {
                   </div>
                   {/* only owner */}
                   { !isAuthChecking && CurrentUser && CurrentUser.pk === wanted.user.pk && (
-                    <div className="mt40 flexNormal spBw">
-                      <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn"
-                       onClick={gottenChangeStart} data-wanted={ wanted.slug }>
-                        {is_gotten ? '入手済み' : '未入手'}
-                        <span className="is_gotten ml10">
-                          {is_gotten ? (
-                            <Emoji emoji="confetti_ball" size={20}></Emoji>
-                          ) : ''}
-                        </span>
+                    <div>
+                      <div className="mt40 flexNormal spBw">
+                        <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn"
+                         onClick={gottenChangeStart} data-wanted={ wanted.slug }>
+                          {is_gotten ? '入手済み' : '未入手'}
+                          <span className="is_gotten ml10">
+                            {is_gotten ? (
+                              <Emoji emoji="confetti_ball" size={20}></Emoji>
+                            ) : ''}
+                          </span>
+                        </div>
+                        <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">
+                          編集<span className="ml10"><Emoji emoji="black_nib" size={20}></Emoji></span>
+                          {/*<a href="{% url 'update' post.slug %}" className="hrefBoxIn"></a>*/}
+                        </div>
+                        <div onClick={delStart} className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn">
+                          削除<span className="ml10"><Emoji emoji="wastebasket" size={20}></Emoji></span>
+                        </div>
                       </div>
-                      <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">
-                        編集<span className="ml10"><Emoji emoji="black_nib" size={20}></Emoji></span>
-                        {/*<a href="{% url 'update' post.slug %}" className="hrefBoxIn"></a>*/}
-                      </div>
-                      <div onClick={delWanted} className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn" data-wanted={ wanted.slug }>
-                        削除<span className="ml10"><Emoji emoji="wastebasket" size={20}></Emoji></span>
-                      </div>
+                      <DelWantedComponent slug={wanted.slug} open={open}></DelWantedComponent>
                     </div>
                   )}
                   {/* offer */}

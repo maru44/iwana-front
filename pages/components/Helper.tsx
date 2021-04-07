@@ -25,13 +25,12 @@ const getCookie = (name: string) => {
 }
 
 // get csrftoken from serverside
-export const getCsrfOfDjango = async (ctx?: NextPageContext) => {
+export const getCsrfOfDjango = async () => {
     const res = await fetch(`${baseUrl}/api/csrf/`);
     const data = await res.json();
 
     setCookie(null, 'csrftoken', data['token'], {
         maxAge: 60 * 24 * 60 * 60,
-        //secure: true, // @TODO 本場コメントアウトはずす
     });
 
     return data;
@@ -87,19 +86,19 @@ export const fetchCurrentUser = async (token: string) => {
 
 /*   modal open or close   */
 // open
-export const modalOpen = () => {
+export const modalOpen = (): void => {
     document.querySelector(".modal").classList.remove('off');
     document.querySelector('.modalCon').classList.remove('off');
 }
 
 // close
-export const modalClose = () => {
+export const modalClose = (): void => {
     document.querySelector(".modal").classList.add('off');
     document.querySelector('.modalCon').classList.add('off');
 }
 
 // update profile
-export const updateProfile = async (e, user: User) => {
+export const updateProfile = async (e: any, user: User) => {
 
     let formData = new FormData();
 
@@ -137,7 +136,7 @@ export const updateProfile = async (e, user: User) => {
 }
 
 // post wanted
-export const postWanted = async (e, wanted_plat, user: User) => {
+export const postWanted = async (e:any, wanted_plat: string[], user: User) => {
 
     console.log(wanted_plat);
     let formData = new FormData();

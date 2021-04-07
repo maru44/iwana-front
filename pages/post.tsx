@@ -28,9 +28,7 @@ const PostPage: NextPage<Props> = (props) => {
 
     const wanted = props.wanted;
 
-    console.log(wanted);
-
-    const checkAll = (e) => {
+    const checkAll = (e: any) => {
         e.preventDefault();
         const allSelect = e.target.children;
         for (let i = 0; i < allSelect.length; i++) {
@@ -40,7 +38,7 @@ const PostPage: NextPage<Props> = (props) => {
         }
     }
 
-    const submitWanted = (e) => {
+    const submitWanted = (e: any) => {
         e.preventDefault();
         // console.log(e.target.want_name.value);
         // console.log(e.target.want_price.value);

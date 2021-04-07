@@ -55,8 +55,9 @@ const fetchScrape = async (e: any) => {
   return ret;
 }
 
+
+// test
 const showUser = async () => {
-  // const coo =  parseCookies();
 
   const tk = await getCsrfOfDjango();
   const res = await fetch(`${baseUrl}/api/test/`, {
