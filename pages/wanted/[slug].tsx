@@ -148,7 +148,9 @@ const WantedDetail: NextPage<Props> = props => {
                       </div>
                       <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">
                         編集<span className="ml10"><Emoji emoji="black_nib" size={20}></Emoji></span>
-                        {/*<a href="{% url 'update' post.slug %}" className="hrefBoxIn"></a>*/}
+                        <Link as={`/wanted/edit/${wanted.slug}`} href="/wanted/edit/[slug]" passHref>
+                          <a className="hrefBoxIn"></a>
+                        </Link>
                       </div>
                       <div onClick={delStart} className="w30 btNormal btFormat1 pt10 pb10 flexCen delWantedBtn">
                         削除<span className="ml10"><Emoji emoji="wastebasket" size={20}></Emoji></span>

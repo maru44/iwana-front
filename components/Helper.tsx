@@ -84,19 +84,6 @@ export const fetchCurrentUser = async (token: string) => {
     return user;
 }
 
-/*   modal open or close   */
-// open
-export const modalOpen = (): void => {
-    document.querySelector(".modal").classList.remove('off');
-    document.querySelector('.modalCon').classList.remove('off');
-}
-
-// close
-export const modalClose = (): void => {
-    document.querySelector(".modal").classList.add('off');
-    document.querySelector('.modalCon').classList.add('off');
-}
-
 // update profile
 export const updateProfile = async (e: any, user: User) => {
 

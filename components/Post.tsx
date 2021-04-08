@@ -6,6 +6,8 @@ import Header from '../components/Header';
 
 import { User, Wanted } from '../types/any';
 
+const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 interface Props {
     wanted: Wanted,
     user: User,
@@ -36,7 +38,29 @@ const Post: NextPage<Props> = (props) => {
 
     const editWanted = (e: any) => {
         e.preventDefault();
-        console.log('edit');
+        const platSelects = e.target.plat;
+        let arrPlat = [];
+        for (let i = 0; i < platSelects.length; i++) {
+            if (platSelects[i].checked) {
+                arrPlat.push(platSelects[i].value);
+            }
+        }
+        console.log(e.target.want_name.value);
+        if (e.target.want_price.value) {
+          console.log(e.target.want_price.value);
+        }
+        console.log(e.target.picture.value);
+        console.log(arrPlat);
+    }
+
+    // let initialPlatList: string[];
+    let initialPlatList = [];
+    if (wanted) {
+      const initialPlat = wanted.plat;
+      for (let i = 0; i < initialPlat.length; i++) {
+        initialPlatList.push(initialPlat[i].name);
+      }
+      console.log(initialPlatList);
     }
 
     return (
@@ -51,33 +75,45 @@ const Post: NextPage<Props> = (props) => {
                     <div className="mt20">
                         <form className="field">
                           <label htmlFor="id_want_name">欲しいもの</label>
-                          <input type="text" required id="id_want_name" name="want_name" maxLength={36} form="postData" defaultValue={wanted && wanted.want_name }></input>
+                          <input type="text" required id="id_want_name" name="want_name" maxLength={36} form="postData" defaultValue={wanted ? wanted.want_name: undefined }></input>
                         </form>
                         <form className="field mt20">
                           <label htmlFor="id_want_price">価格目安</label>
-                          <input type="number" id="id_want_price" name="want_price" form="postData" defaultValue={wanted && wanted.want_price }></input>
+                          <input type="number" id="id_want_price" name="want_price" form="postData" defaultValue={wanted ? wanted.want_price: undefined }></input>
                         </form>
                         <div className="field mt20">
                           <label htmlFor="id_want_plat">プラットフォーム指定</label>
                           <div className="mt10">
                             <input type="submit" form="want_plat" name="plat_all" id="plat_all" value="全て"></input>
                             <label htmlFor="plat_all"></label>
-                            <form onSubmit={checkAll} className="flexNormal mt5 alCen" id="want_plat">
+                              <form onSubmit={checkAll} className="flexNormal mt5 alCen" id="want_plat">
                               <div className="mr20">
-                                <input id="plat_mercari" name="plat" form="postData" value="Mercari" type="checkbox" />
+                                {wanted && initialPlatList.includes('Mercari') ? 
+                                  <input id="plat_mercari" name="plat" form="postData" value="Mercari" type="checkbox" defaultChecked={true} /> :
+                                  <input id="plat_mercari" name="plat" form="postData" value="Mercari" type="checkbox" />
+                                }
                                 <label htmlFor="plat_mercari">Mercari</label>
                               </div>
                               <div className="mr20">
-                                <input id="plat_rakuma" name="plat" form="postData" value="Rakuma" type="checkbox" />
+                                {wanted && initialPlatList.includes('Rakuma') ?
+                                  <input id="plat_rakuma" name="plat" form="postData" value="Rakuma" type="checkbox" defaultChecked={true} /> :
+                                  <input id="plat_rakuma" name="plat" form="postData" value="Rakuma" type="checkbox" />
+                                }
                                 <label htmlFor="plat_rakuma">Rakuma</label>
                               </div>
                               <div className="mr20">
-                                <input id="plat_yahoo" name="plat" form="postData" value="Yahoo" type="checkbox" />
+                                {wanted && initialPlatList.includes('Yahoo') ?
+                                  <input id="plat_yahoo" name="plat" form="postData" value="Yahoo" type="checkbox" defaultChecked={true} /> :
+                                  <input id="plat_yahoo" name="plat" form="postData" value="Yahoo" type="checkbox" />
+                                }
                                 <label htmlFor="plat_yahoo">Yahoo</label>
                               </div>
                             </form>
                           </div>
                           <form className="field mt20">
+                            {wanted && (
+                              <div className="wM500px frameContain" style={{ backgroundImage: `url(${backEndUrl}${wanted.picture})`}}></div>
+                            )}
                             <label htmlFor="id_picture">画像</label>
                             <input form="postData" id="id_picture" type="file" name="picture" className="mt5" accept="image/*"></input>
                           </form>
