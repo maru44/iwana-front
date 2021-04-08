@@ -18,17 +18,12 @@ const Post: NextPage<Props> = (props) => {
         e.preventDefault();
         const allSelect = e.target.children;
         for (let i = 0; i < allSelect.length; i++) {
-            // console.log(allSelect[i].children[0].value);
-            // console.log(allSelect[i].children[0].checked);
             allSelect[i].children[0].checked = true;
         }
     }
 
     const submitWanted = (e: any) => {
         e.preventDefault();
-        // console.log(e.target.want_name.value);
-        // console.log(e.target.want_price.value);
-        // console.log(e.target.wanted_plat);
         const platSelects = e.target.plat;
         let arrPlat = [];
         for (let i = 0; i < platSelects.length; i++) {

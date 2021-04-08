@@ -39,6 +39,10 @@ body {
   background-color: #fff2f0;
 }
 
+.preWrap {
+  white-space: pre-wrap;
+}
+
 .touchDevBody {
   touch-action: manipulation !important;
 }
@@ -798,6 +802,15 @@ main
 
 .scrapePrice {
   width: 100%;
+}
+
+/*  error  */
+
+.errorMain h2 {
+  font-size: 56px;
+}
+.errorMain p {
+  font-size: 20px;
 }
 
 /*///////////////////

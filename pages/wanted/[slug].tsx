@@ -9,6 +9,7 @@ import Header from '../../components/Header';
 import DelWantedComponent from '../../components/DelWantedComponent';
 import { headData, Wanted } from '../../types/any';
 import { getCsrfOfDjango, gottenChange } from '../../components/Helper';
+import Error from '../../components/Error';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -20,13 +21,8 @@ export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface Props {
   wanted: Wanted,
-  offers: { [key: number]: any}
-}
-
-// SSR return value
-interface SSRProps {
-  wanted: { [key: string]: any },
-  offers: { [key: number]: any },
+  offers: { [key: number]: any},
+  statusCode: number,
 }
 
 // ssr query params
@@ -36,57 +32,57 @@ interface Params extends ParsedUrlQuery {
 
 const WantedDetail: NextPage<Props> = props => {
 
-    const { isAuthChecking, CurrentUser } = useCurrentUser();
-
-    async function fetcher (url: string) {
-      const res = await fetch(url);
-      return res.json();
-    }
-
-    const wanted = props.wanted;
-
-    const [ is_gotten, SetGotten ] = useState(wanted.is_gotten);
-
-    const initialOffers = props.offers;
-    const { data, error } = useSWR(
-      `${backEndUrl}/api/offering/${wanted.slug}`, fetcher, { initialData: initialOffers }
+  const status = props.statusCode;
+  if (status !== 200) {
+    return (
+      <Error status={status}></Error>
     )
-
-    const headData: headData = {
-      ogtypeWebsite: 'article',
-      ogtitle: `${wanted.want_name} | 欲しいものページ`,
-      ogimage: `${backEndUrl}${wanted.picture}`,
-      ogdescription: `${wanted.want_name}を欲しがっています。`,
-      title: `Iwana - ${wanted.want_name}`,
-    }
-
-    const gottenChangeStart = async (e: any) => {
-      if (wanted.user.pk === CurrentUser.pk) {
-        const which = await gottenChange(e);
-        SetGotten(which);
-      }
-    }
-
-    const [open, setOpen] = useState(false);
-
-    // open delete modal
-    const delStart = (e: any) => {
-      e.preventDefault();
-      console.log(open);
-      setOpen(true);
-    }
-
-    const delClose = (e: any) => {
-      e.preventDefault();
-      setOpen(false);
   }
 
-  console.log(wanted);
+  const { isAuthChecking, CurrentUser } = useCurrentUser();
 
-  if (!wanted) {
-    // 404
-    return (<></>)
-  } else {
+  async function fetcher (url: string) {
+    const res = await fetch(url);
+    return res.json();
+  }
+
+  const wanted = props.wanted;
+
+  const [ is_gotten, SetGotten ] = useState(wanted.is_gotten);
+
+  const initialOffers = props.offers;
+  const { data, error } = useSWR(
+    `${backEndUrl}/api/offering/${wanted.slug}`, fetcher, { initialData: initialOffers }
+  )
+
+  const headData: headData = {
+    ogtypeWebsite: 'article',
+    ogtitle: `${wanted.want_name} | 欲しいものページ`,
+    ogimage: `${backEndUrl}${wanted.picture}`,
+    ogdescription: `${wanted.want_name}を欲しがっています。`,
+    title: `Iwana - ${wanted.want_name}`,
+  }
+
+  const gottenChangeStart = async (e: any) => {
+    if (wanted.user.pk === CurrentUser.pk) {
+      const which = await gottenChange(e);
+      SetGotten(which);
+    }
+  }
+
+  const [open, setOpen] = useState(false);
+
+  // open delete modal
+  const delStart = (e: any) => {
+    e.preventDefault();
+    setOpen(true);
+  }
+
+  const delClose = (e: any) => {
+    e.preventDefault();
+    setOpen(false);
+  }
+
     return (
       <div>
           <HeadCustom {...headData}></HeadCustom>
@@ -124,9 +120,9 @@ const WantedDetail: NextPage<Props> = props => {
                   </div>
                   <div className="mt10 flexNormal flexWrap">
                     <div className="mr20 mb5">価格目安: </div>
-                    <div className="">{ wanted.want_price } 円</div>
+                    <div className="">{ wanted.want_price }</div>
                   </div>
-                  <div className="mt30">
+                  <div className="mt30 preWrap">
                     <p className="brAll">{ wanted.want_intro }</p>
                   </div>
                 </div>
@@ -134,8 +130,7 @@ const WantedDetail: NextPage<Props> = props => {
                 { !isAuthChecking && CurrentUser && CurrentUser.pk === wanted.user.pk && (
                   <div>
                     <div className="mt40 flexNormal spBw">
-                      <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn"
-                       onClick={gottenChangeStart} data-wanted={ wanted.slug }>
+                      <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn hrefBox">
                         {is_gotten ? (
                           <>
                             <Emoji emoji="confetti_ball" size={20}></Emoji>
@@ -149,6 +144,7 @@ const WantedDetail: NextPage<Props> = props => {
                             <Emoji emoji="zombie" size={20}></Emoji>
                           </>
                         )}
+                        <a className="hrefBoxIn" onClick={gottenChangeStart} data-wanted={ wanted.slug }></a>
                       </div>
                       <div className="w30 btNormal btFormat1 pt10 pb10 flexCen hrefBox">
                         編集<span className="ml10"><Emoji emoji="black_nib" size={20}></Emoji></span>
@@ -213,23 +209,22 @@ const WantedDetail: NextPage<Props> = props => {
           </div>
       </div>
     )
-  }
 }
 
-export const getServerSideProps: GetServerSideProps<SSRProps, Params> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx) => {
     const slug = ctx.params.slug;
     const res = await fetch(`${backEndUrl}/api/wanted/${slug}`);
     const wanted = await res.json();
+    const status = res.status;
 
     const res2 = await fetch(`${backEndUrl}/api/offering/${slug}`);
     const offers = await res2.json();
-
-    console.log(wanted);
   
     return {
       props: {
         wanted: wanted,
         offers: offers,
+        statusCode: status,
       }
     }
 }

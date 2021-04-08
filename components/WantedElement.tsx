@@ -1,6 +1,5 @@
 import { NextComponentType, NextPageContext } from 'next';
 import Link from 'next/link';
-// import { useState } from 'react';
 
 import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
@@ -13,11 +12,7 @@ interface Props {
   is_gotten: boolean,
 }
 
-// type user_pk = string;
-
 const WantedElement: NextComponentType<NextPageContext, {}, Props> = (wanted) => {
-
-    // const [ is_gotten, SetGotten ] = useState(wanted.is_gotten);
 
     return (
       <div>

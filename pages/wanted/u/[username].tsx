@@ -3,23 +3,18 @@ import Link from 'next/link';
 import useSWR from 'swr';
 import { ParsedUrlQuery } from 'node:querystring';
 
-
 import HeadCustom from '../../../components/HeadCustom';
 import WantedElement from '../../../components/WantedElement';
 import Header from '../../../components/Header';
-import { headData } from '../../../types/any';
+import Error from '../../../components/Error';
 
+import User, { headData, Wanted } from '../../../types/any';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
 
 interface Props {
-    wanteds: { [key: number]: any[]},
-    user: { [key: string]: any },
-}
-
-// SSR return value
-interface SSRProps {
-  wanteds: { [key: number]: any },
-  user: { [key: string]: any },
+    wanteds: Wanted,
+    user: User,
+    statusCode: number,
 }
   
 // ssr query params
@@ -30,6 +25,13 @@ interface Params extends ParsedUrlQuery {
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const WantedList: NextPage<Props> = props => {
+
+    const status = props.statusCode;
+    if (status !== 200) {
+      return (
+        <Error status={status}></Error>
+      )
+    }
     
     const localUrl = `${baseUrl}/api/wanted`;
 
@@ -80,7 +82,7 @@ const WantedList: NextPage<Props> = props => {
                     </div>
                   )}
                 </div>
-                <div className="mt5">
+                <div className="mt5 preWrap">
                   <p>{user.intro}</p>
                 </div>
                 {/* wanteds list */}
@@ -95,11 +97,22 @@ const WantedList: NextPage<Props> = props => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps<SSRProps, Params> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx) => {
     const username = ctx.params.username;
 
     const res = await fetch(`${baseUrl}/api/wanted/u/${username}`);
     const json_ = await res.json();
+
+    const status = res.status;
+    if (status !== 200) {
+      return {
+        props: {
+          wanteds: null,
+          user: null,
+          statusCode: status,
+        }
+      }
+    }
 
     const wanteds = json_['wanteds'];
     const user = json_['user'];
@@ -108,6 +121,7 @@ export const getServerSideProps: GetServerSideProps<SSRProps, Params> = async (c
         props: {
             wanteds: wanteds,
             user: user,
+            statusCode: status,
         }
     }
 }

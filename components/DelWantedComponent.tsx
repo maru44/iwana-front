@@ -26,9 +26,9 @@ const DelWantedComponent: NextPage<ModalParams> = (props) => {
               <h3>削除しますか?</h3>
             </div>
             <div className="mt25 flexNormal spBw">
-              <button type="button" onClick={deleteW} data-wanted={ props.slug } className="w48 h50px btFormat1 flexCen hrefBox">
+              <button type="button" className="w48 h50px btFormat1 flexCen hrefBox">
                 <b>削除する</b>
-                <a className="hrefBoxIn"></a>
+                <a className="hrefBoxIn" onClick={deleteW} data-wanted={ props.slug }></a>
               </button>
               <button type="button" onClick={props.func} className="w48 h50px closeModal flexCen btNegative hrefBox">
                 <b>キャンセル</b>
