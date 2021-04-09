@@ -1,6 +1,6 @@
-import { modalClose, modalOpen, updateProfile } from '../../components/Helper';
+import { updateProfile } from '../../components/Helper';
 import { NextPage } from 'next';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
 import HeadCustom from '../../components/HeadCustom';
@@ -23,13 +23,14 @@ const Profile: NextPage = () => {
     useRequireLogin();
 
     const user = CurrentUser;
+    const router = useRouter();
 
     // logout
     const setCurrentUser = useSetRecoilState(CurrentUserState);
     const logout = () => {
       destroyCookie(null, 'iwana_user_token');
       setCurrentUser(null);
-      Router.push('/');
+      router.push('/');
     }
 
     // update profile
@@ -79,11 +80,11 @@ const Profile: NextPage = () => {
                 </div>
                 <div className="mt20">
                   <div className="flexNormal">
-                    <a onClick={modalOpen} className="pt10 pb10 mt5 actve logoutStart">
+                    <a onClick={} className="pt10 pb10 mt5 actve logoutStart">
                       ログアウト
                     </a>
                   </div>
-                  <div onClick={modalClose} className="modal off"></div>
+                  <div onClick={} className="modal off"></div>
                   <div className="modalConLogout off modalCon">
                     <div>
                       <h3>ログアウトしますか？</h3>
@@ -92,7 +93,7 @@ const Profile: NextPage = () => {
                       <button onClick={logout} className="w48 h50px btFormat1 flexCen hrefBox">
                         <b>ログアウト</b>
                       </button>
-                      <button onClick={modalClose} className="w48 h50px closeModal flexCen btNegative hrefBox">
+                      <button onClick={} className="w48 h50px closeModal flexCen btNegative hrefBox">
                         <b>キャンセル</b>
                       </button>
                     </div>

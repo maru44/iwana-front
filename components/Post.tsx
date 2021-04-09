@@ -1,10 +1,11 @@
 import { NextPage } from 'next';
 
-import { postWanted } from '../components/Helper';
+import { postWanted, updateWanted } from '../components/Helper';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 
 import { User, Wanted } from '../types/any';
+import WantedDetail from '../pages/wanted/[slug]';
 
 const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -15,6 +16,7 @@ interface Props {
 
 const Post: NextPage<Props> = (props) => {
     const wanted = props.wanted;
+    const user = props.user;
 
     const checkAll = (e: any) => {
         e.preventDefault();
@@ -33,7 +35,7 @@ const Post: NextPage<Props> = (props) => {
                 arrPlat.push(platSelects[i].value);
             }
         }
-        postWanted(e, arrPlat, props.user);
+        postWanted(e, arrPlat, user);
     }
 
     const editWanted = (e: any) => {
@@ -45,12 +47,7 @@ const Post: NextPage<Props> = (props) => {
                 arrPlat.push(platSelects[i].value);
             }
         }
-        console.log(e.target.want_name.value);
-        if (e.target.want_price.value) {
-          console.log(e.target.want_price.value);
-        }
-        console.log(e.target.picture.value);
-        console.log(arrPlat);
+        updateWanted(e, arrPlat, user);
     }
 
     // let initialPlatList: string[];
@@ -60,7 +57,6 @@ const Post: NextPage<Props> = (props) => {
       for (let i = 0; i < initialPlat.length; i++) {
         initialPlatList.push(initialPlat[i].name);
       }
-      console.log(initialPlatList);
     }
 
     return (
@@ -111,19 +107,19 @@ const Post: NextPage<Props> = (props) => {
                             </form>
                           </div>
                           <form className="field mt20">
-                            {wanted && (
-                              <div className="wM500px frameContain" style={{ backgroundImage: `url(${backEndUrl}${wanted.picture})`}}></div>
-                            )}
+                            {wanted && 
+                              <img src={`${backEndUrl}${wanted.picture}`} className="wM500px" />
+                            }
                             <label htmlFor="id_picture">画像</label>
                             <input form="postData" id="id_picture" type="file" name="picture" className="mt5" accept="image/*"></input>
                           </form>
                           <form className="field mt20">
                             <label htmlFor="id_want_intro">説明</label>
-                            <textarea form="postData" name="want_intro" cols={40} rows={10} maxLength={800} id="id_want_intro"></textarea>
+                            <textarea form="postData" name="want_intro" cols={40} rows={10} maxLength={800} id="id_want_intro" defaultValue={wanted ? wanted.want_intro: undefined }></textarea>
                           </form>
                         </div>
                         {wanted ? (
-                            <form onSubmit={editWanted} id="postData" className="field mt30">
+                            <form onSubmit={editWanted} id="postData" className="field mt30" data-wanted={ wanted.slug }>
                               <button type="submit" className="btFormat1 btNormal wM500px pt5 pb5">編集する</button>
                             </form>
                         ) : (

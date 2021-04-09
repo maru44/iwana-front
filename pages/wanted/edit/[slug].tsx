@@ -32,6 +32,13 @@ const Edit: NextPage<Props> = props => {
 
     const wanted = props.wanted;
 
+    useRequireLogin();
+    if (user && user.pk !== wanted.user.pk) {
+      return (
+        <Error status={403}></Error>
+      )
+    }
+
     return (
         <>
           <Post user={user} wanted={wanted}></Post>

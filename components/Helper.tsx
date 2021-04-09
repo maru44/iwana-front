@@ -49,7 +49,7 @@ interface postData {
  * @param {String or null} nextPage next page
  * @returns data (key is token)
  */
-export const getJwtToken = async (postData: postData, nextPage?: string) => {
+export const getJwtToken = async (postData: postData, nextPage: string) => {
 
     const csrf = await getCsrfOfDjango();
 
@@ -122,10 +122,17 @@ export const updateProfile = async (e: any, user: User) => {
     Router.reload();
 }
 
+// change is gotten
+export const gottenChange = async (e: any) => {
+    const slug = e.target.getAttribute('data-wanted');
+    const res = await fetch(`${baseUrl}/api/gotten/${slug}`);
+    const ret = await res.json();
+
+    return ret['is_'];
+}
+
 // post wanted
 export const postWanted = async (e:any, wanted_plat: string[], user: User) => {
-
-    console.log(wanted_plat);
     let formData = new FormData();
     // user pk
     formData.set('user_pk', user.pk.toString());
@@ -156,13 +163,39 @@ export const postWanted = async (e:any, wanted_plat: string[], user: User) => {
     destroyCookie(null, 'csrftoken');
 }
 
-// change is gotten
-export const gottenChange = async (e: any) => {
-    const slug = e.target.getAttribute('data-wanted');
-    const res = await fetch(`${baseUrl}/api/gotten/${slug}`);
-    const ret = await res.json();
+export const updateWanted = async (e:any, wanted_plat: string[], user: User) => {
+    let formData = new FormData();
+    // user pk
+    formData.set('user_pk', user.pk.toString());
 
-    return ret['is_'];
+    formData.set('want_name', e.target.want_name.value);
+    formData.set('want_price', e.target.want_price.value);
+    for (let i = 0; i < wanted_plat.length; i++) {
+        formData.append('plat[]', wanted_plat[i]);
+    }
+    formData.set('want_intro', e.target.want_intro.value);
+    if (e.target.picture.files.length !== 0) {
+        formData.set('picture', e.target.picture.files[0])
+    }
+
+    console.log(formData);
+
+    const slug = e.target.getAttribute('data-wanted');
+    const csrf = await getCsrfOfDjango();
+    const res = await fetch(`${baseUrl}/api/wanted/${slug}/`, {
+        method: "PUT",
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": csrf['token'],
+        },
+        body: formData,
+    });
+
+    const ret = await res.json();
+    destroyCookie(null, 'csrftoken');
+
+    // Router.push(`/wanted/${slug}`);
+    Router.back();
 }
 
 export const deleteWanted = async (e: any) => {

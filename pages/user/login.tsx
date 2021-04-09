@@ -1,5 +1,6 @@
 import { fetchCurrentUser, getCsrfOfDjango, getJwtToken } from '../../components/Helper';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import { useRouter } from 'next/router';
 
 import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
@@ -7,29 +8,26 @@ import { useSetRecoilState } from 'recoil';
 
 import { useRequireAnonymous } from '../../hooks/useRequireAnonymous';
 import { CurrentUserState } from '../../states/CurrentUser';
-import Router from 'next/router';
-
-const isBrowser = () => typeof window !== 'undefined';
 
 const Login = () => {
 
     useRequireAnonymous();
-
     // login function
     const setCurrentUser = useSetRecoilState(CurrentUserState);
-    const fetchLogin = async e => {
+    const router = useRouter();
 
+    const fetchLogin = async (e: any) => {
       e.preventDefault();
       const target = e.target;
-      let nextPage = null;
+      let nextPage: string = null;
   
       const postData = {
         "username": target.username.value,
         "password": target.password.value,
       }
 
-      if (target.next.value !== null || target.next.value !== "") {
-          nextPage = target.next.value;
+      if (router.query.next) {
+        nextPage = router.query.next.toString();
       }
 
       const data = await getJwtToken(postData, nextPage);
@@ -37,13 +35,15 @@ const Login = () => {
       const CurrentUser = await fetchCurrentUser(data['token']);
       setCurrentUser(CurrentUser);
 
+      /*
       if (data.token) {
         if (nextPage) {
-          Router.push(nextPage);
+          router.push(nextPage);
         } else {
-          Router.push('/');
+          router.push('/');
         }
       }
+      */
     }
     
     return (
@@ -56,7 +56,6 @@ const Login = () => {
                 <div className="pt40">
                   <h3>ログイン</h3>
                   <form onSubmit={fetchLogin}>
-                    <input type="hidden" name="next"/>
                     <div className="field">
                       <label htmlFor="id_uername">ユーザー名</label>
                       <input type="text" maxLength={24} required id="id_username" name="username" />
