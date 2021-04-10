@@ -1,10 +1,12 @@
-import { updateProfile } from '../../components/Helper';
+import { useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
 import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
+import LogoutModal from '../../components/LogoutModal';
+import { updateProfile } from '../../components/Helper';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useRequireLogin } from '../../hooks/useRequireLogin';
@@ -12,7 +14,6 @@ import { useRequireLogin } from '../../hooks/useRequireLogin';
 // for logout
 import { useSetRecoilState } from 'recoil';
 import { CurrentUserState } from '../../states/CurrentUser';
-import { fetchCurrentUser } from '../../components/Helper';
 
 export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -25,10 +26,13 @@ const Profile: NextPage = () => {
     const user = CurrentUser;
     const router = useRouter();
 
+    const [open, setOpen] = useState(false);
+
     // logout
     const setCurrentUser = useSetRecoilState(CurrentUserState);
     const logout = () => {
       destroyCookie(null, 'iwana_user_token');
+      destroyCookie(null, 'iwana_refresh');
       setCurrentUser(null);
       router.push('/');
     }
@@ -37,6 +41,14 @@ const Profile: NextPage = () => {
     const updating = (e: any) => {
       e.preventDefault();
       updateProfile(e, CurrentUser);
+    }
+
+    const logoutStart = () => {
+      setOpen(true);
+    }
+
+    const logoutCancel = () => {
+      setOpen(false);
     }
 
     return (
@@ -80,24 +92,11 @@ const Profile: NextPage = () => {
                 </div>
                 <div className="mt20">
                   <div className="flexNormal">
-                    <a onClick={} className="pt10 pb10 mt5 actve logoutStart">
+                    <a onClick={logoutStart} className="pt10 pb10 mt5 actve logoutStart">
                       ログアウト
                     </a>
                   </div>
-                  <div onClick={} className="modal off"></div>
-                  <div className="modalConLogout off modalCon">
-                    <div>
-                      <h3>ログアウトしますか？</h3>
-                    </div>
-                    <div className="mt25 flexNormal spBw">
-                      <button onClick={logout} className="w48 h50px btFormat1 flexCen hrefBox">
-                        <b>ログアウト</b>
-                      </button>
-                      <button onClick={} className="w48 h50px closeModal flexCen btNegative hrefBox">
-                        <b>キャンセル</b>
-                      </button>
-                    </div>
-                  </div>
+                  <LogoutModal open={open} closeFunc={logoutCancel} logoutFunc={logout}></LogoutModal>
                 </div>
               </div>
             </main>

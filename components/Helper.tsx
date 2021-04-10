@@ -1,8 +1,7 @@
 import { NextPageContext } from 'next';
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
-import nookies from 'nookies';
 
-import { useSetRecoilState } from 'recoil';
+import { atomFamily, useSetRecoilState } from 'recoil';
 import { CurrentUserState } from '../states/CurrentUser';
 import Router from 'next/router';
 import User from '../types/any';
@@ -10,19 +9,6 @@ import User from '../types/any';
 export const isBrowser = () => typeof window !== 'undefined';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-const getCookie = (name: string) => {
-    if (isBrowser) {
-        if (document.cookie && document.cookie !== '') {
-            for (const cookie of document.cookie.split(';')) {
-                const [key, value] = cookie.trim().split('=');
-                if (key === name) {
-                    return decodeURIComponent(value);
-                }
-            }
-        }
-    }
-}
 
 // get csrftoken from serverside
 export const getCsrfOfDjango = async () => {
@@ -47,7 +33,7 @@ interface postData {
  * 
  * @param {Array} postData username & passworrd
  * @param {String or null} nextPage next page
- * @returns data (key is token)
+ * @returns data (key is access)
  */
 export const getJwtToken = async (postData: postData, nextPage: string) => {
 
@@ -66,22 +52,57 @@ export const getJwtToken = async (postData: postData, nextPage: string) => {
     const res = await fetch(`${baseUrl}/api/user/login/`, params);
     const data = await res.json();
 
+    setCookie(null, 'iwana_user_token', data['access']);
+    setCookie(null, 'iwana_refresh', data['refresh']);
     destroyCookie(null, 'csrftoken');
 
     return data;
 }
 
+const reviveToken = (accessToken: string) => {
+    destroyCookie(null, 'iwana_user_token');
+    setCookie(null, 'iwana_user_token', accessToken);
+}
+
+// refresh token
+export const refreshToken = async ()=> {
+    const cookies = parseCookies();
+    const refreshKey = cookies['iwana_refresh'];
+    const csrf = await getCsrfOfDjango();
+    
+    const res = await fetch(`${baseUrl}/api/user/refresh/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "X-CSRFToken": csrf['token'],
+        },
+        body: JSON.stringify({"refresh": refreshKey}),
+    })
+    const ret = await res.json();
+
+    reviveToken(ret['access']);
+    destroyCookie(null, 'csrftoken');
+
+    return ret;
+}
+
+const tokenToUser = async (tk: string) => {
+    const tkList = tk.split('.');
+    const res = await fetch(`${baseUrl}/api/user/profile/?head=${tkList[0]}&pay=${tkList[1]}&signature=${tkList[2]}`);
+    const ret = await res.json();
+    return ret;
+}
+
 // get CurrentUser information by jwt
 export const fetchCurrentUser = async (token: string) => {
-    const tokenList = token.split('.');
-    const head = tokenList[0];
-    const pay = tokenList[1];
-    const signature = tokenList[2];
-
-    const res = await fetch(`${baseUrl}/api/user/profile/?head=${head}&pay=${pay}&signature=${signature}`);
-    const user = await res.json();
-
-    return user;
+    try {
+        const user = await tokenToUser(token);
+        return user;
+    } catch {
+        const data = await refreshToken();
+        const user = await tokenToUser(data['access']);
+        return user;
+    }
 }
 
 // update profile
@@ -101,8 +122,6 @@ export const updateProfile = async (e: any, user: User) => {
     if (e.target.picture.files.length !== 0) {
         formData.set('picture', e.target.picture.files[0]);
     }
-
-    console.log(e.target.picture.files.length);
 
     const csrf = await getCsrfOfDjango();
     
@@ -161,8 +180,11 @@ export const postWanted = async (e:any, wanted_plat: string[], user: User) => {
 
     const ret = await res.json();
     destroyCookie(null, 'csrftoken');
+
+    Router.push('/wanted');
 }
 
+// update wanted
 export const updateWanted = async (e:any, wanted_plat: string[], user: User) => {
     let formData = new FormData();
     // user pk
@@ -198,6 +220,7 @@ export const updateWanted = async (e:any, wanted_plat: string[], user: User) => 
     Router.back();
 }
 
+// delete wanted
 export const deleteWanted = async (e: any) => {
     const slug = e.target.getAttribute('data-wanted');
     const csrf = await getCsrfOfDjango();
@@ -208,6 +231,30 @@ export const deleteWanted = async (e: any) => {
             "X-CSRFToken": csrf['token'],
         },
     });
+
+    Router.back();
 }
 
-export default getCookie;
+// post offer
+export const postOffer = async (e: any, wanted_slug: string, user: User) => {
+    let data: { [key: string]: any } = {
+        "offer_url": e.target.offer_url.value,
+    }
+    if (user) {
+        data['user'] = user.pk;
+    }
+    const csrf = await getCsrfOfDjango();
+    const res = await fetch(`${baseUrl}/api/offering/${wanted_slug}/`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "X-CSRFToken": csrf['token'],
+        },
+        body: JSON.stringify(data),
+    })
+    const ret = await res.json();
+    return ret;
+}
+
+export default getCsrfOfDjango;

@@ -32,7 +32,8 @@ const Login = () => {
 
       const data = await getJwtToken(postData, nextPage);
 
-      const CurrentUser = await fetchCurrentUser(data['token']);
+      // const CurrentUser = await fetchCurrentUser(data['token']);
+      const CurrentUser = await fetchCurrentUser(data['access']);
       setCurrentUser(CurrentUser);
 
       /*

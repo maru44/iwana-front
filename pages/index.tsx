@@ -17,35 +17,15 @@ const fetchScrape = async (e: any) => {
 
   e.preventDefault();
 
-  const tk = await getCsrfOfDjango();
-
   const target = e.target;
   
-  const postData = {
-    "keyword": target.keyword.value,
-    "sold": target.sold.value,
-    "category": target.category.value,
-  }
-  
-  if (postData['keyword'] == null || postData['keyword'] == "") {
+  if (target.keyword.value == null || target.keyword.value == "") {
     const res = "need";
     return res;
   }
-  
-  const res = await fetch(scrapeEndPoint, {
-    method: "POST",
-    credentials: 'include',
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-CSRFToken": tk['token'],
-    },
-    body: JSON.stringify(postData),
-  });
-  
-  let ret = await res.json();
 
-  // destroy cookie
-  destroyCookie(null, 'csrftoken');
+  const res = await fetch(`${scrapeEndPoint}?keyword=${target.keyword.value}&sold=${target.sold.value}&category=${target.category.value}`)
+  let ret = await res.json();
 
   if (ret['mercari'] == [] && ret['rakuma'] == [] && ret['yahoo'] == []) {
     ret = "null";

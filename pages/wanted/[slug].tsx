@@ -8,7 +8,7 @@ import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
 import DelWantedComponent from '../../components/DelWantedComponent';
 import { headData, Wanted } from '../../types/any';
-import { getCsrfOfDjango, gottenChange } from '../../components/Helper';
+import { getCsrfOfDjango, gottenChange, postOffer } from '../../components/Helper';
 import Error from '../../components/Error';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
@@ -68,6 +68,15 @@ const WantedDetail: NextPage<Props> = props => {
       const which = await gottenChange(e);
       SetGotten(which);
     }
+  }
+
+  // post offer
+  const offeringPost = (e: any) => {
+    e.preventDefault();
+    if (e.target.offer_url.value) {
+      postOffer(e, wanted.slug, CurrentUser);
+    }
+    e.target.offer_url.value = '';
   }
 
   const [open, setOpen] = useState(false);
@@ -168,10 +177,10 @@ const WantedDetail: NextPage<Props> = props => {
                     ) : (
                       <div className="notHave">
                         <label htmlFor="id_offer_url">メッセージまたはリンク</label>
-                        <div className="flexNormal">
-                          <input type="text" name="offer" id="id_offer_url" className="w70 wM1200px" />
-                          <div id="offeringBtn" className="ml10 btNormal btFormat1 flexCen pl10 pr10">送信</div>
-                        </div>
+                        <form onSubmit={offeringPost} className="flexNormal">
+                          <input type="text" name="offer_url" id="id_offer_url" className="w70 wM1200px" />
+                          <button id="offeringBtn" className="ml10 btNormal btFormat1 flexCen pl10 pr10">送信</button>
+                        </form>
                       </div>
                     )}
                   </div>
