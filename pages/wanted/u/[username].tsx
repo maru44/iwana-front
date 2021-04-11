@@ -10,6 +10,7 @@ import Error from '../../../components/Error';
 
 import User, { headData, Wanted } from '../../../types/any';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
+import Footer from '../../../components/Footer';
 
 interface Props {
     wanteds: Wanted,
@@ -65,10 +66,11 @@ const WantedList: NextPage<Props> = props => {
         <div>
           <HeadCustom {...headData}></HeadCustom>
           <Header what={1}></Header>
-          <main>
+          <div className="content">
+            <main>
               <div className="mainZone mla mra">
                 {/* user data */}
-                <div className="mt20 flex1 flexNormal alCen userDetArea">
+                <div className="pt20 flex1 flexNormal alCen userDetArea">
                   <div className="imgCircle" style={{ backgroundImage: `url('${baseUrl}${user.picture}')`}}></div>
                   <div className="ml10 flex1 ovHide">
                     <h1 className="whNormal h3Size">{ uname }</h1>
@@ -92,7 +94,9 @@ const WantedList: NextPage<Props> = props => {
                     )}
                 </div>
               </div>
-          </main>
+            </main>
+          </div>
+          <Footer></Footer>
         </div>
     )
 }

@@ -86,6 +86,7 @@ export const refreshToken = async ()=> {
     return ret;
 }
 
+// get user bt token
 const tokenToUser = async (tk: string) => {
     const tkList = tk.split('.');
     const res = await fetch(`${baseUrl}/api/user/profile/?head=${tkList[0]}&pay=${tkList[1]}&signature=${tkList[2]}`);
@@ -96,9 +97,11 @@ const tokenToUser = async (tk: string) => {
 // get CurrentUser information by jwt
 export const fetchCurrentUser = async (token: string) => {
     try {
+        console.log('first');
         const user = await tokenToUser(token);
         return user;
     } catch {
+        console.log('second');
         const data = await refreshToken();
         const user = await tokenToUser(data['access']);
         return user;
@@ -231,6 +234,7 @@ export const deleteWanted = async (e: any) => {
             "X-CSRFToken": csrf['token'],
         },
     });
+    destroyCookie(null, 'csrftoken');
 
     Router.back();
 }
@@ -254,6 +258,56 @@ export const postOffer = async (e: any, wanted_slug: string, user: User) => {
         body: JSON.stringify(data),
     })
     const ret = await res.json();
+    destroyCookie(null, 'csrftoken');
+    return ret;
+}
+
+// post inquiry
+export const fetchInquiry = async (e: any) => {
+    const data = {
+        'name': e.target.inq_name.value,
+        'mail': e.target.inq_mail.value,
+        'category': e.target.inq_category.value,
+        'content': e.target.inq_content.value,
+    }
+    const csrf = await getCsrfOfDjango();
+    const res = await fetch(`${baseUrl}/api/inquiry/`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "X-CSRFToken": csrf['token'],
+        },
+        body: JSON.stringify(data),
+    })
+    const ret = await res.json();
+    destroyCookie(null, 'csrftoken');
+    return ret;
+}
+
+export const fetchRegist = async (e: any) => {
+    const data = {
+        'username': e.target.username.value,
+        'email': e.target.email.value,
+        'password': e.target.password.value,
+        'password2': e.target.password2.value,
+    }
+    const csrf = await getCsrfOfDjango();
+    const res = await fetch(`${baseUrl}/api/user/register/`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "X-CSRFToken": csrf['token'],
+        },
+        body: JSON.stringify(data),
+    })
+    destroyCookie(null, 'iwana_user_token');
+    const ret = await res.json();
+    
+    setCookie(null, 'iwana_user_token', ret['access']);
+    setCookie(null, 'iwana_refresh', ret['refresh']);
+    destroyCookie(null, 'csrftoken');
     return ret;
 }
 

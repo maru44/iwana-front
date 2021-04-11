@@ -14,6 +14,7 @@ import { useRequireLogin } from '../../hooks/useRequireLogin';
 // for logout
 import { useSetRecoilState } from 'recoil';
 import { CurrentUserState } from '../../states/CurrentUser';
+import Footer from '../../components/Footer';
 
 export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -101,6 +102,7 @@ const Profile: NextPage = () => {
               </div>
             </main>
           </div>
+          <Footer></Footer>
         </div>
     )
 }

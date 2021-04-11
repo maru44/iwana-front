@@ -6,6 +6,7 @@ import Header from '../components/Header';
 
 import { User, Wanted } from '../types/any';
 import WantedDetail from '../pages/wanted/[slug]';
+import Footer from './Footer';
 
 const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -66,7 +67,7 @@ const Post: NextPage<Props> = (props) => {
             <div className="content">
               <main>
                 <div className="mainZone mla mra">
-                  <div className="mt20">
+                  <div className="pt30">
                     <h1 className="h2Size">{wanted ? '欲しいものを更新する' : '欲しいものを作成する' }</h1>
                     <div className="mt20">
                         <form className="field">
@@ -132,6 +133,7 @@ const Post: NextPage<Props> = (props) => {
                 </div>
               </main>
             </div>
+            <Footer></Footer>
         </div>
     )
 }

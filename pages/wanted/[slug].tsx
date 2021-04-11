@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import { useState } from 'react';
 import { AppContext } from 'next/app';
 import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
+import { parseCookies } from 'nookies';
 
 import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
@@ -16,6 +17,8 @@ import { ParsedUrlQuery } from 'node:querystring';
 
 import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
+import Footer from '../../components/Footer';
+import { parse } from 'node:path';
 
 export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -70,6 +73,13 @@ const WantedDetail: NextPage<Props> = props => {
     }
   }
 
+  const cookies = parseCookies();
+  const timeZone = cookies['timezone'];
+  const localizeTime = (date: string): any => {
+    const dt = new Date(date).toLocaleString('ja-JP',{ timeZone: timeZone, hour12: false});
+    return dt;
+  }
+
   // post offer
   const offeringPost = (e: any) => {
     e.preventDefault();
@@ -116,7 +126,7 @@ const WantedDetail: NextPage<Props> = props => {
                       </Link>
                     </div>
                     <div>
-                       <small>{ wanted.posted }</small>
+                       <small>{ localizeTime(wanted.posted) }</small>
                     </div>
                   </div>
                   <div className="platArea mt15 flexNormal flexWrap alCen">
@@ -207,7 +217,7 @@ const WantedDetail: NextPage<Props> = props => {
                               <p className="brAll">{ offer.offer_url }</p>
                             </div>
                             <div className="mt5 textRight">
-                              <small>{ offer.posted }</small>
+                              <small>{ localizeTime(offer.posted) }</small>
                             </div>
                           </article>
                         </div>
@@ -218,6 +228,7 @@ const WantedDetail: NextPage<Props> = props => {
               </div>
             </main>
           </div>
+          <Footer></Footer>
       </div>
     )
 }

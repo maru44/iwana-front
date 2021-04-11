@@ -6,6 +6,7 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import HeadCustom from '../components/HeadCustom';
 import WantedElement from '../components/WantedElement';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 interface Props {
     wanteds: { [key: number]: any[]}
@@ -41,6 +42,7 @@ const WantedList: NextPage<Props> = props => {
                 </div>
               </div>
           </main>
+          <Footer></Footer>
         </div>
     )
 }

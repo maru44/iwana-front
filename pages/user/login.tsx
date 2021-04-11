@@ -8,6 +8,10 @@ import { useSetRecoilState } from 'recoil';
 
 import { useRequireAnonymous } from '../../hooks/useRequireAnonymous';
 import { CurrentUserState } from '../../states/CurrentUser';
+import Footer from '../../components/Footer';
+import Link from 'next/link';
+
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const Login = () => {
 
@@ -55,8 +59,8 @@ const Login = () => {
             <main>
               <div className="mainZone mla mra">
                 <div className="pt40">
-                  <h3>ログイン</h3>
-                  <form onSubmit={fetchLogin}>
+                  <h1 className="h2Size">ログイン</h1>
+                  <form onSubmit={fetchLogin} className="pt10">
                     <div className="field">
                       <label htmlFor="id_uername">ユーザー名</label>
                       <input type="text" maxLength={24} required id="id_username" name="username" />
@@ -71,10 +75,29 @@ const Login = () => {
                       </button>
                     </div>
                   </form>
+                  <h4 className="mt20 textCen wM500px">---- 会員登録はこちら ----</h4>
+                  <div className="mt10">
+                    <button className="pt5 pb5 wM500px btNormal btFormat1 hrefBox">
+                      会員登録
+                      <Link href="/user/register" passHref>
+                        <a className="hrefBoxIn"></a>
+                      </Link>
+                    </button>
+                  </div>
+                  <h4 className="mt30 textCen wM500px">---- Social Login ----</h4>
+                  <div className="mt10">
+                    <button className="googleLogin btNormal wM500px hrefBox pt5 pb5">
+                      Googleでログイン
+                      <Link href={`${baseUrl}/auth/login/google-oauth2/`} prefetch={false}>
+                        <a className="hrefBoxIn"></a>
+                      </Link>
+                    </button>
+                  </div>
                 </div>
               </div>
             </main>
           </div>
+          <Footer></Footer>
         </div>
     )
 }

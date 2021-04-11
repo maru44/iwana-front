@@ -9,6 +9,7 @@ import Header from '../components/Header';
 import { GlobalArea, MessageArea } from '../components/GlobalPlat';
 
 import { getCsrfOfDjango } from '../components/Helper';
+import Footer from '../components/Footer';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
@@ -116,6 +117,7 @@ export const Home: NextPage = () => {
           </div>
         </main>
       </div>
+      <Footer></Footer>
     </div>
   )
 }
