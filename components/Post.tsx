@@ -15,6 +15,10 @@ interface Props {
     user: User,
 }
 
+interface Ini {
+  [key: string]: any,
+}
+
 const Post: NextPage<Props> = (props) => {
     const wanted = props.wanted;
     const user = props.user;
@@ -52,9 +56,9 @@ const Post: NextPage<Props> = (props) => {
     }
 
     // let initialPlatList: string[];
-    let initialPlatList = [];
+    let initialPlatList: string[]  = [];
     if (wanted) {
-      const initialPlat = wanted.plat;
+      const initialPlat: Ini = wanted.plat;
       for (let i = 0; i < initialPlat.length; i++) {
         initialPlatList.push(initialPlat[i].name);
       }
