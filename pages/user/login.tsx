@@ -39,6 +39,8 @@ const Login = () => {
       const CurrentUser = await fetchCurrentUser(data['access']);
       setCurrentUser(CurrentUser);
 
+      router.push('/wanted');
+
       /*
       if (data.token) {
         if (nextPage) {

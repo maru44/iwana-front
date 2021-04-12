@@ -20,6 +20,7 @@ interface Props {
 const UserComplete: NextPage<Props> = (props) => {
 
     const setCurrentUser = useSetRecoilState(CurrentUserState);
+    // const router = useRouter();
 
     console.log(props.data);
     const cookies = parseCookies();
@@ -36,11 +37,14 @@ const UserComplete: NextPage<Props> = (props) => {
         <div>
             <HeadCustom></HeadCustom>
             <Header></Header>
-            <div className="content">
-                <main>
-                  <div className="mainZone mla mra"></div>
-                </main>
-            </div>
+            <main className="">
+              <div className="content flexCol alCen jsCen errorMain textCen">
+                <h1>{ props.data['status'] }</h1>
+                <div className="mt30 preWrap">
+                    <p>{ props.data['message'] }</p>
+                </div>
+              </div>
+            </main>
             <Footer></Footer>
         </div>
     )

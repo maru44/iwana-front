@@ -18,7 +18,7 @@ const HeadCustom = (headData: headData) => {
             <meta charSet="utf-8" />
             <title>{headData.title ? headData.title: defaultHeadData.title}</title>
             {/* Global site tag (gtag.js) - Google Analytics */}
-              <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+              {/*<script async src="https://www.googletagmanager.com/gtag/js?id="></script>*/}
             {/* GA end */}
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta property="og:type" content={headData.ogtypeWebsite ? headData.ogtypeWebsite : defaultHeadData.ogtypeWebsite} />
