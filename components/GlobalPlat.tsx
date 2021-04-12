@@ -1,7 +1,11 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
 
-const globalPlatName = {
+interface Plat {
+  [key: string]: any,
+}
+
+const globalPlatName: Plat = {
     "mercari": "メルカリ",
     "rakuma": "ラクマ",
     "yahoo": "Yahoo オークション",
