@@ -1,3 +1,4 @@
+import { NextPage } from 'next';
 import Link from 'next/link';
 
 const globalPlatName = {
@@ -35,7 +36,12 @@ export const GlobalPlat = (data: any) => {
     )
 }
 
-export const GlobalArea = ({ kind, datas }) => {
+interface Props {
+  kind: string,
+  datas: [key: number],
+}
+
+export const GlobalArea: NextPage<Props> = ({ kind, datas }) => {
     return (
       <div className="mt60 pb10">
         <h2 className="h3Size">{ globalPlatName[kind] }</h2>
@@ -46,7 +52,11 @@ export const GlobalArea = ({ kind, datas }) => {
     )
 }
 
-export const MessageArea = ({ mess }) => {
+interface Mess {
+  mess: string;
+}
+
+export const MessageArea: NextPage<Mess> = ({ mess }) => {
     return (
         <div className="w100 mt60">
           <div className="mb10 aMess">
