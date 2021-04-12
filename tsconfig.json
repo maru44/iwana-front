@@ -22,6 +22,7 @@
         "hooks/**/*",
         "state/**/*",
         "types/**/*",
+        "helper/**/*",
         "emoji.d.ts",
     ],
     "exclude": ["node_modules"],

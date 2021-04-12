@@ -4,12 +4,15 @@ import Link from 'next/link';
 import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
 
+const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 interface Props {
   slug: string,
   want_name: string,
   want_intro: string,
   plat: { [key: number]: object},
   is_gotten: boolean,
+  picture: string,
 }
 
 const WantedElement: NextComponentType<NextPageContext, {}, Props> = (wanted) => {
@@ -17,7 +20,9 @@ const WantedElement: NextComponentType<NextPageContext, {}, Props> = (wanted) =>
     return (
       <div>
         <article className="mb20 aPost flexNormal hrefBox">
-          <div className="frameContain" ></div>
+          <div className="frameForImg">
+            <img className="w100 cover" src={`${backEndUrl}${wanted.picture}`} alt={wanted.want_name} />
+          </div>
           <div className="ml20 flex1">
             <h2 className="postTitle h4Size">{ wanted.want_name }</h2>
             <p className="mt5 postDet">

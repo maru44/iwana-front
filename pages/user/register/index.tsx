@@ -1,11 +1,13 @@
 import { NextPage } from "next";
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useState } from 'react';
 
 import HeadCustom from "../../../components/HeadCustom";
 import Header from "../../../components/Header";
 import RuleModal from '../../../components/RuleModal';
-import { fetchRegist } from '../../../components/Helper';
+import { fetchRegist } from '../../../helper/HelperUser';
+import Footer from '../../../components/Footer';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -13,6 +15,7 @@ const Register: NextPage = () => {
 
     const [accept, setAccept] = useState(false);
     const [open, setOpen] = useState(false);
+    const router = useRouter();
 
     const changeAccept = (e: any) => {
         if (e.target.checked) {
@@ -22,9 +25,12 @@ const Register: NextPage = () => {
         }
     }
 
-    const registerStart = (e: any) => {
+    const registerStart = async (e: any) => {
         e.preventDefault();
-        fetchRegist(e);
+        const ret = await fetchRegist(e);
+        if (ret && ret['access']) {
+          router.push('/user/register/temp/');
+        }
     }
 
     const openModal = () => {
@@ -38,7 +44,7 @@ const Register: NextPage = () => {
         <div>
             <HeadCustom></HeadCustom>
             <Header></Header>
-            <div className="context">
+            <div className="content">
               <main>
                 <div className="mainZone mla mra">
                   <div className="pt30">
@@ -94,6 +100,7 @@ const Register: NextPage = () => {
                 </div>
               </main>
             </div>
+            <Footer></Footer>
         </div>
     )
 }

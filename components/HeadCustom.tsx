@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { headData } from '../types/any';
 
 const defaultHeadData: headData = {
-    title: 'iwana | 商品を見つけよう/提案しよう',
+    title: 'Iwana | 欲しいものが見つかるサイト',
     ogtypeWebsite: 'website',
     ogimage: 'https://ogp-builder.com/Suo2gx/https://iwana.link/',
-    ogtitle: '逆フリマプラットフォーム | もう商品を探さない!!',
-    ogdescription: '逆フリマプラットフォーム！Iwanaで商品を探そう/提案しよう',
-    seodescription: '逆フリマプラットフォーム！Iwanaで商品を探そう/提案しよう',
+    ogtitle: 'Iwana | 欲しいものが見つかるサイト',
+    ogdescription: '欲しいものが見つかるサイト Iwanaで欲しいものを手に入れよう。欲しいものを提示しオファーをもらおう。フリマプラットフォームを横断した検索機能を使って商品探しを効率化しよう。',
+    seodescription: '欲しいものが見つかるサイト Iwanaで欲しいものを手に入れよう。欲しいものを提示しオファーをもらおう。フリマプラットフォームを横断した検索機能を使って商品探しを効率化しよう。',
 }
 
 const HeadCustom = (headData: headData) => {
@@ -16,10 +16,9 @@ const HeadCustom = (headData: headData) => {
     return (
         <Head>
             <meta charSet="utf-8" />
-            <title>{headData.title}</title>
+            <title>{headData.title ? headData.title: defaultHeadData.title}</title>
             {/* Global site tag (gtag.js) - Google Analytics */}
-              <script async src="https://www.googletagmanager.com/gtag/js?id=G-C5EW2JNG4R"></script>
-              
+              <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
             {/* GA end */}
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta property="og:type" content={headData.ogtypeWebsite ? headData.ogtypeWebsite : defaultHeadData.ogtypeWebsite} />

@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 
-import { postWanted, updateWanted } from '../components/Helper';
+import { postWanted, updateWanted } from '../helper/HelperWanted';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 

@@ -5,7 +5,7 @@ import { useSetRecoilState, RecoilRoot } from 'recoil';
 import { parseCookies } from 'nookies';
 
 import { CurrentUserState } from '../states/CurrentUser';
-import { fetchCurrentUser } from '../components/Helper';
+import { fetchCurrentUser } from '../helper/HelperUser';
 
 const AppInt = (): null => {
   const setCurrentUser = useSetRecoilState(CurrentUserState);

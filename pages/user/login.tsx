@@ -1,15 +1,14 @@
-import { fetchCurrentUser, getCsrfOfDjango, getJwtToken } from '../../components/Helper';
-import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import { fetchCurrentUser, getJwtToken } from '../../helper/HelperUser';
+import { useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
-import { useSetRecoilState } from 'recoil';
+import Footer from '../../components/Footer';
 
 import { useRequireAnonymous } from '../../hooks/useRequireAnonymous';
 import { CurrentUserState } from '../../states/CurrentUser';
-import Footer from '../../components/Footer';
-import Link from 'next/link';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -58,7 +57,7 @@ const Login = () => {
           <div className="content">
             <main>
               <div className="mainZone mla mra">
-                <div className="pt40">
+                <div className="pt30">
                   <h1 className="h2Size">ログイン</h1>
                   <form onSubmit={fetchLogin} className="pt10">
                     <div className="field">

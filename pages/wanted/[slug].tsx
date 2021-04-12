@@ -1,16 +1,17 @@
 import Link from 'next/link';
 import useSWR from 'swr';
 import { useState } from 'react';
-import { AppContext } from 'next/app';
-import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
+import { GetServerSideProps, NextComponentType, NextPage } from 'next';
 import { parseCookies } from 'nookies';
 
 import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
 import DelWantedComponent from '../../components/DelWantedComponent';
-import { headData, Wanted } from '../../types/any';
-import { getCsrfOfDjango, gottenChange, postOffer } from '../../components/Helper';
 import Error from '../../components/Error';
+
+import { headData, Wanted } from '../../types/any';
+import { localizeTime, matchLink } from '../../helper/Helper';
+import { gottenChange, postOffer } from '../../helper/HelperWanted';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { ParsedUrlQuery } from 'node:querystring';
@@ -18,9 +19,8 @@ import { ParsedUrlQuery } from 'node:querystring';
 import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
 import Footer from '../../components/Footer';
-import { parse } from 'node:path';
 
-export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface Props {
   wanted: Wanted,
@@ -64,20 +64,14 @@ const WantedDetail: NextPage<Props> = props => {
     ogimage: `${backEndUrl}${wanted.picture}`,
     ogdescription: `${wanted.want_name}を欲しがっています。`,
     title: `Iwana - ${wanted.want_name}`,
+    seodescription: `${wanted.want_name}を欲しがっています。`,
   }
 
   const gottenChangeStart = async (e: any) => {
-    if (wanted.user.pk === CurrentUser.pk) {
+    if (wanted.user && wanted.user.pk === CurrentUser.pk) {
       const which = await gottenChange(e);
       SetGotten(which);
     }
-  }
-
-  const cookies = parseCookies();
-  const timeZone = cookies['timezone'];
-  const localizeTime = (date: string): any => {
-    const dt = new Date(date).toLocaleString('ja-JP',{ timeZone: timeZone, hour12: false});
-    return dt;
   }
 
   // post offer
@@ -112,19 +106,21 @@ const WantedDetail: NextPage<Props> = props => {
                 <div className="pt20 detPost">
                   <h1 className="brAll h2Size">{ wanted.want_name }</h1>
                   
-                  <div className="mt20">
-                    <div className="frameContain w100" style={{ backgroundImage: `url(${backEndUrl}${wanted.picture})`}}></div>
+                  <div className="mt20 w100 frameForImg">
+                    <img className="w100 contain" src={`${backEndUrl}${wanted.picture}`} alt={wanted.want_name} />
                   </div>
                   <div className="mt20 flexNormal spBw alFlBot">
-                    <div className="flex1 flexNormal alCen hrefBox">
-                      <div className="imgCircle" style={{ backgroundImage: `url(${backEndUrl}${wanted.user.picture})`}}></div>
-                      <div className="ml10 flex1 ovHide">
-                        <h2 className="whNormal h3Size">{ wanted.user.username }</h2>
+                    { wanted.user ? (
+                      <div className="flex1 flexNormal alCen hrefBox">
+                        <div className="imgCircle" style={{ backgroundImage: `url(${backEndUrl}${wanted.user.picture})`}}></div>
+                        <div className="ml10 flex1 ovHide">
+                          <h2 className="whNormal h3Size">{ wanted.user.username }</h2>
+                        </div>
+                        <Link as={`/wanted/u/${wanted.user.username}`} href="/wanted/u/[username]" passHref>
+                          <a className="hrefBoxIn"></a>
+                        </Link>
                       </div>
-                      <Link as={`/wanted/u/${wanted.user.username}`} href="/wanted/u/[username]" passHref>
-                        <a className="hrefBoxIn"></a>
-                      </Link>
-                    </div>
+                    ): (<div></div>)}
                     <div>
                        <small>{ localizeTime(wanted.posted) }</small>
                     </div>
@@ -146,7 +142,7 @@ const WantedDetail: NextPage<Props> = props => {
                   </div>
                 </div>
                 {/* only owner */}
-                { !isAuthChecking && CurrentUser && CurrentUser.pk === wanted.user.pk && (
+                { !isAuthChecking && CurrentUser && wanted.user && CurrentUser.pk === wanted.user.pk && (
                   <div>
                     <div className="mt40 flexNormal spBw">
                       <div className="w30 btNormal btnEl pt10 pb10 flexCen gottenBtn hrefBox">
@@ -179,7 +175,7 @@ const WantedDetail: NextPage<Props> = props => {
                   </div>
                 )}
                 {/* offer */}
-                <div className="mt40 offerZone">
+                <div className="mt90 offerZone">
                   <h2 className="h3Size">オファー</h2>
                   <div className="mt10 field">
                     {is_gotten ? (
@@ -187,10 +183,12 @@ const WantedDetail: NextPage<Props> = props => {
                     ) : (
                       <div className="notHave">
                         <label htmlFor="id_offer_url">メッセージまたはリンク</label>
-                        <form onSubmit={offeringPost} className="flexNormal">
-                          <input type="text" name="offer_url" id="id_offer_url" className="w70 wM1200px" />
-                          <button id="offeringBtn" className="ml10 btNormal btFormat1 flexCen pl10 pr10">送信</button>
-                        </form>
+                        {wanted.user && 
+                          <form onSubmit={offeringPost} className="flexNormal">
+                            <input type="text" name="offer_url" id="id_offer_url" className="w70 wM1200px" />
+                            <button id="offeringBtn" className="ml10 btNormal btFormat1 flexCen pl10 pr10">送信</button>
+                          </form>
+                        }
                       </div>
                     )}
                   </div>
@@ -214,7 +212,12 @@ const WantedDetail: NextPage<Props> = props => {
                           )}
                           <article className="flex1 aOffer">
                             <div className="ml10">
-                              <p className="brAll">{ offer.offer_url }</p>
+                              <p className="brAll">
+                                { matchLink(offer.offer_url) ?
+                                  (<a href={offer.offer_url} target="_new">{offer.offer_url}</a>) :
+                                  offer.offer_url
+                                }
+                              </p>
                             </div>
                             <div className="mt5 textRight">
                               <small>{ localizeTime(offer.posted) }</small>

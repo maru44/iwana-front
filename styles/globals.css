@@ -121,6 +121,23 @@ body {
       opacity: 0.6;
   }
 
+.frameForImg {
+  position: relative; }
+  .frameForImg img.contain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .frameForImg img.cover {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
 /*  block or none  */
 
 .min1099 { display: block; }
@@ -209,7 +226,9 @@ margin padding
 .p3 { padding: 3px; }
 
 /* top */
+.mt120 { margin-top: 120px; }
 .mt100 { margin-top: 100px; }
+.mt90 { margin-top: 90px; }
 .mt60 { margin-top: 60px; }
 .mt50 { margin-top: 50px; }
 .mt40 { margin-top: 40px; }
@@ -572,12 +591,14 @@ header {
   .headerCon .halfCircle {
     height: 40px;
     border-radius: 50px;
-    background-color: #fff2f0;
+    background-color: #ff9985;
+    color: #fff;
   }
   .headerCon .toPost {
       width: 40px;
       font-size: 28px;
       border: 1px solid #edf2f7;
+      background-color: #ff9985;
   }
 
 .headerCon2 {
@@ -652,7 +673,7 @@ main
 .mainZone {
   width: 100%;
   max-width: 800px;
-  padding: 0 15px 60px 15px;
+  padding: 0 15px 90px 15px;
 }
 
 .aMess {
@@ -713,6 +734,10 @@ main
       padding: 3px 5px;
       color: #fff;
   }
+  .aPost .frameForImg {
+    width: 100px;
+    height: 100px;
+  }
   .platArea .mercari { background-color: #19a7ff; }
   .platArea .rakuma { background-color: #ad0000; }
   .platArea .yahoo { background-color: #f2ca00; }
@@ -740,6 +765,11 @@ main
 .detPost .imgCircle {
   width: 60px;
   height: 60px;
+}
+
+.detPost .frameForImg {
+  padding-top: 56%;
+  background-color: #777;
 }
 
 .aOffer {

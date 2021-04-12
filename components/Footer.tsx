@@ -3,7 +3,7 @@ import Link from 'next/link';
 import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
 import { NextPage } from 'next';
-import { copyFile } from 'node:fs';
+// import { copyFile } from 'node:fs';
 
 export const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -17,7 +17,7 @@ const Footer: NextPage = () => {
               </div>
               <div className="footerInq mla pt20">
                 <Link href="/inquiry">
-                  <h5>お問い合わせ</h5>
+                  <h5 className="hrefBox">お問い合わせ</h5>
                 </Link>
             </div>
             </div>

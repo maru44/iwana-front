@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { deleteWanted } from './Helper';
+import { deleteWanted } from '../helper/HelperWanted';
 
 interface ModalParams {
   slug: string,

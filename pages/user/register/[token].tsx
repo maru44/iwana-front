@@ -5,7 +5,8 @@ import { parseCookies, setCookie } from 'nookies';
 import Footer from "../../../components/Footer";
 import HeadCustom from "../../../components/HeadCustom";
 import Header from "../../../components/Header";
-import { fetchCurrentUser } from "../../../components/Helper";
+
+import { fetchCurrentUser } from "../../../helper/HelperUser";
 
 import { useSetRecoilState } from 'recoil';
 import { CurrentUserState } from '../../../states/CurrentUser';

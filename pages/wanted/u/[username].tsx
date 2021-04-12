@@ -7,10 +7,10 @@ import HeadCustom from '../../../components/HeadCustom';
 import WantedElement from '../../../components/WantedElement';
 import Header from '../../../components/Header';
 import Error from '../../../components/Error';
+import Footer from '../../../components/Footer';
 
 import User, { headData, Wanted } from '../../../types/any';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
-import Footer from '../../../components/Footer';
 
 interface Props {
     wanteds: Wanted,

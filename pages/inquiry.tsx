@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 import DelWantedComponent from '../components/DelWantedComponent';
-import { fetchInquiry } from '../components/Helper';
 import Footer from '../components/Footer';
 
 import { headData } from '../types/any';
+import { fetchInquiry } from '../helper/Helper';
 
 const Inquiry = () => {
     const router = useRouter();

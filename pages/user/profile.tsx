@@ -6,7 +6,7 @@ import { parseCookies, setCookie, destroyCookie } from 'nookies';
 import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
 import LogoutModal from '../../components/LogoutModal';
-import { updateProfile } from '../../components/Helper';
+import { updateProfile } from '../../helper/HelperUser';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useRequireLogin } from '../../hooks/useRequireLogin';
@@ -93,7 +93,7 @@ const Profile: NextPage = () => {
                 </div>
                 <div className="mt20">
                   <div className="flexNormal">
-                    <a onClick={logoutStart} className="pt10 pb10 mt5 actve logoutStart">
+                    <a onClick={logoutStart} className="pt10 pb10 mt5 actve logoutStart hrefBox">
                       ログアウト
                     </a>
                   </div>

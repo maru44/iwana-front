@@ -6,7 +6,7 @@ const globalPlatName = {
     "yahoo": "Yahoo オークション",
 }
 
-export const GlobalPlat = data => {
+export const GlobalPlat = (data: any) => {
 
     const imgStyle = {
         backgroundImage: `url(${data.image})`,

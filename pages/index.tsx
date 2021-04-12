@@ -7,9 +7,9 @@ import { useState } from 'react';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 import { GlobalArea, MessageArea } from '../components/GlobalPlat';
-
-import { getCsrfOfDjango } from '../components/Helper';
 import Footer from '../components/Footer';
+
+import { getCsrfOfDjango } from '../helper/Helper';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
