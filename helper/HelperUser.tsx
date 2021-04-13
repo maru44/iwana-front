@@ -80,11 +80,9 @@ const tokenToUser = async (tk: string) => {
 // get CurrentUser information by jwt
 export const fetchCurrentUser = async (token: string) => {
     try {
-        console.log('first');
         const user = await tokenToUser(token);
         return user;
     } catch {
-        console.log('second');
         const data = await refreshToken();
         const user = await tokenToUser(data['access']);
         return user;
