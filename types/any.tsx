@@ -10,12 +10,17 @@ export type User = {
     is_superuser: boolean,
 }
 
+export type Plat = {
+    name: string,
+    slug: string,
+}
+
 export type Wanted = {
     slug: string,
     want_name: string,
     want_intro: string,
     want_price: number,
-    plat: { [key: number]: any}
+    plat: [Plat],
     user: User, // User type
     posted: string,
     is_gotten: boolean,

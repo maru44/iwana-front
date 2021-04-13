@@ -4,8 +4,8 @@ import { postWanted, updateWanted } from '../helper/HelperWanted';
 import HeadCustom from '../components/HeadCustom';
 import Header from '../components/Header';
 
-import { User, Wanted } from '../types/any';
-import WantedDetail from '../pages/wanted/[slug]';
+import { User, Wanted, Plat } from '../types/any';
+
 import Footer from './Footer';
 
 const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -13,10 +13,6 @@ const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 interface Props {
     wanted: Wanted,
     user: User,
-}
-
-interface Ini {
-  [key: string]: any,
 }
 
 const Post: NextPage<Props> = (props) => {
@@ -58,7 +54,7 @@ const Post: NextPage<Props> = (props) => {
     // let initialPlatList: string[];
     let initialPlatList: string[]  = [];
     if (wanted) {
-      const initialPlat: Ini = wanted.plat;
+      const initialPlat: [Plat] = wanted.plat;
       for (let i = 0; i < initialPlat.length; i++) {
         initialPlatList.push(initialPlat[i].name);
       }

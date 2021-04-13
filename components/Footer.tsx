@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 import 'emoji-mart/css/emoji-mart.css';
-import { Emoji } from 'emoji-mart';
 import { NextPage } from 'next';
 // import { copyFile } from 'node:fs';
 

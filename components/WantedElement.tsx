@@ -3,19 +3,16 @@ import Link from 'next/link';
 
 import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
+import { Wanted } from '../types/any';
 
 const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-interface Props {
+interface Plat {
+  name: string,
   slug: string,
-  want_name: string,
-  want_intro: string,
-  plat: { [key: number]: object},
-  is_gotten: boolean,
-  picture: string,
 }
 
-const WantedElement: NextComponentType<NextPageContext, {}, Props> = (wanted) => {
+const WantedElement: NextComponentType<NextPageContext, {}, Wanted> = (wanted) => {
 
     return (
       <div>
@@ -29,7 +26,7 @@ const WantedElement: NextComponentType<NextPageContext, {}, Props> = (wanted) =>
               { wanted.want_intro }
             </p>
             <div className="platArea">
-              {wanted.plat.map( p => <span className={p.slug} key={p.name}>{ p.name }</span>)}
+              {wanted.plat.map(p => <span className={p.slug} key={p.name}>{ p.name }</span>)}
             </div>
           </div>
           <div className="ml10 mr10">
