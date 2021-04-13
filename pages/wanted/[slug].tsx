@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import useSWR from 'swr';
 import { useState } from 'react';
-import { GetServerSideProps, NextComponentType, NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import { parseCookies } from 'nookies';
 
 import HeadCustom from '../../components/HeadCustom';
