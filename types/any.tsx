@@ -15,6 +15,20 @@ export type Plat = {
     slug: string,
 }
 
+export type SearchList = {
+    mercari: [Search],
+    rakuma: [Search],
+    yahoo: [Search],
+}
+
+export type Search = {
+    image: string,
+    price: string,
+    name: string,
+    sold: boolean,
+    href: string,
+}
+
 export type Wanted = {
     slug: string,
     want_name: string,

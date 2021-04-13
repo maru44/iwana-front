@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
+import { Search } from '../types/any';
 
 interface Plat {
   [key: string]: any,
@@ -42,7 +43,7 @@ export const GlobalPlat = (data: any) => {
 
 interface Props {
   kind: string,
-  datas: [key: number],
+  datas: [Search],
 }
 
 export const GlobalArea: NextPage<Props> = ({ kind, datas }) => {

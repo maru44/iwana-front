@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 
 import { useState } from 'react';
 
@@ -7,18 +9,30 @@ import Header from '../components/Header';
 import { GlobalArea, MessageArea } from '../components/GlobalPlat';
 import Footer from '../components/Footer';
 
-import { Search, SearchList } from '../types/any';
+import { getCsrfOfDjango } from '../helper/Helper';
+import { Search } from '../types/any';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
 
-type searchResult = SearchList;
+interface globalSearch {
+  status: string,
+  mercari: [Search],
+  rakuma: [Search],
+  yahoo: [Search],
+}
 
 const fetchScrape = async (e: any) => {
 
   e.preventDefault();
 
   const target = e.target;
+  let ret: globalSearch = {
+    status: "",
+    mercari: null,
+    rakuma: null,
+    yahoo: null,
+  }
   
   if (target.keyword.value == null || target.keyword.value == "") {
     const res = "need";
@@ -26,10 +40,10 @@ const fetchScrape = async (e: any) => {
   }
 
   const res = await fetch(`${scrapeEndPoint}?keyword=${target.keyword.value}&sold=${target.sold.value}&category=${target.category.value}`)
-  let ret = await res.json();
+  ret = await res.json();
 
-  if (ret['mercari'] == [] && ret['rakuma'] == [] && ret['yahoo'] == []) {
-    ret = "null";
+  if (ret['mercari'] == null && ret['rakuma'] == null && ret['yahoo'] == null) {
+    ret['status'] = "null";
     return ret;
   }
     
@@ -39,13 +53,20 @@ const fetchScrape = async (e: any) => {
 // component
 export const Home: NextPage = () => {
 
-  const [searchState, setSearch] = useState<string>(null);
-  const [data, setData] = useState<searchResult>(null);
+  let searchResult: globalSearch = {
+    status: "",
+    mercari: null,
+    rakuma: null,
+    yahoo: null,
+  }
 
-  const searching = async (e: any) => {
-    setSearch('searching');
+  const [data, setData] = useState<globalSearch>();
+
+  const searching= async (e: any) => {
+    searchResult['status'] = searching;
+    setData(searchResult);
     const dd = await fetchScrape(e);
-    typeof dd == "string" ? setSearch(dd) : setData(dd);
+    setData(;
   }
 
   return (
@@ -103,9 +124,9 @@ export const Home: NextPage = () => {
                  検索
               </button>
             </form>
-            {searchState && searchState == "need" && (<MessageArea mess="検索ワードを入力してください。"></MessageArea>)}
-            {searchState && searchState == "null" && (<MessageArea mess="条件に合致する商品がありませんでした。"></MessageArea>)}
-            {searchState && searchState == "searching" && (<MessageArea mess="検索中です。検索には5秒前後の時間がかかります。"></MessageArea>)}
+            {data && data[0] == "need" && (<MessageArea mess="検索ワードを入力してください。"></MessageArea>)}
+            {data && data[0] == "null" && (<MessageArea mess="条件に合致する商品がありませんでした。"></MessageArea>)}
+            {data && data[0] == "searching" && (<MessageArea mess="検索中です。検索には5秒前後の時間がかかります。"></MessageArea>)}
             {data && data.mercari &&
               (<GlobalArea kind="mercari" datas={ data.mercari }></GlobalArea>)
             }
