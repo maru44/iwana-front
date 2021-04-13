@@ -32,7 +32,7 @@ const Header = (props: props) => {
             </div>
             <div className="headerUserArea">
               { CurrentUser ? (
-                  <div className="imgCircle mla hrefBox" style={{ backgroundImage: `url(${baseUrl}${CurrentUser.picture})`}}>
+                  <div className="imgCircle mla hrefBox" style={{ backgroundImage: `url(${CurrentUser.picture})`}}>
                     <Link as={`/wanted/u/${CurrentUser.username}`} href="/wanted/u/[username]" passHref>
                       <a className="hrefBoxIn"></a>
                     </Link>

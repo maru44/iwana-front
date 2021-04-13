@@ -74,7 +74,7 @@ const Profile: NextPage = () => {
                           <div className="field mt20">
                             <label htmlFor="id_intro">プロフィール画像</label>
                             <div className="frame"
-                             style={{ backgroundImage: `url(${backEndUrl}${user.picture})`,
+                             style={{ backgroundImage: `url(${user.picture})`,
                                width: `200px`, height: `200px`, paddingTop: 0 }}></div>
                             <input type="file" name="picture" className="mt10" accept="image/*"></input>
                           </div>

@@ -61,7 +61,7 @@ const WantedDetail: NextPage<Props> = props => {
   const headData: headData = {
     ogtypeWebsite: 'article',
     ogtitle: `${wanted.want_name} | 欲しいものページ`,
-    ogimage: `${backEndUrl}${wanted.picture}`,
+    ogimage: `${wanted.picture}`,
     ogdescription: `${wanted.want_name}を欲しがっています。`,
     title: `Iwana - ${wanted.want_name}`,
     seodescription: `${wanted.want_name}を欲しがっています。`,
@@ -107,12 +107,12 @@ const WantedDetail: NextPage<Props> = props => {
                   <h1 className="brAll h2Size">{ wanted.want_name }</h1>
                   
                   <div className="mt20 w100 frameForImg">
-                    <img className="w100 contain" src={`${backEndUrl}${wanted.picture}`} alt={wanted.want_name} />
+                    <img className="w100 contain" src={`${wanted.picture}`} alt={wanted.want_name} />
                   </div>
                   <div className="mt20 flexNormal spBw alFlBot">
                     { wanted.user ? (
                       <div className="flex1 flexNormal alCen hrefBox">
-                        <div className="imgCircle" style={{ backgroundImage: `url(${backEndUrl}${wanted.user.picture})`}}></div>
+                        <div className="imgCircle" style={{ backgroundImage: `url(${wanted.user.picture})`}}></div>
                         <div className="ml10 flex1 ovHide">
                           <h2 className="whNormal h3Size">{ wanted.user.username }</h2>
                         </div>
@@ -202,7 +202,7 @@ const WantedDetail: NextPage<Props> = props => {
                               {/* if offer user is_auth */}
                               <div className="offerUserArea">
                                 <div className="imgCircle mla mra w30px h30px" 
-                                  style={{ backgroundImage: `url(${backEndUrl}${offer.user.picture})` }}>
+                                  style={{ backgroundImage: `url(${offer.user.picture})` }}>
                                 </div>
                               </div>
                               <Link as={`/wanted/u/${offer.user.username}`} href="/wanted/u/[username]" passHref>

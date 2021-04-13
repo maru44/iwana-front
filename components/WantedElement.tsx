@@ -18,7 +18,7 @@ const WantedElement: NextComponentType<NextPageContext, {}, Wanted> = (wanted) =
       <div>
         <article className="mb20 aPost flexNormal hrefBox">
           <div className="frameForImg">
-            <img className="w100 cover" src={`${backEndUrl}${wanted.picture}`} alt={wanted.want_name} />
+            <img className="w100 cover" src={`${wanted.picture}`} alt={wanted.want_name} />
           </div>
           <div className="ml20 flex1">
             <h2 className="postTitle h4Size">{ wanted.want_name }</h2>

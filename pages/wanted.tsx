@@ -31,7 +31,8 @@ const WantedList: NextPage<Props> = props => {
         <div>
           <HeadCustom></HeadCustom>
           <Header what={1}></Header>
-          <main>
+          <div className="content">
+            <main>
               <div className="mainZone mla mra">
                 <div className="pt20">
                     {data && data.map( (w: any) =>
@@ -39,7 +40,8 @@ const WantedList: NextPage<Props> = props => {
                     )}
                 </div>
               </div>
-          </main>
+            </main>
+          </div>
           <Footer></Footer>
         </div>
     )

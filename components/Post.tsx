@@ -109,7 +109,7 @@ const Post: NextPage<Props> = (props) => {
                           </div>
                           <form className="field mt20">
                             {wanted && 
-                              <img src={`${backEndUrl}${wanted.picture}`} className="wM500px" />
+                              <img src={`${wanted.picture}`} className="wM500px" />
                             }
                             <label htmlFor="id_picture">画像</label>
                             <input form="postData" id="id_picture" type="file" name="picture" className="mt5" accept="image/*"></input>

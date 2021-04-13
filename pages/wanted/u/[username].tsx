@@ -57,7 +57,7 @@ const WantedList: NextPage<Props> = props => {
     // head data for seo
     const headData: headData = {
       ogtitle: `${uname}さんの欲しいものリスト`,
-      ogimage: `${baseUrl}${user.picture}`,
+      ogimage: `${user.picture}`,
       ogdescription: `${uname}さんの欲しいものリスト | Iwanaで欲しいものを手に入れよう。`,
       title: `Iwana - ${uname}さんの欲しいものリスト`,
     }
@@ -71,7 +71,7 @@ const WantedList: NextPage<Props> = props => {
               <div className="mainZone mla mra">
                 {/* user data */}
                 <div className="pt20 flex1 flexNormal alCen userDetArea">
-                  <div className="imgCircle" style={{ backgroundImage: `url('${baseUrl}${user.picture}')`}}></div>
+                  <div className="imgCircle" style={{ backgroundImage: `url('${user.picture}')`}}></div>
                   <div className="ml10 flex1 ovHide">
                     <h1 className="whNormal h3Size">{ uname }</h1>
                   </div>
