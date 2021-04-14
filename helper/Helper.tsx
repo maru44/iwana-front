@@ -25,6 +25,7 @@ export const fetchInquiry = async (e: any) => {
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/inquiry/`, {
         method: "POST",
+        mode: "cors",
         credentials: 'include',
         headers: {
             "Content-Type": "application/json; charset=utf-8",

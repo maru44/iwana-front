@@ -27,6 +27,7 @@ export const postWanted = async (e:any, wanted_plat: string[], user: User) => {
     
     const res = await fetch(`${baseUrl}/api/wanted/`, {
         method: "POST",
+        mode: "cors",
         credentials: 'include',
         headers: {
             //"Content-Type": "multipart/form-data",
@@ -63,6 +64,7 @@ export const updateWanted = async (e:any, wanted_plat: string[], user: User) => 
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/wanted/${slug}/`, {
         method: "PUT",
+        mode: "cors",
         credentials: 'include',
         headers: {
             "X-CSRFToken": csrf['token'],
@@ -83,6 +85,7 @@ export const deleteWanted = async (e: any) => {
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/wanted/${slug}`, {
         method: "DELETE",
+        mode: "cors",
         credentials: 'include',
         headers: {
             "X-CSRFToken": csrf['token'],
@@ -104,6 +107,7 @@ export const postOffer = async (e: any, wanted_slug: string, user: User) => {
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/offering/${wanted_slug}/`, {
         method: "POST",
+        mode: "cors",
         credentials: 'include',
         headers: {
             "Content-Type": "application/json; charset=utf-8",

@@ -55,6 +55,7 @@ export const refreshToken = async ()=> {
     
     const res = await fetch(`${baseUrl}/api/user/refresh/`, {
         method: "POST",
+        mode: "cors",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           "X-CSRFToken": csrf['token'],
@@ -111,6 +112,7 @@ export const updateProfile = async (e: any, user: User) => {
     
     const res = await fetch(`${baseUrl}/api/user/profile/${user.pk}/`, {
         method: "PUT",
+        mode: "cors",
         credentials: 'include',
         headers: {
           "X-CSRFToken": csrf['token'],
@@ -135,6 +137,7 @@ export const fetchRegist = async (e: any) => {
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/user/register/`, {
         method: "POST",
+        mode: "cors",
         credentials: 'include',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
