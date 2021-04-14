@@ -741,6 +741,7 @@ main
   .platArea .mercari { background-color: #19a7ff; }
   .platArea .rakuma { background-color: #ad0000; }
   .platArea .yahoo { background-color: #f2ca00; }
+  .platArea .ebay { background-color: #86B817; }
   .aPost:hover {
       box-shadow: 0 0 10px rgba(0, 0, 0, .4);
   }

@@ -35,8 +35,8 @@ export const getJwtToken = async (postData: postData, nextPage: string) => {
     const res = await fetch(`${baseUrl}/api/user/login/`, params);
     const data = await res.json();
 
-    setCookie(null, 'iwana_user_token', data['access']);
-    setCookie(null, 'iwana_refresh', data['refresh']);
+    setCookie(null, 'iwana_user_token', data['access'], {maxAge: 30 * 24 * 60 * 60, });
+    setCookie(null, 'iwana_refresh', data['refresh'], {maxAge: 30 * 24 * 60 * 60, });
     destroyCookie(null, 'csrftoken');
 
     return data;
@@ -44,7 +44,7 @@ export const getJwtToken = async (postData: postData, nextPage: string) => {
 
 const reviveToken = (accessToken: string) => {
     destroyCookie(null, 'iwana_user_token');
-    setCookie(null, 'iwana_user_token', accessToken);
+    setCookie(null, 'iwana_user_token', accessToken, {maxAge: 30 * 24 * 60 * 60, });
 }
 
 // refresh token
@@ -145,8 +145,8 @@ export const fetchRegist = async (e: any) => {
     destroyCookie(null, 'iwana_user_token');
     const ret = await res.json();
     
-    setCookie(null, 'iwana_user_token', ret['access']);
-    setCookie(null, 'iwana_refresh', ret['refresh']);
+    setCookie(null, 'iwana_user_token', ret['access'], {maxAge: 30 * 24 * 60 * 60, });
+    setCookie(null, 'iwana_refresh', ret['refresh'], {maxAge: 30 * 24 * 60 * 60, });
     destroyCookie(null, 'csrftoken');
     return ret;
 }
