@@ -1,4 +1,4 @@
-import { destroyCookie } from 'nookies';
+import { destroyCookie, parseCookies } from 'nookies';
 
 import Router from 'next/router';
 import User from '../types/any';
@@ -82,6 +82,7 @@ export const updateWanted = async (e:any, wanted_plat: string[], user: User) => 
 // delete wanted
 export const deleteWanted = async (e: any) => {
     const slug = e.target.getAttribute('data-wanted');
+    const cookies = parseCookies();
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/wanted/${slug}`, {
         method: "DELETE",
@@ -89,6 +90,7 @@ export const deleteWanted = async (e: any) => {
         credentials: 'include',
         headers: {
             "X-CSRFToken": csrf['token'],
+            "Authorization": `Bearer ${cookies['iwana_user_token']}`,
         },
     });
     destroyCookie(null, 'csrftoken');
