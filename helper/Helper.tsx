@@ -26,7 +26,7 @@ export const fetchInquiry = async (e: any) => {
     const res = await fetch(`${baseUrl}/api/inquiry/`, {
         method: "POST",
         mode: "cors",
-        credentials: 'include',
+        credentials: "include",
         headers: {
             "Content-Type": "application/json; charset=utf-8",
             "X-CSRFToken": csrf['token'],
