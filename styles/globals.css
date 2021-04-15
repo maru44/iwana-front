@@ -853,11 +853,8 @@ responsive
 }
 
 @media screen and (max-width: 799px) {
-  .headerCon {
-      padding: 0 15px;
-  }
-  .footerCon {
-      padding: 0 15px;
+  .headerCon, .footerCon {
+      padding: 0 2px;
   }
   .lp_image, .lp_desc {
       width: 100%;
