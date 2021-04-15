@@ -61,12 +61,14 @@ export const updateWanted = async (e:any, wanted_plat: string[], user: User) => 
     console.log(formData);
 
     const slug = e.target.getAttribute('data-wanted');
+    const cookies = parseCookies();
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/wanted/${slug}/`, {
         method: "PUT",
         mode: "cors",
         headers: {
             "X-CSRFToken": csrf['token'],
+            "Authorization": `Bearer ${cookies['iwana_user_token']}`,
         },
         body: formData,
     });
