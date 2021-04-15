@@ -9,13 +9,7 @@ interface postData {
     password: string,
 }
 
-// loginの実処理を行う関数
-/**
- * 
- * @param {Array} postData username & passworrd
- * @param {String or null} nextPage next page
- * @returns data (key is access)
- */
+// login excute
 export const getJwtToken = async (postData: postData, nextPage: string) => {
 
     const csrf = await getCsrfOfDjango();
@@ -68,7 +62,7 @@ export const refreshToken = async ()=> {
     return ret;
 }
 
-// get user bt token
+// get user by token
 const tokenToUser = async (tk: string) => {
     const tkList = tk.split('.');
     const res = await fetch(`${baseUrl}/api/user/profile/?head=${tkList[0]}&pay=${tkList[1]}&signature=${tkList[2]}`);
@@ -125,6 +119,7 @@ export const updateProfile = async (e: any, user: User) => {
     Router.reload();
 }
 
+// register
 export const fetchRegist = async (e: any) => {
     const data = {
         'username': e.target.username.value,
