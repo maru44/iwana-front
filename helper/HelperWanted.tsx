@@ -65,6 +65,7 @@ export const updateWanted = async (e:any, wanted_plat: string[], user: User) => 
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/wanted/${slug}/`, {
         method: "PUT",
+        credentials: "include",
         mode: "cors",
         headers: {
             "X-CSRFToken": csrf['token'],
@@ -87,6 +88,7 @@ export const deleteWanted = async (e: any) => {
     const csrf = await getCsrfOfDjango();
     const res = await fetch(`${baseUrl}/api/wanted/${slug}`, {
         method: "DELETE",
+        credentials: "include",
         mode: "cors",
         headers: {
             "X-CSRFToken": csrf['token'],
