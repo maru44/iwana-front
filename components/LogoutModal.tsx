@@ -6,7 +6,6 @@ interface ModalParams {
   logoutFunc: any,
 }
 
-// delete wanted component
 const DelWantedComponent: NextPage<ModalParams> = (props) => {
 
     let parentOpen = props.open;
