@@ -56,13 +56,21 @@ const WantedDetail: NextPage<Props> = props => {
     `${baseUrl}/api/offering/${wanted.slug}`, fetcher, { initialData: initialOffers }
   )
 
+  const ogDescription = wanted.user ? (
+    wanted.user.name ? (
+      `${wanted.user.name}さんが${wanted.want_name}を欲しがっています。`
+    ) : (
+      `${wanted.user.username}さんが${wanted.want_name}を欲しがっています。`
+    )
+  ) : (`${wanted.want_name}を欲しがっている人がいました。`);
+
   const headData: headData = {
     ogtypeWebsite: 'article',
     ogtitle: `${wanted.want_name} | 欲しいものページ`,
     ogimage: `${wanted.picture}`,
-    ogdescription: `${wanted.want_name}を欲しがっています。`,
-    title: `Iwana - ${wanted.want_name}`,
-    seodescription: `${wanted.want_name}を欲しがっています。`,
+    ogdescription: ogDescription,
+    title: `Iwana - ${wanted.want_name} | 欲しいものページ`,
+    seodescription: ogDescription,
   }
 
   const gottenChangeStart = async (e: any) => {
