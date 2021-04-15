@@ -6,17 +6,16 @@ import { parseCookies, setCookie, destroyCookie } from 'nookies';
 import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
 import LogoutModal from '../../components/LogoutModal';
-import { updateProfile } from '../../helper/HelperUser';
+import Footer from '../../components/Footer';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { useRequireLogin } from '../../hooks/useRequireLogin';
 
+import { updateProfile } from '../../helper/HelperUser';
+
 // for logout
 import { useSetRecoilState } from 'recoil';
 import { CurrentUserState } from '../../states/CurrentUser';
-import Footer from '../../components/Footer';
-
-export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const Profile: NextPage = () => {
 

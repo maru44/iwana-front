@@ -6,10 +6,10 @@ import { useState } from 'react';
 import HeadCustom from "../../../components/HeadCustom";
 import Header from "../../../components/Header";
 import RuleModal from '../../../components/RuleModal';
-import { fetchRegist } from '../../../helper/HelperUser';
 import Footer from '../../../components/Footer';
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { fetchRegist } from '../../../helper/HelperUser';
+import { baseUrl } from '../../../helper/Helper';
 
 const Register: NextPage = () => {
 

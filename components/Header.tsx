@@ -5,7 +5,7 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
 
-export const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { baseUrl } from '../helper/Helper';
 
 interface props {
   what?: number,

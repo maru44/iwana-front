@@ -1,10 +1,8 @@
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
-import { getCsrfOfDjango } from './Helper';
+import { getCsrfOfDjango, baseUrl } from './Helper';
 
 import Router from 'next/router';
 import User from '../types/any';
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface postData {
     username: string,

@@ -6,12 +6,11 @@ import Footer from "../../../components/Footer";
 import HeadCustom from "../../../components/HeadCustom";
 import Header from "../../../components/Header";
 
-import { fetchCurrentUser } from "../../../helper/HelperUser";
-
 import { useSetRecoilState } from 'recoil';
 import { CurrentUserState } from '../../../states/CurrentUser';
 
-const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { fetchCurrentUser } from "../../../helper/HelperUser";
+import { baseUrl } from '../../../helper/Helper';
 
 interface Props {
     data: any;
@@ -57,7 +56,7 @@ interface Params extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx) => {
     const token = ctx.params.token;
-    const res = await fetch(`${backEndUrl}/api/user/register/${token}`);
+    const res = await fetch(`${baseUrl}/api/user/register/${token}`);
     const ret = await res.json();
 
     // setCookie(null, 'iwana_user_token', ret['access']);

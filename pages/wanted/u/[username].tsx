@@ -12,6 +12,8 @@ import Footer from '../../../components/Footer';
 import User, { headData, Wanted } from '../../../types/any';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
 
+import { baseUrl } from '../../../helper/Helper';
+
 interface Props {
     wanteds: Wanted,
     user: User,
@@ -22,8 +24,6 @@ interface Props {
 interface Params extends ParsedUrlQuery {
   username: string,
 }
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const WantedList: NextPage<Props> = props => {
 

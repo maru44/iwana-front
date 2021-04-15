@@ -8,8 +8,6 @@ import { User, Wanted, Plat } from '../types/any';
 
 import Footer from './Footer';
 
-const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 interface Props {
     wanted: Wanted,
     user: User,

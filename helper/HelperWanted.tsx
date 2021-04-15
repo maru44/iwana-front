@@ -3,9 +3,7 @@ import { destroyCookie, parseCookies } from 'nookies';
 import Router from 'next/router';
 import User from '../types/any';
 
-import { getCsrfOfDjango } from './Helper';
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { getCsrfOfDjango, baseUrl } from './Helper';
 
 // post wanted
 export const postWanted = async (e:any, wanted_plat: string[], user: User) => {

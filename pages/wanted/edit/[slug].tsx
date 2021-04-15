@@ -8,7 +8,7 @@ import Error from '../../../components/Error';
 import { useCurrentUser } from '../../../hooks/useCurrentUser';
 import { useRequireLogin } from '../../../hooks/useRequireLogin';
 
-export const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { baseUrl } from '../../../helper/Helper';
 
 interface Props {
   wanted: Wanted,
@@ -48,7 +48,7 @@ const Edit: NextPage<Props> = props => {
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx) => {
     const slug = ctx.params.slug;
-    const res = await fetch(`${backEndUrl}/api/wanted/${slug}`);
+    const res = await fetch(`${baseUrl}/api/wanted/${slug}`);
     const wanted = await res.json();
     const status = res.status;
   

@@ -2,9 +2,6 @@ import Link from 'next/link';
 
 import 'emoji-mart/css/emoji-mart.css';
 import { NextPage } from 'next';
-// import { copyFile } from 'node:fs';
-
-export const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const Footer: NextPage = () => {
     return (

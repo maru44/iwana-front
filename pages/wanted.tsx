@@ -6,11 +6,11 @@ import WantedElement from '../components/WantedElement';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
+import { baseUrl } from '../helper/Helper';
+
 interface Props {
     wanteds: { [key: number]: any[]}
 }
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const WantedList: NextPage<Props> = props => {
     

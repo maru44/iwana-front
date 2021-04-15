@@ -8,8 +8,8 @@ import { GlobalArea, MessageArea } from '../components/GlobalPlat';
 import Footer from '../components/Footer';
 
 import { Search, SearchList } from '../types/any';
+import { baseUrl } from '../helper/Helper';
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
 
 type searchResult = SearchList;

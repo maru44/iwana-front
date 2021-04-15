@@ -8,9 +8,10 @@ import HeadCustom from '../../components/HeadCustom';
 import Header from '../../components/Header';
 import DelWantedComponent from '../../components/DelWantedComponent';
 import Error from '../../components/Error';
+import Footer from '../../components/Footer';
 
 import { headData, Wanted } from '../../types/any';
-import { localizeTime, matchLink } from '../../helper/Helper';
+import { localizeTime, matchLink, baseUrl } from '../../helper/Helper';
 import { gottenChange, postOffer } from '../../helper/HelperWanted';
 
 import { useCurrentUser } from '../../hooks/useCurrentUser';
@@ -18,9 +19,6 @@ import { ParsedUrlQuery } from 'node:querystring';
 
 import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
-import Footer from '../../components/Footer';
-
-const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface Props {
   wanted: Wanted,
@@ -55,7 +53,7 @@ const WantedDetail: NextPage<Props> = props => {
 
   const initialOffers = props.offers;
   const { data, error } = useSWR(
-    `${backEndUrl}/api/offering/${wanted.slug}`, fetcher, { initialData: initialOffers }
+    `${baseUrl}/api/offering/${wanted.slug}`, fetcher, { initialData: initialOffers }
   )
 
   const headData: headData = {
@@ -238,11 +236,11 @@ const WantedDetail: NextPage<Props> = props => {
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx) => {
     const slug = ctx.params.slug;
-    const res = await fetch(`${backEndUrl}/api/wanted/${slug}`);
+    const res = await fetch(`${baseUrl}/api/wanted/${slug}`);
     const wanted = await res.json();
     const status = res.status;
 
-    const res2 = await fetch(`${backEndUrl}/api/offering/${slug}`);
+    const res2 = await fetch(`${baseUrl}/api/offering/${slug}`);
     const offers = await res2.json();
   
     return {

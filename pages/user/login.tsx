@@ -10,7 +10,7 @@ import Footer from '../../components/Footer';
 import { useRequireAnonymous } from '../../hooks/useRequireAnonymous';
 import { CurrentUserState } from '../../states/CurrentUser';
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { baseUrl } from '../../helper/Helper';
 
 const Login = () => {
 

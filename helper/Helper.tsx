@@ -1,6 +1,6 @@
 import { parseCookies, setCookie, destroyCookie } from 'nookies';
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+export const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 // get csrftoken from serverside
 export const getCsrfOfDjango = async () => {
@@ -48,5 +48,3 @@ export const localizeTime = (date: string): any => {
 export const matchLink = (str: string): boolean => {
     return (/((https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig).test(str);
 }
-
-export default getCsrfOfDjango;
