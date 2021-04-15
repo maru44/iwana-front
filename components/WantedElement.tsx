@@ -5,13 +5,6 @@ import 'emoji-mart/css/emoji-mart.css';
 import { Emoji } from 'emoji-mart';
 import { Wanted } from '../types/any';
 
-const backEndUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-interface Plat {
-  name: string,
-  slug: string,
-}
-
 const WantedElement: NextComponentType<NextPageContext, {}, Wanted> = (wanted) => {
 
     return (

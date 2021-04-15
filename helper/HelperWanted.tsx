@@ -65,7 +65,6 @@ export const updateWanted = async (e:any, wanted_plat: string[], user: User) => 
     const res = await fetch(`${baseUrl}/api/wanted/${slug}/`, {
         method: "PUT",
         mode: "cors",
-        credentials: 'include',
         headers: {
             "X-CSRFToken": csrf['token'],
         },
@@ -87,7 +86,6 @@ export const deleteWanted = async (e: any) => {
     const res = await fetch(`${baseUrl}/api/wanted/${slug}`, {
         method: "DELETE",
         mode: "cors",
-        credentials: 'include',
         headers: {
             "X-CSRFToken": csrf['token'],
             "Authorization": `Bearer ${cookies['iwana_user_token']}`,
