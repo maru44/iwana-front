@@ -10,7 +10,6 @@ export const postWanted = async (e:any, wanted_plat: string[], user: User) => {
     let formData = new FormData();
     // user pk
     formData.set('user_pk', user.pk.toString());
-
     formData.set('want_name', e.target.want_name.value);
     formData.set('want_price', e.target.want_price.value);
     for (let i = 0; i < wanted_plat.length; i++) {
@@ -28,7 +27,6 @@ export const postWanted = async (e:any, wanted_plat: string[], user: User) => {
         mode: "cors",
         credentials: 'include',
         headers: {
-            //"Content-Type": "multipart/form-data",
             "X-CSRFToken": csrf['token'],
         },
         body: formData,

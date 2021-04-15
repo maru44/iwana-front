@@ -1,6 +1,8 @@
 import { NextPage, GetServerSideProps } from "next";
+import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'node:querystring';
 import { parseCookies, setCookie } from 'nookies';
+import { useEffect } from 'react';
 
 import Footer from "../../../components/Footer";
 import HeadCustom from "../../../components/HeadCustom";
@@ -13,15 +15,14 @@ import { fetchCurrentUser } from "../../../helper/HelperUser";
 import { baseUrl } from '../../../helper/Helper';
 
 interface Props {
-    data: any;
+    data: {[key: string]: any};
 }
 
 const UserComplete: NextPage<Props> = (props) => {
 
     const setCurrentUser = useSetRecoilState(CurrentUserState);
-    // const router = useRouter();
-
-    console.log(props.data);
+    const router = useRouter();
+    
     const cookies = parseCookies();
     const tk = cookies['iwana_user_token'];
     if (props.data['status'] === 200) {
@@ -31,6 +32,10 @@ const UserComplete: NextPage<Props> = (props) => {
             setCurrentUser(CurrentUser);
         }
     }
+
+    useEffect(() => {
+        router.push('/wanted');
+    })
     
     return (
         <div>

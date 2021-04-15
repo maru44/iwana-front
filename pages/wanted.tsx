@@ -7,9 +7,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 import { baseUrl } from '../helper/Helper';
+import { Wanted } from '../types/any';
 
 interface Props {
-    wanteds: { [key: number]: any[]}
+    wanteds: [Wanted],
 }
 
 const WantedList: NextPage<Props> = props => {
