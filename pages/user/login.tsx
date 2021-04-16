@@ -10,12 +10,10 @@ import Footer from '../../components/Footer';
 import { useRequireAnonymous } from '../../hooks/useRequireAnonymous';
 import { CurrentUserState } from '../../states/CurrentUser';
 
-import { baseUrl } from '../../helper/Helper';
 
 const Login = () => {
 
     useRequireAnonymous();
-    // login function
     const setCurrentUser = useSetRecoilState(CurrentUserState);
     const router = useRouter();
 
@@ -35,7 +33,6 @@ const Login = () => {
 
       const data = await getJwtToken(postData, nextPage);
 
-      // const CurrentUser = await fetchCurrentUser(data['token']);
       const CurrentUser = await fetchCurrentUser(data['access']);
       setCurrentUser(CurrentUser);
 
@@ -85,6 +82,7 @@ const Login = () => {
                       </Link>
                     </button>
                   </div>
+                  {/*
                   <h4 className="mt30 textCen wM500px">---- Social Login ----</h4>
                   <div className="mt10">
                     <button className="googleLogin btNormal wM500px hrefBox pt5 pb5">
@@ -94,6 +92,7 @@ const Login = () => {
                       </Link>
                     </button>
                   </div>
+                  */}
                 </div>
               </div>
             </main>
