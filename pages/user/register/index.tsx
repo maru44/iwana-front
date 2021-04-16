@@ -86,6 +86,7 @@ const Register: NextPage = () => {
                         </Link>
                       </button>
                     </div>
+                    {/*
                     <h4 className="mt30 textCen wM500px">---- Social Login ----</h4>
                     <div className="mt10">
                       <button className="googleLogin btNormal wM500px hrefBox pt5 pb5">
@@ -95,6 +96,7 @@ const Register: NextPage = () => {
                         </Link>
                       </button>
                     </div>
+                    */}
                   </div>
                   <RuleModal open={open} closeFunc={closeModal}></RuleModal>
                 </div>
