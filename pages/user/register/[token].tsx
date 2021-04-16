@@ -30,12 +30,11 @@ const UserComplete: NextPage<Props> = (props) => {
             const res = await fetchCurrentUser(tk);
             const CurrentUser = await res.json();
             setCurrentUser(CurrentUser);
-        }
+        };
+        useEffect(() => {
+            router.push('/wanted');
+        });
     }
-
-    useEffect(() => {
-        router.push('/wanted');
-    })
     
     return (
         <div>
