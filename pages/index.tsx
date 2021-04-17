@@ -9,39 +9,12 @@ import Footer from "../components/Footer";
 import { MessageArea } from "../components/Message";
 
 import { Search, SearchList } from "../types/any";
-import { baseUrl } from "../helper/Helper";
-
-const scrapeEndPoint = `${baseUrl}/api/scrape/`;
-
-type searchResult = SearchList;
-
-const fetchScrape = async (e: any) => {
-  e.preventDefault();
-
-  const target = e.target;
-
-  if (target.keyword.value == null || target.keyword.value == "") {
-    const res = "need";
-    return res;
-  }
-
-  const res = await fetch(
-    `${scrapeEndPoint}?keyword=${target.keyword.value}&sold=${target.sold.value}&category=${target.category.value}`
-  );
-  let ret = await res.json();
-
-  if (ret["mercari"] == [] && ret["rakuma"] == [] && ret["yahoo"] == []) {
-    ret = "条件に合致する商品がありませんでした。";
-    return ret;
-  }
-
-  return ret;
-};
+import { fetchScrape } from "../helper/Helper";
 
 // component
 export const Home: NextPage = () => {
   const [mess, setSearch] = useState<string>(null);
-  const [data, setData] = useState<searchResult>(null);
+  const [data, setData] = useState<SearchList>(null);
 
   const searching = async (e: any) => {
     setSearch("検索中です。検索には5秒前後の時間がかかります。");

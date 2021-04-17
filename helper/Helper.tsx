@@ -38,6 +38,27 @@ export const fetchInquiry = async (e: any) => {
   return ret;
 };
 
+export const fetchScrape = async (e: any) => {
+  e.preventDefault();
+  const target = e.target;
+
+  if (target.keyword.value == null || target.keyword.value == "") {
+    const res = "need";
+    return res;
+  }
+
+  const res = await fetch(
+    `${baseUrl}/api/scrape/?keyword=${target.keyword.value}&sold=${target.sold.value}&category=${target.category.value}`
+  );
+  let ret = await res.json();
+
+  if (ret["mercari"] == [] && ret["rakuma"] == [] && ret["yahoo"] == []) {
+    ret = "条件に合致する商品がありませんでした。";
+    return ret;
+  }
+  return ret;
+};
+
 export const localizeTime = (date: string): any => {
   const cookies = parseCookies();
   const timeZone = cookies["timezone"];
