@@ -1,7 +1,7 @@
 import { destroyCookie, parseCookies } from "nookies";
 
 import Router from "next/router";
-import User from "../types/any";
+import { User } from "../types/any";
 
 import { getCsrfOfDjango, baseUrl } from "./Helper";
 
