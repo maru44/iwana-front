@@ -45,7 +45,7 @@ export const Home: NextPage = () => {
   const searching = async (e: any) => {
     setSearch("searching");
     const dd = await fetchScrape(e);
-    typeof dd == "string" ? setSearch(dd) : setData(dd);
+    typeof dd == "string" ? setSearch(dd) : setData(dd), setSearch(null);
   };
 
   return (
