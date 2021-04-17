@@ -6,6 +6,8 @@ import { parseCookies } from "nookies";
 
 import { CurrentUserState } from "../states/CurrentUser";
 import { fetchCurrentUser } from "../helper/HelperUser";
+import * as gtag from "../helper/gtag";
+import { useRouter } from "next/router";
 
 const AppInt = (): null => {
   const setCurrentUser = useSetRecoilState(CurrentUserState);
@@ -27,6 +29,19 @@ const AppInt = (): null => {
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  useEffect(() => {
+    if (gtag.existsGaId) {
+      const handleRouteChange = (path: string) => {
+        gtag.pageview(path);
+      };
+      router.events.on("routeChangeComplete", handleRouteChange);
+      return () => {
+        router.events.off("routeChangeComplete", handleRouteChange);
+      };
+    }
+  }, [router.events]);
+
   return (
     <RecoilRoot>
       <Component {...pageProps} />
