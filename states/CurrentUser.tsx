@@ -1,4 +1,4 @@
-import User from "../types/any";
+import { User } from "../types/any";
 import { atom } from "recoil";
 
 // undefined >> 確認前

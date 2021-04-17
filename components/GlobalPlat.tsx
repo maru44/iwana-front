@@ -2,17 +2,17 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { Search } from "../types/any";
 
-interface Plat {
+interface Plats {
   [key: string]: any;
 }
 
-const globalPlatName: Plat = {
+const globalPlatName: Plats = {
   mercari: "メルカリ",
   rakuma: "ラクマ",
   yahoo: "Yahoo オークション",
 };
 
-export const GlobalPlat = (data: any) => {
+export const GlobalPlat = (data: Search) => {
   const imgStyle = {
     backgroundImage: `url(${data.image})`,
   };

@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 
 import HeadCustom from "../components/HeadCustom";
 import Header from "../components/Header";
-import DelWantedComponent from "../components/DelWantedComponent";
 import Footer from "../components/Footer";
 
 import { headData } from "../types/any";

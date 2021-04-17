@@ -9,7 +9,7 @@ import Header from "../../../components/Header";
 import Error from "../../../components/Error";
 import Footer from "../../../components/Footer";
 
-import User, { headData, Wanted } from "../../../types/any";
+import { User, headData, Wanted } from "../../../types/any";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 
 import { baseUrl } from "../../../helper/Helper";

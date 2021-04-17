@@ -48,5 +48,3 @@ export interface headData {
   ogdescription?: string;
   seodescription?: string;
 }
-
-export default User;
