@@ -4,8 +4,9 @@ import { useState } from "react";
 
 import HeadCustom from "../components/HeadCustom";
 import Header from "../components/Header";
-import { GlobalArea, MessageArea } from "../components/GlobalPlat";
+import { GlobalArea } from "../components/GlobalPlat";
 import Footer from "../components/Footer";
+import { MessageArea } from "../components/Message";
 
 import { Search, SearchList } from "../types/any";
 import { baseUrl } from "../helper/Helper";
@@ -30,7 +31,7 @@ const fetchScrape = async (e: any) => {
   let ret = await res.json();
 
   if (ret["mercari"] == [] && ret["rakuma"] == [] && ret["yahoo"] == []) {
-    ret = "null";
+    ret = "条件に合致する商品がありませんでした。";
     return ret;
   }
 
@@ -39,11 +40,11 @@ const fetchScrape = async (e: any) => {
 
 // component
 export const Home: NextPage = () => {
-  const [searchState, setSearch] = useState<string>(null);
+  const [mess, setSearch] = useState<string>(null);
   const [data, setData] = useState<searchResult>(null);
 
   const searching = async (e: any) => {
-    setSearch("searching");
+    setSearch("検索中です。検索には5秒前後の時間がかかります。");
     const dd = await fetchScrape(e);
     typeof dd == "string" ? setSearch(dd) : setData(dd), setSearch(null);
   };
@@ -63,7 +64,7 @@ export const Home: NextPage = () => {
                 yahooオークションの絞り込みは未実装です。
               </p>
             </div>
-            <form onSubmit={searching}>
+            <form onSubmit={searching} className="mb60">
               {/*<input type="hidden" name="csrfmiddlewaretoken" value={ csrftoken } />*/}
               <div className="pt40 field">
                 <label htmlFor="globalStr">
@@ -74,6 +75,7 @@ export const Home: NextPage = () => {
                   type="text"
                   id="globalStr"
                   placeholder="キーワード"
+                  required
                 />
               </div>
               <div className="mt15 field">
@@ -119,15 +121,7 @@ export const Home: NextPage = () => {
                 検索
               </button>
             </form>
-            {searchState && searchState == "need" && (
-              <MessageArea mess="検索ワードを入力してください。"></MessageArea>
-            )}
-            {searchState && searchState == "null" && (
-              <MessageArea mess="条件に合致する商品がありませんでした。"></MessageArea>
-            )}
-            {searchState && searchState == "searching" && (
-              <MessageArea mess="検索中です。検索には5秒前後の時間がかかります。"></MessageArea>
-            )}
+            <MessageArea mess={mess}></MessageArea>
             {data && data.mercari && (
               <GlobalArea kind="mercari" datas={data.mercari}></GlobalArea>
             )}

@@ -2,10 +2,12 @@ import { fetchCurrentUser, getJwtToken } from "../../helper/HelperUser";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useState } from "react";
 
 import HeadCustom from "../../components/HeadCustom";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { MessageArea } from "../../components/Message";
 
 import { useRequireAnonymous } from "../../hooks/useRequireAnonymous";
 import { CurrentUserState } from "../../states/CurrentUser";
@@ -14,7 +16,9 @@ const Login = () => {
   useRequireAnonymous();
   const setCurrentUser = useSetRecoilState(CurrentUserState);
   const router = useRouter();
+  const [mess, setMess] = useState<string>(null);
 
+  // login function
   const fetchLogin = async (e: any) => {
     e.preventDefault();
     const target = e.target;
@@ -29,12 +33,15 @@ const Login = () => {
       nextPage = router.query.next.toString();
     }
 
-    const data = await getJwtToken(postData, nextPage);
+    try {
+      const data = await getJwtToken(postData, nextPage);
+      const CurrentUser = await fetchCurrentUser(data["access"]);
+      setCurrentUser(CurrentUser);
 
-    const CurrentUser = await fetchCurrentUser(data["access"]);
-    setCurrentUser(CurrentUser);
-
-    router.push("/wanted");
+      router.push("/wanted");
+    } catch {
+      setMess("該当するユーザーが存在しません。");
+    }
 
     /*
       if (data.token) {
@@ -56,6 +63,7 @@ const Login = () => {
           <div className="mainZone mla mra">
             <div className="pt30">
               <h1 className="h2Size">ログイン</h1>
+              <MessageArea mess={mess}></MessageArea>
               <form onSubmit={fetchLogin} className="pt10">
                 <div className="field">
                   <label htmlFor="id_uername">ユーザー名</label>

@@ -58,18 +58,4 @@ export const GlobalArea: NextPage<Props> = ({ kind, datas }) => {
   );
 };
 
-interface Mess {
-  mess: string;
-}
-
-export const MessageArea: NextPage<Mess> = ({ mess }) => {
-  return (
-    <div className="w100 mt60">
-      <div className="mb10 aMess">
-        <p>{mess}</p>
-      </div>
-    </div>
-  );
-};
-
 export default GlobalArea;
