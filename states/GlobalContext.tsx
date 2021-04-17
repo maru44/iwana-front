@@ -1,8 +1,8 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 const GlobalContext = createContext({
-    currentUser: 0,
-    setUser: () => {}
-})
+  currentUser: 0,
+  setUser: () => {},
+});
 
 export default GlobalContext;

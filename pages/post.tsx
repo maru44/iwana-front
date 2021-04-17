@@ -1,21 +1,21 @@
-import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
+import { GetServerSideProps, NextComponentType, NextPage } from "next";
 
-import Post from '../components/Post';
+import Post from "../components/Post";
 
-import { useCurrentUser } from '../hooks/useCurrentUser';
-import { useRequireLogin } from '../hooks/useRequireLogin';
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useRequireLogin } from "../hooks/useRequireLogin";
 
 const PostPage: NextPage = () => {
-    const { isAuthChecking, CurrentUser } = useCurrentUser();
-    const user = CurrentUser;
-    
-    useRequireLogin();
+  const { isAuthChecking, CurrentUser } = useCurrentUser();
+  const user = CurrentUser;
 
-    return (
-      <>
-        <Post user={user} wanted={null}></Post>
-      </>
-    )
-}
+  useRequireLogin();
+
+  return (
+    <>
+      <Post user={user} wanted={null}></Post>
+    </>
+  );
+};
 
 export default PostPage;

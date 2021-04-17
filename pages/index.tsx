@@ -1,52 +1,52 @@
-import {  GetServerSideProps, NextComponentType, NextPage } from 'next';
+import { GetServerSideProps, NextComponentType, NextPage } from "next";
 
-import { useState } from 'react';
+import { useState } from "react";
 
-import HeadCustom from '../components/HeadCustom';
-import Header from '../components/Header';
-import { GlobalArea, MessageArea } from '../components/GlobalPlat';
-import Footer from '../components/Footer';
+import HeadCustom from "../components/HeadCustom";
+import Header from "../components/Header";
+import { GlobalArea, MessageArea } from "../components/GlobalPlat";
+import Footer from "../components/Footer";
 
-import { Search, SearchList } from '../types/any';
-import { baseUrl } from '../helper/Helper';
+import { Search, SearchList } from "../types/any";
+import { baseUrl } from "../helper/Helper";
 
 const scrapeEndPoint = `${baseUrl}/api/scrape/`;
 
 type searchResult = SearchList;
 
 const fetchScrape = async (e: any) => {
-
   e.preventDefault();
 
   const target = e.target;
-  
+
   if (target.keyword.value == null || target.keyword.value == "") {
     const res = "need";
     return res;
   }
 
-  const res = await fetch(`${scrapeEndPoint}?keyword=${target.keyword.value}&sold=${target.sold.value}&category=${target.category.value}`)
+  const res = await fetch(
+    `${scrapeEndPoint}?keyword=${target.keyword.value}&sold=${target.sold.value}&category=${target.category.value}`
+  );
   let ret = await res.json();
 
-  if (ret['mercari'] == [] && ret['rakuma'] == [] && ret['yahoo'] == []) {
+  if (ret["mercari"] == [] && ret["rakuma"] == [] && ret["yahoo"] == []) {
     ret = "null";
     return ret;
   }
-    
+
   return ret;
-}
+};
 
 // component
 export const Home: NextPage = () => {
-
   const [searchState, setSearch] = useState<string>(null);
   const [data, setData] = useState<searchResult>(null);
 
   const searching = async (e: any) => {
-    setSearch('searching');
+    setSearch("searching");
     const dd = await fetchScrape(e);
     typeof dd == "string" ? setSearch(dd) : setData(dd);
-  }
+  };
 
   return (
     <div>
@@ -57,20 +57,31 @@ export const Home: NextPage = () => {
           <div className="mainZone mla mra">
             <div className="pt30">
               <h1 className="h2Size">商品検索</h1>
-              <p className="pt10">ここではメルカリ、ラクマ、ヤフオクで一斉検索ができます。
-                  <br />yahooオークションの絞り込みは未実装です。
+              <p className="pt10">
+                ここではメルカリ、ラクマ、ヤフオクで一斉検索ができます。
+                <br />
+                yahooオークションの絞り込みは未実装です。
               </p>
             </div>
             <form onSubmit={searching}>
               {/*<input type="hidden" name="csrfmiddlewaretoken" value={ csrftoken } />*/}
               <div className="pt40 field">
-                <label htmlFor="globalStr">検索ワード<span className="ml20 colorR">***</span></label>
-                <input name="keyword" type="text" id="globalStr" placeholder="キーワード" />
+                <label htmlFor="globalStr">
+                  検索ワード<span className="ml20 colorR">***</span>
+                </label>
+                <input
+                  name="keyword"
+                  type="text"
+                  id="globalStr"
+                  placeholder="キーワード"
+                />
               </div>
               <div className="mt15 field">
                 <label htmlFor="sold_select">販売状況</label>
                 <select id="sold_select" name="sold">
-                  <option value="0" selected>全て</option>
+                  <option value="0" selected>
+                    全て
+                  </option>
                   <option value="2">販売中</option>
                   <option value="1">売り切れ</option>
                 </select>
@@ -78,7 +89,9 @@ export const Home: NextPage = () => {
               <div className="mt15 field">
                 <label htmlFor="category_select">カテゴリ</label>
                 <select id="category_select" name="category">
-                  <option value="0" selected>---------</option>
+                  <option value="0" selected>
+                    ---------
+                  </option>
                   <option value="1">レディース</option>
                   <option value="2">メンズ</option>
                   <option value="3">ベビー・キッズ</option>
@@ -98,29 +111,38 @@ export const Home: NextPage = () => {
                   <option value="17">その他</option>
                 </select>
               </div>
-              <button id="globalBtn" type="submit"
-               className="mt30 btFormat1 btNormal wM500px flexCen pt5 pb5">
-                 検索
+              <button
+                id="globalBtn"
+                type="submit"
+                className="mt30 btFormat1 btNormal wM500px flexCen pt5 pb5"
+              >
+                検索
               </button>
             </form>
-            {searchState && searchState == "need" && (<MessageArea mess="検索ワードを入力してください。"></MessageArea>)}
-            {searchState && searchState == "null" && (<MessageArea mess="条件に合致する商品がありませんでした。"></MessageArea>)}
-            {searchState && searchState == "searching" && (<MessageArea mess="検索中です。検索には5秒前後の時間がかかります。"></MessageArea>)}
-            {data && data.mercari &&
-              (<GlobalArea kind="mercari" datas={ data.mercari }></GlobalArea>)
-            }
-            {data && data.rakuma &&
-              (<GlobalArea kind="rakuma" datas={ data.rakuma }></GlobalArea>)
-            }
-            {data && data.yahoo &&
-              (<GlobalArea kind="yahoo" datas={ data.yahoo }></GlobalArea>)
-            }
+            {searchState && searchState == "need" && (
+              <MessageArea mess="検索ワードを入力してください。"></MessageArea>
+            )}
+            {searchState && searchState == "null" && (
+              <MessageArea mess="条件に合致する商品がありませんでした。"></MessageArea>
+            )}
+            {searchState && searchState == "searching" && (
+              <MessageArea mess="検索中です。検索には5秒前後の時間がかかります。"></MessageArea>
+            )}
+            {data && data.mercari && (
+              <GlobalArea kind="mercari" datas={data.mercari}></GlobalArea>
+            )}
+            {data && data.rakuma && (
+              <GlobalArea kind="rakuma" datas={data.rakuma}></GlobalArea>
+            )}
+            {data && data.yahoo && (
+              <GlobalArea kind="yahoo" datas={data.yahoo}></GlobalArea>
+            )}
           </div>
         </main>
       </div>
       <Footer></Footer>
     </div>
-  )
-}
+  );
+};
 
 export default Home;
