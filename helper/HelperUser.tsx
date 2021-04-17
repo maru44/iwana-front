@@ -2,7 +2,7 @@ import { parseCookies, setCookie, destroyCookie } from "nookies";
 import { getCsrfOfDjango, baseUrl } from "./Helper";
 
 import Router from "next/router";
-import User from "../types/any";
+import { User } from "../types/any";
 
 interface postData {
   username: string;
@@ -131,7 +131,6 @@ export const fetchRegist = async (e: any) => {
   const csrf = await getCsrfOfDjango();
   const res = await fetch(`${baseUrl}/api/user/register/`, {
     method: "POST",
-    mode: "cors",
     credentials: "include",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -148,6 +147,7 @@ export const fetchRegist = async (e: any) => {
   setCookie(null, "iwana_refresh", ret["refresh"], {
     maxAge: 30 * 24 * 60 * 60,
   });
+
   destroyCookie(null, "csrftoken");
   return ret;
 };
