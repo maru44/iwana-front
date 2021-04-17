@@ -95,16 +95,11 @@ export const updateProfile = async (e: any, user: User) => {
 
   formData.set("email", user.email);
   formData.set("username", user.username);
+  formData.set("name", e.target.name.value);
+  formData.set("intro", e.target.intro.value);
 
-  if (e.target.name.value !== "") {
-    formData.set("name", e.target.name.value);
-  }
-  if (e.target.intro.value !== "") {
-    formData.set("intro", e.target.intro.value);
-  }
-  if (e.target.picture.files.length !== 0) {
+  e.target.picture.files.length !== 0 &&
     formData.set("picture", e.target.picture.files[0]);
-  }
 
   const csrf = await getCsrfOfDjango();
 
