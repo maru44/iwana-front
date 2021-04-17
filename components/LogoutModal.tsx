@@ -8,7 +8,6 @@ interface ModalParams {
 
 const DelWantedComponent: NextPage<ModalParams> = (props) => {
   let parentOpen = props.open;
-  const a = "a";
 
   if (parentOpen) {
     return (
