@@ -8,12 +8,14 @@ import Header from "../../../components/Header";
 import RuleModal from "../../../components/RuleModal";
 import Footer from "../../../components/Footer";
 
-import { fetchRegist } from "../../../helper/HelperUser";
-import { baseUrl } from "../../../helper/Helper";
+import { fetchRegist, getJwtToken, registed } from "../../../helper/HelperUser";
+import { baseUrl, getCsrfOfDjango } from "../../../helper/Helper";
+import { MessageArea } from "../../../components/Message";
 
 const Register: NextPage = () => {
   const [accept, setAccept] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mess, setMess] = useState<string>(null);
   const router = useRouter();
 
   const changeAccept = (e: any) => {
@@ -27,8 +29,24 @@ const Register: NextPage = () => {
   const registerStart = async (e: any) => {
     e.preventDefault();
     const ret = await fetchRegist(e);
-    if (ret && ret["access"]) {
-      router.push("/user/register/temp/");
+    if (ret && ret["status"] === 200) {
+      try {
+        const getJwt = await getJwtToken(
+          {
+            username: e.target.username.value,
+            password: e.target.password.value,
+          },
+          null
+        );
+        const deactivate = await registed();
+        await router.push("/user/register/temp/");
+      } catch {
+        setMess("ユーザーの作成に失敗しました。");
+        // @TODO user 作成失敗後の処理も後で追加
+      }
+    } else {
+      console.log(ret);
+      setMess("ユーザーの作成に失敗しました。");
     }
   };
 
@@ -48,6 +66,7 @@ const Register: NextPage = () => {
           <div className="mainZone mla mra">
             <div className="pt30">
               <h1 className="h2Size">会員登録</h1>
+              <MessageArea mess={mess}></MessageArea>
               <form className="pt10" onSubmit={registerStart} method="POST">
                 <div className="field">
                   <label htmlFor="id_username">ユーザー名</label>
