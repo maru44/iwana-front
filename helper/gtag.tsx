@@ -2,9 +2,11 @@ export const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 export const existsGaId = GA_ID !== "";
 
 export const pageview = (path: string): void => {
-  window.gtag("config", GA_ID, {
-    page_path: path,
-  });
+  if (window && window.gtag) {
+    window.gtag("config", GA_ID, {
+      page_path: path,
+    });
+  }
 };
 
 type GaEventProps = {

@@ -143,7 +143,6 @@ export const fetchRegist = async (e: any) => {
     const ret = await res.json();
     return ret;
   } catch (ex: any) {
-    console.log(ex);
     const ret: { [key: string]: any } = {
       status: "400",
     };

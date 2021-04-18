@@ -9,7 +9,6 @@ import RuleModal from "../../../components/RuleModal";
 import Footer from "../../../components/Footer";
 
 import { fetchRegist, getJwtToken, registed } from "../../../helper/HelperUser";
-import { baseUrl, getCsrfOfDjango } from "../../../helper/Helper";
 import { MessageArea } from "../../../components/Message";
 
 const Register: NextPage = () => {

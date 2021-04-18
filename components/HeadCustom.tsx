@@ -4,7 +4,7 @@ import { headData } from "../types/any";
 const defaultHeadData: headData = {
   title: "Iwana | 欲しいものが見つかるサイト",
   ogtypeWebsite: "website",
-  ogimage: "https://ogp-builder.com/Suo2gx/https://iwana.link/",
+  ogimage: "https://iwanaiwana.club/static/blog/ogp.png",
   ogtitle: "Iwana | 欲しいものが見つかるサイト",
   ogdescription:
     "欲しいものが見つかるサイト Iwanaで欲しいものを手に入れよう。欲しいものを提示しオファーをもらおう。フリマプラットフォームを横断した検索機能を使って商品探しを効率化しよう。",
