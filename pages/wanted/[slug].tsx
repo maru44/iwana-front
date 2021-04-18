@@ -41,13 +41,8 @@ const WantedDetail: NextPage<Props> = (props) => {
   const { isAuthChecking, CurrentUser } = useCurrentUser();
 
   async function fetcher(url: string) {
-    try {
-      const res = await fetch(url);
-      setMess("オファー/メッセージを送信しました。");
-      return res.json();
-    } catch {
-      setMess("オファー/メッセージの送信に失敗しました。");
-    }
+    const res = await fetch(url);
+    return res.json();
   }
 
   const wanted = props.wanted;
@@ -86,9 +81,14 @@ const WantedDetail: NextPage<Props> = (props) => {
   const offeringPost = (e: any) => {
     e.preventDefault();
     if (e.target.offer_url.value) {
-      postOffer(e, wanted.slug, CurrentUser);
+      try {
+        postOffer(e, wanted.slug, CurrentUser);
+        setMess("オファー/メッセージを送信しました。");
+        e.target.offer_url.value = "";
+      } catch {
+        setMess("オファー/メッセージの送信に失敗しました。。");
+      }
     }
-    e.target.offer_url.value = "";
   };
 
   const [open, setOpen] = useState(false);
