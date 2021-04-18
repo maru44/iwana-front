@@ -2,7 +2,6 @@ import Link from "next/link";
 import useSWR from "swr";
 import { useState } from "react";
 import { GetServerSideProps, NextPage } from "next";
-import { parseCookies } from "nookies";
 
 import HeadCustom from "../../components/HeadCustom";
 import Header from "../../components/Header";
@@ -19,6 +18,7 @@ import { ParsedUrlQuery } from "node:querystring";
 
 import "emoji-mart/css/emoji-mart.css";
 import { Emoji } from "emoji-mart";
+import { MessageArea } from "../../components/Message";
 
 interface Props {
   wanted: Wanted;
@@ -36,16 +36,21 @@ const WantedDetail: NextPage<Props> = (props) => {
   if (status !== 200) {
     return <Error status={status}></Error>;
   }
+  const [mess, setMess] = useState(null);
 
   const { isAuthChecking, CurrentUser } = useCurrentUser();
 
   async function fetcher(url: string) {
-    const res = await fetch(url);
-    return res.json();
+    try {
+      const res = await fetch(url);
+      setMess("オファー/メッセージを送信しました。");
+      return res.json();
+    } catch {
+      setMess("オファー/メッセージの送信に失敗しました。");
+    }
   }
 
   const wanted = props.wanted;
-
   const [is_gotten, SetGotten] = useState(wanted.is_gotten);
 
   const initialOffers = props.offers;
@@ -228,6 +233,7 @@ const WantedDetail: NextPage<Props> = (props) => {
                 ) : (
                   <div className="notHave">
                     <label htmlFor="id_offer_url">メッセージまたはリンク</label>
+                    <MessageArea mess={mess}></MessageArea>
                     {wanted.user && (
                       <form onSubmit={offeringPost} className="flexNormal">
                         <input
