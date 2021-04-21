@@ -17,7 +17,7 @@ const Inquiry = () => {
   };
 
   const postInq = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     const ret = await fetchInquiry(e);
     if (ret && ret["status"] === 200) {
       router.push("/");

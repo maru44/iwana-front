@@ -26,7 +26,7 @@ const Register: NextPage = () => {
   };
 
   const registerStart = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     const ret = await fetchRegist(e);
     if (ret && ret["status"] === 200) {
       try {

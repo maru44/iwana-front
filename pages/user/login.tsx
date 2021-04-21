@@ -20,7 +20,7 @@ const Login = () => {
 
   // login function
   const fetchLogin = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     const target = e.target;
     let nextPage: string = null;
 

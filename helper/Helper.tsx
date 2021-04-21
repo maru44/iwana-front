@@ -39,7 +39,7 @@ export const fetchInquiry = async (e: any) => {
 };
 
 export const fetchScrape = async (e: any) => {
-  e.preventDefault();
+  e.preventDefault ? e.preventDefault() : (e.returnValue = false);
   const target = e.target;
 
   if (target.keyword.value == null || target.keyword.value == "") {

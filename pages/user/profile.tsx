@@ -38,7 +38,7 @@ const Profile: NextPage = () => {
 
   // update profile
   const updating = (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     updateProfile(e, CurrentUser);
   };
 

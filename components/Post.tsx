@@ -18,7 +18,7 @@ const Post: NextPage<Props> = (props) => {
   const user = props.user;
 
   const checkAll = (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     const allSelect = e.target.children;
     for (let i = 0; i < allSelect.length; i++) {
       allSelect[i].children[0].checked = true;
@@ -26,7 +26,7 @@ const Post: NextPage<Props> = (props) => {
   };
 
   const submitWanted = (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     const platSelects = e.target.plat;
     let arrPlat = [];
     for (let i = 0; i < platSelects.length; i++) {
@@ -38,7 +38,7 @@ const Post: NextPage<Props> = (props) => {
   };
 
   const editWanted = (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     const platSelects = e.target.plat;
     let arrPlat = [];
     for (let i = 0; i < platSelects.length; i++) {

@@ -79,7 +79,7 @@ const WantedDetail: NextPage<Props> = (props) => {
 
   // post offer
   const offeringPost = (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     if (e.target.offer_url.value) {
       try {
         postOffer(e, wanted.slug, CurrentUser);
@@ -95,12 +95,12 @@ const WantedDetail: NextPage<Props> = (props) => {
 
   // open delete modal
   const delStart = (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     setOpen(true);
   };
 
   const delClose = (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     setOpen(false);
   };
 

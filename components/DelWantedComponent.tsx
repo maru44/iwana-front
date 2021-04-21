@@ -12,7 +12,7 @@ const DelWantedComponent: NextPage<ModalParams> = (props) => {
   let parentOpen = props.open;
 
   const deleteW = (e: any) => {
-    e.preventDefault();
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
     deleteWanted(e);
   };
 
