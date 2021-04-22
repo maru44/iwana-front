@@ -61,7 +61,6 @@ export const updateWanted = async (
   console.log(formData);
 
   const slug = e.target.getAttribute("data-wanted");
-  const cookies = parseCookies();
   const csrf = await getCsrfOfDjango();
   const res = await fetch(`${baseUrl}/api/wanted/${slug}/`, {
     method: "PUT",
@@ -69,7 +68,6 @@ export const updateWanted = async (
     mode: "cors",
     headers: {
       "X-CSRFToken": csrf["token"],
-      Authorization: `Bearer ${cookies["iwana_user_token"]}`,
     },
     body: formData,
   });
@@ -84,7 +82,6 @@ export const updateWanted = async (
 // delete wanted
 export const deleteWanted = async (e: any) => {
   const slug = e.target.getAttribute("data-wanted");
-  const cookies = parseCookies();
   const csrf = await getCsrfOfDjango();
   const res = await fetch(`${baseUrl}/api/wanted/${slug}`, {
     method: "DELETE",
@@ -92,7 +89,6 @@ export const deleteWanted = async (e: any) => {
     mode: "cors",
     headers: {
       "X-CSRFToken": csrf["token"],
-      Authorization: `Bearer ${cookies["iwana_user_token"]}`,
     },
   });
   destroyCookie(null, "csrftoken");

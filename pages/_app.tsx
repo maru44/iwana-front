@@ -15,9 +15,7 @@ const AppInt = (): null => {
   useEffect(() => {
     (async function () {
       try {
-        const cookies = parseCookies();
-        const tk = cookies["iwana_user_token"];
-        const CurrentUser = await fetchCurrentUser(tk);
+        const CurrentUser = await fetchCurrentUser();
         setCurrentUser(CurrentUser);
       } catch {
         setCurrentUser(null);

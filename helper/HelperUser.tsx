@@ -26,12 +26,6 @@ export const getJwtToken = async (postData: postData, nextPage: string) => {
   const res = await fetch(`${baseUrl}/api/user/login/`, params);
   const data = await res.json();
 
-  setCookie(null, "iwana_user_token", data["access"], {
-    maxAge: 30 * 24 * 60 * 60,
-  });
-  setCookie(null, "iwana_refresh", data["refresh"], {
-    maxAge: 30 * 24 * 60 * 60,
-  });
   destroyCookie(null, "csrftoken");
 
   return data;
@@ -61,30 +55,29 @@ export const refreshToken = async () => {
   });
   const ret = await res.json();
 
-  reviveToken(ret["access"]);
+  //reviveToken(ret["access"]);
   destroyCookie(null, "csrftoken");
 
   return ret;
 };
 
 // get user by token
-const tokenToUser = async (tk: string) => {
-  const tkList = tk.split(".");
-  const res = await fetch(
-    `${baseUrl}/api/user/profile/?head=${tkList[0]}&pay=${tkList[1]}&signature=${tkList[2]}`
-  );
+const tokenToUser = async () => {
+  const res = await fetch(`${baseUrl}/api/user/`, {
+    credentials: "include",
+  });
   const ret = await res.json();
   return ret;
 };
 
 // get CurrentUser information by jwt
-export const fetchCurrentUser = async (token: string) => {
+export const fetchCurrentUser = async () => {
   try {
-    const user = await tokenToUser(token);
+    const user = await tokenToUser();
     return user;
   } catch {
     const data = await refreshToken();
-    const user = await tokenToUser(data["access"]);
+    const user = await tokenToUser();
     return user;
   }
 };
@@ -139,7 +132,6 @@ export const fetchRegist = async (e: any) => {
       },
       body: JSON.stringify(data),
     });
-    destroyCookie(null, "iwana_user_token");
     const ret = await res.json();
     return ret;
   } catch (ex: any) {
@@ -150,27 +142,16 @@ export const fetchRegist = async (e: any) => {
   } finally {
     destroyCookie(null, "csrftoken");
   }
-
-  /*
-  setCookie(null, "iwana_user_token", ret["access"], {
-    maxAge: 30 * 24 * 60 * 60,
-  });
-  setCookie(null, "iwana_refresh", ret["refresh"], {
-    maxAge: 30 * 24 * 60 * 60,
-  });
-  */
 };
 
 export const registed = async () => {
   const csrf = await getCsrfOfDjango();
-  const cookies = parseCookies();
   const res = await fetch(`${baseUrl}/api/user/profile/`, {
     method: "PUT",
     credentials: "include",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "X-CSRFToken": csrf["token"],
-      Authorization: `Bearer ${cookies["iwana_user_token"]}`,
     },
   });
   destroyCookie(null, "csrftoken");

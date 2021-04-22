@@ -22,11 +22,9 @@ const UserComplete: NextPage<Props> = (props) => {
   const setCurrentUser = useSetRecoilState(CurrentUserState);
   const router = useRouter();
 
-  const cookies = parseCookies();
-  const tk = cookies["iwana_user_token"];
   if (props.data["status"] === 200) {
     async () => {
-      const res = await fetchCurrentUser(tk);
+      const res = await fetchCurrentUser();
       const CurrentUser = await res.json();
       setCurrentUser(CurrentUser);
     };

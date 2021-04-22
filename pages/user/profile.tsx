@@ -16,6 +16,7 @@ import { updateProfile } from "../../helper/HelperUser";
 // for logout
 import { useSetRecoilState } from "recoil";
 import { CurrentUserState } from "../../states/CurrentUser";
+import { baseUrl } from "../../helper/Helper";
 
 const Profile: NextPage = () => {
   const { isAuthChecking, CurrentUser } = useCurrentUser();
@@ -30,8 +31,12 @@ const Profile: NextPage = () => {
   // logout
   const setCurrentUser = useSetRecoilState(CurrentUserState);
   const logout = () => {
-    destroyCookie(null, "iwana_user_token");
-    destroyCookie(null, "iwana_refresh");
+    // destroyCookie(null, "iwana_user_token");
+    // destroyCookie(null, "iwana_refresh");
+    fetch(`${baseUrl}/api/user/logout/`, {
+      method: "GET",
+      credentials: "include",
+    });
     setCurrentUser(null);
     router.push("/");
   };
