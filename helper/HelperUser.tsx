@@ -77,6 +77,9 @@ const tokenToUser = async () => {
     credentials: "include",
   });
   const ret = await res.json();
+  if (res.status === 400) {
+    throw ret;
+  }
   return ret;
 };
 
@@ -85,10 +88,14 @@ export const fetchCurrentUser = async () => {
   try {
     const user = await tokenToUser();
     return user;
-  } catch {
-    const data = await refreshToken();
-    const user = await tokenToUser();
-    return user;
+  } catch (e) {
+    if (e["error"] === "Activations link expired") {
+      const refresh = await refreshToken();
+      if (refresh["status"] === 200) {
+        const user = await tokenToUser();
+        return user;
+      }
+    }
   }
 };
 
