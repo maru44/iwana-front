@@ -39,6 +39,7 @@ const reviveToken = (accessToken: string) => {
 };
 
 // refresh token
+/*
 export const refreshToken = async () => {
   const cookies = parseCookies();
   const refreshKey = cookies["iwana_refresh"];
@@ -58,6 +59,15 @@ export const refreshToken = async () => {
   //reviveToken(ret["access"]);
   destroyCookie(null, "csrftoken");
 
+  return ret;
+};
+*/
+
+export const refreshToken = async () => {
+  const res = await fetch(`${baseUrl}/api/user/refresh/`, {
+    credentials: "include",
+  });
+  const ret = await res.json();
   return ret;
 };
 
