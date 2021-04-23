@@ -35,7 +35,7 @@ const Login = () => {
 
     try {
       const data = await getJwtToken(postData, nextPage);
-      const CurrentUser = await fetchCurrentUser(data["access"]);
+      const CurrentUser = await fetchCurrentUser();
       setCurrentUser(CurrentUser);
 
       router.push("/wanted");
