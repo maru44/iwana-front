@@ -64,12 +64,27 @@ export const refreshToken = async () => {
 };
 */
 
-export const refreshToken = async () => {
+const getRefreshToken = async () => {
   const res = await fetch(`${baseUrl}/api/user/refresh/`, {
-    mode: "cors",
     credentials: "include",
   });
   const ret = await res.json();
+  return ret;
+};
+
+const newToken = async (refresh: any) => {
+  const csrf = await getCsrfOfDjango();
+  const res = await fetch(`${baseUrl}/api/user/refresh/token/`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-CSRFToken": csrf["token"],
+    },
+    body: JSON.stringify(refresh),
+  });
+  const ret = await res.json();
+  destroyCookie(null, "csrftoken");
   return ret;
 };
 
@@ -92,8 +107,10 @@ export const fetchCurrentUser = async () => {
     return user;
   } catch (e) {
     if (e["error"] === "Activations link expired") {
-      const refresh = await refreshToken();
-      if (refresh["status"] === 200) {
+      const refresh = await getRefreshToken();
+      const refreshRet = await newToken(refresh);
+
+      if (refreshRet["access"]) {
         const user = await tokenToUser();
         return user;
       }
