@@ -3,6 +3,7 @@ import { getCsrfOfDjango, baseUrl } from "./Helper";
 
 import Router from "next/router";
 import { User } from "../types/any";
+import { countReset } from "node:console";
 
 interface postData {
   username: string;
@@ -74,6 +75,7 @@ export const refreshToken = async () => {
 // get user by token
 const tokenToUser = async () => {
   const res = await fetch(`${baseUrl}/api/user/`, {
+    mode: "cors",
     credentials: "include",
   });
   const ret = await res.json();
