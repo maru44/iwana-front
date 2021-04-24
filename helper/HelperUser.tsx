@@ -66,6 +66,7 @@ export const refreshToken = async () => {
 
 export const refreshToken = async () => {
   const res = await fetch(`${baseUrl}/api/user/refresh/`, {
+    mode: "cors",
     credentials: "include",
   });
   const ret = await res.json();
@@ -75,7 +76,6 @@ export const refreshToken = async () => {
 // get user by token
 const tokenToUser = async () => {
   const res = await fetch(`${baseUrl}/api/user/`, {
-    mode: "cors",
     credentials: "include",
   });
   const ret = await res.json();
